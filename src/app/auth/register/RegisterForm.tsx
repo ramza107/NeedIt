@@ -63,51 +63,54 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md">
+    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/60 via-background to-accent-light/30" />
+      <div className="gradient-orb -top-20 left-1/4 h-72 w-72 bg-primary/15" aria-hidden />
+      <div className="gradient-orb bottom-0 right-1/4 h-64 w-64 bg-accent/10" aria-hidden />
+      <Card className="relative w-full max-w-md">
         <CardHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600 text-white">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
               <Hammer className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-stone-900">Join {APP_NAME}</h1>
-              <p className="text-sm text-stone-500">Create your free account</p>
+              <h1 className="font-display text-xl font-semibold text-foreground">Join {APP_NAME}</h1>
+              <p className="text-sm text-muted">Create your free account</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           {success ? (
             <div className="text-center py-4">
-              <p className="text-stone-700 mb-4">Check your email to confirm your account.</p>
+              <p className="text-foreground/80 mb-4">Check your email to confirm your account.</p>
               <Button href="/auth/login">Go to Login</Button>
             </div>
           ) : (
-            <form onSubmit={handleRegister} className="space-y-4">
+            <form onSubmit={handleRegister} className="space-y-5">
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setRole('buyer')}
-                  className={`rounded-xl border-2 p-4 text-left transition-colors ${
+                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
                     role === 'buyer'
-                      ? 'border-amber-600 bg-amber-50'
-                      : 'border-stone-200 hover:border-stone-300'
+                      ? 'border-primary bg-primary-light shadow-sm'
+                      : 'border-border hover:border-primary/30 hover:bg-muted-bg/50'
                   }`}
                 >
-                  <p className="font-semibold text-stone-900">Buyer</p>
-                  <p className="text-xs text-stone-500 mt-1">I need something made</p>
+                  <p className="font-semibold text-foreground">Buyer</p>
+                  <p className="text-xs text-muted mt-1">I need something made</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole('maker')}
-                  className={`rounded-xl border-2 p-4 text-left transition-colors ${
+                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
                     role === 'maker'
-                      ? 'border-amber-600 bg-amber-50'
-                      : 'border-stone-200 hover:border-stone-300'
+                      ? 'border-primary bg-primary-light shadow-sm'
+                      : 'border-border hover:border-primary/30 hover:bg-muted-bg/50'
                   }`}
                 >
-                  <p className="font-semibold text-stone-900">Maker</p>
-                  <p className="text-xs text-stone-500 mt-1">I create custom items</p>
+                  <p className="font-semibold text-foreground">Maker</p>
+                  <p className="text-xs text-muted mt-1">I create custom items</p>
                 </button>
               </div>
 
@@ -137,16 +140,18 @@ export default function RegisterForm() {
               />
 
               {error && (
-                <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+                <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </div>
               )}
 
               <Button type="submit" className="w-full" loading={loading}>
                 Create Account
               </Button>
 
-              <p className="text-center text-sm text-stone-500">
+              <p className="text-center text-sm text-muted">
                 Already have an account?{' '}
-                <Link href="/auth/login" className="text-amber-700 font-medium hover:underline">
+                <Link href="/auth/login" className="text-primary font-semibold hover:text-primary-hover transition-colors">
                   Log in
                 </Link>
               </p>

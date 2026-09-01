@@ -2,17 +2,20 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const variants = {
-  primary: 'bg-amber-600 text-white hover:bg-amber-700 shadow-sm',
-  secondary: 'bg-stone-100 text-stone-900 hover:bg-stone-200',
-  outline: 'border-2 border-stone-300 text-stone-700 hover:border-amber-600 hover:text-amber-700',
-  ghost: 'text-stone-600 hover:bg-stone-100 hover:text-stone-900',
-  danger: 'bg-red-600 text-white hover:bg-red-700',
+  primary:
+    'bg-primary text-primary-foreground hover:bg-primary-hover shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0',
+  secondary:
+    'bg-primary-foreground text-foreground border border-border hover:bg-muted-bg shadow-sm',
+  outline:
+    'border-2 border-border text-foreground hover:border-primary hover:text-primary bg-card/50 backdrop-blur-sm',
+  ghost: 'text-muted hover:bg-muted-bg hover:text-foreground',
+  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
 };
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-sm',
+  sm: 'px-3.5 py-2 text-sm',
   md: 'px-5 py-2.5 text-sm',
-  lg: 'px-6 py-3 text-base',
+  lg: 'px-7 py-3.5 text-base',
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -33,7 +36,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-md',
     variants[variant],
     sizes[size],
     className

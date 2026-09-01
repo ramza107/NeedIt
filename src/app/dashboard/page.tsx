@@ -47,8 +47,8 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-stone-900">Maker Dashboard</h1>
-            <p className="text-stone-600">Welcome back, {makerProfile.business_name || profile.full_name}</p>
+            <h1 className="font-display text-2xl font-semibold text-foreground">Maker Dashboard</h1>
+            <p className="text-muted">Welcome back, {makerProfile.business_name || profile.full_name}</p>
           </div>
           <Button href="/requests">Browse Requests</Button>
         </div>
@@ -56,27 +56,27 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className="p-6">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-amber-100 p-3"><TrendingUp className="h-5 w-5 text-amber-700" /></div>
+              <div className="rounded-xl bg-primary-light p-3"><TrendingUp className="h-5 w-5 text-primary" /></div>
               <div>
-                <p className="text-sm text-stone-500">Completed Orders</p>
+                <p className="text-sm text-muted">Completed Orders</p>
                 <p className="text-2xl font-bold">{makerProfile.completed_orders}</p>
               </div>
             </div>
           </Card>
           <Card className="p-6">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-emerald-100 p-3"><Package className="h-5 w-5 text-emerald-700" /></div>
+              <div className="rounded-xl bg-accent-light p-3"><Package className="h-5 w-5 text-accent" /></div>
               <div>
-                <p className="text-sm text-stone-500">Active Orders</p>
+                <p className="text-sm text-muted">Active Orders</p>
                 <p className="text-2xl font-bold">{myOrders?.filter((o) => !['completed', 'paid_to_maker', 'cancelled'].includes(o.status)).length || 0}</p>
               </div>
             </div>
           </Card>
           <Card className="p-6">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-blue-100 p-3"><MessageSquare className="h-5 w-5 text-blue-700" /></div>
+              <div className="rounded-xl bg-muted-bg p-3"><MessageSquare className="h-5 w-5 text-foreground/70" /></div>
               <div>
-                <p className="text-sm text-stone-500">Rating</p>
+                <p className="text-sm text-muted">Rating</p>
                 <p className="text-2xl font-bold">★ {makerProfile.rating.toFixed(1)}</p>
               </div>
             </div>

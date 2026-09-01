@@ -3,12 +3,14 @@ import { cn } from '@/lib/utils';
 export function Card({
   className,
   children,
+  hover = false,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement> & { hover?: boolean }) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-stone-200 bg-white shadow-sm',
+        'rounded-2xl border border-border bg-card card-elevated transition-all duration-300',
+        hover && 'hover:-translate-y-0.5',
         className
       )}
       {...props}
@@ -26,7 +28,7 @@ export function CardHeader({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn('px-6 py-4 border-b border-stone-100', className)}>
+    <div className={cn('px-6 py-5 border-b border-border/60', className)}>
       {children}
     </div>
   );
@@ -39,5 +41,5 @@ export function CardContent({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <div className={cn('px-6 py-4', className)}>{children}</div>;
+  return <div className={cn('px-6 py-5', className)}>{children}</div>;
 }

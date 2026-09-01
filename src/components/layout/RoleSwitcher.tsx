@@ -52,19 +52,19 @@ export function RoleSwitcher({
   }
 
   return (
-    <div className="border-b border-stone-100 px-3 py-2">
-      <p className="px-1 pb-2 text-xs font-medium uppercase tracking-wide text-stone-400">
+    <div className="border-b border-border/60 px-3 py-3">
+      <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-widest text-muted">
         Account mode
       </p>
-      <div className="grid grid-cols-2 gap-1 rounded-lg bg-stone-100 p-1">
+      <div className="grid grid-cols-2 gap-1 rounded-xl bg-muted-bg p-1">
         <button
           type="button"
           onClick={() => switchRole('buyer')}
           disabled={loading !== null}
-          className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-medium transition-colors ${
+          className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
             profile.role === 'buyer'
-              ? 'bg-white text-amber-700 shadow-sm'
-              : 'text-stone-600 hover:text-stone-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted hover:text-foreground'
           }`}
         >
           <ShoppingBag className="h-3.5 w-3.5" />
@@ -74,10 +74,10 @@ export function RoleSwitcher({
           type="button"
           onClick={() => switchRole('maker')}
           disabled={loading !== null}
-          className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-medium transition-colors ${
+          className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
             profile.role === 'maker'
-              ? 'bg-white text-amber-700 shadow-sm'
-              : 'text-stone-600 hover:text-stone-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted hover:text-foreground'
           }`}
         >
           <Hammer className="h-3.5 w-3.5" />

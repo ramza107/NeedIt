@@ -41,18 +41,18 @@ function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <div className="flex items-center gap-2 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600 text-white">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
             <Hammer className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-stone-900">Welcome back</h1>
-            <p className="text-sm text-stone-500">Log in to {APP_NAME}</p>
+            <h1 className="font-display text-xl font-semibold text-foreground">Welcome back</h1>
+            <p className="text-sm text-muted">Log in to {APP_NAME}</p>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <Input
             label="Email"
             type="email"
@@ -69,16 +69,18 @@ function LoginForm() {
           />
 
           {error && (
-            <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+            <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
           )}
 
           <Button type="submit" className="w-full" loading={loading}>
             Log In
           </Button>
 
-          <p className="text-center text-sm text-stone-500">
+          <p className="text-center text-sm text-muted">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="text-amber-700 font-medium hover:underline">
+            <Link href="/auth/register" className="text-primary font-semibold hover:text-primary-hover transition-colors">
               Sign up
             </Link>
           </p>
@@ -90,10 +92,15 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12">
-      <Suspense fallback={<div className="text-stone-500">Loading...</div>}>
-        <LoginForm />
-      </Suspense>
+    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/60 via-background to-accent-light/30" />
+      <div className="gradient-orb -top-20 right-1/4 h-72 w-72 bg-primary/15" aria-hidden />
+      <div className="gradient-orb bottom-0 left-1/4 h-64 w-64 bg-accent/10" aria-hidden />
+      <div className="relative">
+        <Suspense fallback={<div className="text-muted">Loading...</div>}>
+          <LoginForm />
+        </Suspense>
+      </div>
     </div>
   );
 }
