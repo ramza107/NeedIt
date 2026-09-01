@@ -143,7 +143,7 @@ export default async function HomePage() {
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary transition-transform group-hover:scale-110">
                     <step.icon className="h-5 w-5" />
                   </div>
-                  <span className="font-display text-2xl font-bold text-border">
+                  <span className="font-display text-2xl font-bold text-muted/25">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export default async function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="py-20 bg-surface border-y border-border">
+      <section className="py-20 bg-muted-bg border-y border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8">
             Popular categories

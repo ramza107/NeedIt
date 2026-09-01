@@ -64,8 +64,8 @@ export default async function RequestsPage({ searchParams }: Props) {
                   <img src={req.images[0].image_url} alt="" className="h-full w-full object-cover" />
                 </div>
               ) : (
-                <div className="h-48 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
-                  <Camera className="h-10 w-10 text-amber-300" />
+                <div className="h-48 bg-gradient-to-br from-primary-light to-accent-light flex items-center justify-center">
+                  <Camera className="h-10 w-10 text-primary/40" />
                 </div>
               )}
               <div className="p-5 flex-1 flex flex-col">

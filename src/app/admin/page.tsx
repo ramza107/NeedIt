@@ -87,7 +87,7 @@ export default async function AdminPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {disputes?.length ? disputes.map((d) => (
-              <div key={d.id} className="rounded-lg border border-red-100 bg-red-500/10 p-3">
+              <div key={d.id} className="rounded-lg border border-red-200 bg-red-50 p-3">
                 <p className="font-medium text-foreground">{d.order?.request?.title}</p>
                 <p className="text-sm text-muted">{d.reason}: {d.description}</p>
                 <p className="text-xs text-muted mt-1">{formatRelativeTime(d.created_at)}</p>

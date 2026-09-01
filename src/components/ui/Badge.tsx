@@ -4,7 +4,7 @@ const variants = {
   default: 'bg-muted-bg text-muted border border-border',
   success: 'bg-accent-light text-accent border border-accent/20',
   warning: 'bg-primary-light text-primary border border-primary/20',
-  danger: 'bg-red-500/10 text-red-400 border border-red-500/20',
+  danger: 'bg-red-50 text-red-700 border border-red-200',
   info: 'bg-sky-500/10 text-sky-400 border border-sky-500/20',
 };
 

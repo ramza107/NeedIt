@@ -230,7 +230,7 @@ export default function CreateRequestPage() {
               )}
             </div>
 
-            {error && <div className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</div>}
+            {error && <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">{error}</div>}
 
             <Button type="submit" className="w-full" size="lg" loading={loading}>
               Post Request

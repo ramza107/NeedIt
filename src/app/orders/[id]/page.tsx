@@ -59,7 +59,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
         </div>
       )}
       {payment === 'cancelled' && (
-        <div className="mb-6 rounded-xl bg-primary-light border border-amber-200 px-4 py-3 text-primary">
+        <div className="mb-6 rounded-xl bg-primary-light border border-primary/20 px-4 py-3 text-primary">
           Payment was cancelled. You can try again when ready.
         </div>
       )}

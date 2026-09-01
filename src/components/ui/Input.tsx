@@ -23,7 +23,7 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }
@@ -51,7 +51,7 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }
@@ -86,7 +86,7 @@ export function Select({ label, error, options, className, id, ...props }: Selec
           </option>
         ))}
       </select>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 }

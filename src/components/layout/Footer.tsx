@@ -4,7 +4,7 @@ import { Zap } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-surface">
+    <footer className="mt-auto border-t border-border bg-card">
       <div className="glow-line" />
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">

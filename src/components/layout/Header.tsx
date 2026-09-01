@@ -77,7 +77,7 @@ export function Header() {
     : [];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
@@ -116,7 +116,7 @@ export function Header() {
                 <span className="text-sm font-medium text-foreground/90">{profile.full_name}</span>
               </button>
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-card py-1.5 shadow-2xl shadow-black/40">
+                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-card py-1.5 shadow-xl shadow-black/8">
                   <RoleSwitcher profile={profile} onSwitched={() => setUserMenuOpen(false)} />
                   <Link
                     href={`/profile/${profile.id}`}
@@ -130,7 +130,7 @@ export function Header() {
                     type="button"
                     onClick={handleLogout}
                     disabled={loggingOut}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
                     {loggingOut ? 'Logging out...' : 'Log out'}
@@ -199,7 +199,7 @@ export function Header() {
                 type="button"
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-red-500/10"
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
               >
                 <LogOut className="h-4 w-4" />
                 {loggingOut ? 'Logging out...' : 'Log out'}

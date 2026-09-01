@@ -205,7 +205,7 @@ export function OrderActions({
                   key={star}
                   type="button"
                   onClick={() => setRating(star)}
-                  className={`text-2xl ${star <= rating ? 'text-accent' : 'text-stone-300'}`}
+                  className={`text-2xl ${star <= rating ? 'text-accent' : 'text-border'}`}
                 >
                   ★
                 </button>
