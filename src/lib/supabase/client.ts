@@ -8,9 +8,12 @@ export function createClient() {
 }
 
 export function isSupabaseConfigured() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
+    url &&
+    key &&
+    !url.includes('placeholder') &&
+    !key.includes('placeholder')
   );
 }

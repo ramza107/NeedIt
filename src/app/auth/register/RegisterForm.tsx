@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -23,9 +23,7 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const supabaseConfigured = Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
+  const supabaseConfigured = isSupabaseConfigured();
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
