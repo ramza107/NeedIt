@@ -1,19 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { APP_NAME } from '@/lib/constants';
 import type { Profile } from '@/types/database';
-import { Menu, X, Hammer } from 'lucide-react';
+import { Menu, X, Hammer, LogOut, User } from 'lucide-react';
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const menuRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const supabaseConfigured = isSupabaseConfigured();
 
   useEffect(() => {
@@ -39,6 +43,28 @@ export function Header() {
 
     return () => subscription.unsubscribe();
   }, [supabaseConfigured]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUserMenuOpen(false);
+    setMobileOpen(false);
+    setProfile(null);
+    router.push('/');
+    router.refresh();
+    setLoggingOut(false);
+  }
 
   const navLinks = profile
     ? [
@@ -77,10 +103,37 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           {profile ? (
-            <Link href={`/profile/${profile.id}`} className="flex items-center gap-2">
-              <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
-              <span className="text-sm font-medium text-stone-700">{profile.full_name}</span>
-            </Link>
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-stone-100 transition-colors"
+              >
+                <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
+                <span className="text-sm font-medium text-stone-700">{profile.full_name}</span>
+              </button>
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl border border-stone-200 bg-white py-1 shadow-lg">
+                  <Link
+                    href={`/profile/${profile.id}`}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50"
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    <User className="h-4 w-4" />
+                    My Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    {loggingOut ? 'Logging out...' : 'Log out'}
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Button href="/auth/login" variant="ghost" size="sm">
@@ -113,7 +166,7 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {!profile && (
+          {!profile ? (
             <div className="flex gap-2 pt-2">
               <Button href="/auth/login" variant="outline" size="sm" className="flex-1">
                 Log in
@@ -121,6 +174,26 @@ export function Header() {
               <Button href="/auth/register" size="sm" className="flex-1">
                 Get Started
               </Button>
+            </div>
+          ) : (
+            <div className="pt-2 space-y-2 border-t border-stone-100">
+              <Link
+                href={`/profile/${profile.id}`}
+                className="flex items-center gap-2 text-sm font-medium text-stone-700 py-2"
+                onClick={() => setMobileOpen(false)}
+              >
+                <User className="h-4 w-4" />
+                My Profile
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={loggingOut}
+                className="flex w-full items-center gap-2 text-sm font-medium text-red-600 py-2"
+              >
+                <LogOut className="h-4 w-4" />
+                {loggingOut ? 'Logging out...' : 'Log out'}
+              </button>
             </div>
           )}
         </div>
