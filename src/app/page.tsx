@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { RequestCard } from '@/components/requests/RequestCard';
+import { MakerPromoCard } from '@/components/makers/MakerPromoCard';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
 import { APP_NAME, APP_TAGLINE, POPULAR_CATEGORIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
@@ -13,7 +14,23 @@ import {
   Star,
   Hammer,
   Users,
+  Megaphone,
 } from 'lucide-react';
+
+async function getPromotedMakers() {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('maker_profiles')
+      .select('*, profile:profiles(*)')
+      .eq('is_promoted', true)
+      .order('promoted_at', { ascending: false })
+      .limit(12);
+    return data || [];
+  } catch {
+    return [];
+  }
+}
 
 async function getOpenRequests() {
   try {
@@ -71,10 +88,11 @@ const CATEGORY_META: Record<string, { icon: string; desc: string }> = {
 };
 
 export default async function HomePage() {
-  const [requests, makers, categories] = await Promise.all([
+  const [requests, makers, categories, promotedMakers] = await Promise.all([
     getOpenRequests(),
     getFeaturedMakers(),
     getCategories(),
+    getPromotedMakers(),
   ]);
 
   const popularCats = categories.filter((c) => POPULAR_CATEGORIES.includes(c.slug));
@@ -134,6 +152,65 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Sponsored maker ads */}
+      <section className="mx-auto max-w-[1500px] px-4 pt-6">
+        <div className="bg-card rounded p-4 sm:p-6 border border-border">
+          <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-muted flex items-center gap-1.5 mb-1">
+                <Megaphone className="h-3.5 w-3.5" />
+                Sponsored
+              </p>
+              <h2 className="text-xl font-bold text-foreground">Makers advertising their services</h2>
+              <p className="text-sm text-muted mt-0.5">Hire skilled craftspeople — view profiles &amp; portfolios</p>
+            </div>
+            <Link
+              href="/auth/register?role=maker"
+              className="text-sm text-link hover:underline font-medium"
+            >
+              Advertise your profile →
+            </Link>
+          </div>
+
+          {promotedMakers.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
+              {promotedMakers.map((maker) => (
+                <MakerPromoCard key={maker.id} maker={maker} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { name: 'Maria Woodcraft', city: 'Austin', headline: 'Custom furniture & wood restoration', rating: 4.9, orders: 127 },
+                { name: 'Alex Designs', city: 'Portland', headline: 'Handmade jewelry & engagement rings', rating: 5.0, orders: 32 },
+                { name: 'Studio Elena', city: 'Denver', headline: 'Original art commissions & portraits', rating: 4.8, orders: 89 },
+              ].map((demo) => (
+                <Link
+                  key={demo.name}
+                  href="/auth/register?role=maker"
+                  className="card-product p-4 hover:bg-muted-bg transition-colors"
+                >
+                  <span className="text-[10px] font-bold uppercase text-muted">Sponsored · Demo</span>
+                  <p className="font-bold text-link mt-2">{demo.name}</p>
+                  <p className="text-xs text-muted">{demo.city}</p>
+                  <p className="text-xs text-foreground/80 mt-2 line-clamp-2">{demo.headline}</p>
+                  <p className="text-xs text-muted mt-2">★ {demo.rating} · {demo.orders} orders</p>
+                </Link>
+              ))}
+              <div className="sm:col-span-3 rounded border border-dashed border-border bg-muted-bg p-6 text-center">
+                <p className="font-bold text-foreground mb-1">Are you a maker?</p>
+                <p className="text-sm text-muted mb-3">
+                  Turn on homepage promotion from your dashboard — free during beta.
+                </p>
+                <Button href="/auth/register?role=maker" variant="orange" className="font-bold">
+                  Create maker account &amp; advertise
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Shop by category */}
       <section className="mx-auto max-w-[1500px] px-4 pt-6">
         <div className="bg-card rounded p-4 sm:p-6 border border-border">
@@ -170,15 +247,14 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {displayRequests.slice(0, 8).map((req) =>
-              hasRealRequests ? (
-                <RequestCard key={req.id} request={req} compact />
-              ) : (
-                <Link key={req.id} href="/auth/register?role=maker" className="block h-full">
-                  <RequestCard request={req} compact />
-                </Link>
-              )
-            )}
+            {displayRequests.slice(0, 8).map((req) => (
+              <RequestCard
+                key={req.id}
+                request={req}
+                compact
+                href={hasRealRequests ? undefined : '/auth/register?role=maker'}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/ui/Badge';
 import { formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils';
 import { Plus, Package, MessageSquare, TrendingUp } from 'lucide-react';
+import { PromoteProfilePanel } from '@/components/makers/PromoteProfilePanel';
 
 export default async function DashboardPage() {
   const profile = await getProfile();
@@ -81,6 +82,10 @@ export default async function DashboardPage() {
               </div>
             </div>
           </Card>
+        </div>
+
+        <div className="mb-8">
+          <PromoteProfilePanel makerProfile={makerProfile} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

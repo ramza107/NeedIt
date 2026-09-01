@@ -17,11 +17,14 @@ interface RequestCardProps {
     images?: { image_url: string }[] | null;
   };
   compact?: boolean;
+  href?: string;
 }
 
-export function RequestCard({ request, compact = false }: RequestCardProps) {
+export function RequestCard({ request, compact = false, href }: RequestCardProps) {
+  const linkHref = href ?? `/requests/${request.id}`;
+
   return (
-    <Link href={`/requests/${request.id}`} className="block h-full group">
+    <Link href={linkHref} className="block h-full group">
       <article className="card-product h-full flex flex-col bg-card overflow-hidden">
         <div className={`${compact ? 'h-36' : 'h-44'} bg-muted-bg flex items-center justify-center overflow-hidden`}>
           {request.images?.[0] ? (
