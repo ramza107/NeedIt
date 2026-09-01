@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
+import { makerProfilePath, getMakerProfile } from '@/lib/makers';
 import type { MakerProfile } from '@/types/database';
 import { MapPin, Megaphone } from 'lucide-react';
 
@@ -8,10 +9,11 @@ export function MakerPromoCard({
 }: {
   maker: MakerProfile & { profile?: { full_name: string; avatar_url: string | null } | null };
 }) {
-  const name = maker.business_name || maker.profile?.full_name || 'Maker';
+  const name = maker.business_name || getMakerProfile(maker)?.full_name || 'Maker';
   const headline = maker.promo_headline || maker.bio?.slice(0, 100) || 'Custom orders & handmade work';
   const portfolioThumb = maker.portfolio_urls?.[0];
-  const profileHref = `/profile/${maker.user_id || maker.profile?.id}`;
+  const profileHref = makerProfilePath(maker);
+  if (!profileHref) return null;
 
   return (
     <Link
@@ -32,13 +34,13 @@ export function MakerPromoCard({
               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
             />
           ) : (
-            <Avatar src={maker.profile?.avatar_url} name={name} size="lg" />
+            <Avatar src={getMakerProfile(maker)?.avatar_url} name={name} size="lg" />
           )}
         </div>
 
         <div className="p-3 flex-1 flex flex-col">
           <div className="flex items-start gap-2 mb-2">
-            <Avatar src={maker.profile?.avatar_url} name={name} size="sm" />
+            <Avatar src={getMakerProfile(maker)?.avatar_url} name={name} size="sm" />
             <div className="min-w-0 flex-1">
               <h3 className="text-sm font-bold text-link line-clamp-1 group-hover:text-accent-hover">
                 {name}

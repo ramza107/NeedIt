@@ -5,21 +5,22 @@ import { RequestCard } from '@/components/requests/RequestCard';
 import { Plus } from 'lucide-react';
 
 interface Props {
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; mine?: string }>;
 }
 
 export default async function RequestsPage({ searchParams }: Props) {
-  const { category: categorySlug, q } = await searchParams;
+  const { category: categorySlug, q, mine } = await searchParams;
   const profile = await getProfile();
   const supabase = await createClient();
+  const showOnlyMine = mine === '1' && profile?.role === 'buyer';
 
   let query = supabase
     .from('requests')
     .select('*, category:categories(*), images:request_images(*), buyer:profiles(full_name, city)')
     .order('created_at', { ascending: false });
 
-  if (profile?.role === 'buyer') {
-    query = query.eq('buyer_id', profile.id);
+  if (showOnlyMine) {
+    query = query.eq('buyer_id', profile!.id);
   } else if (profile?.role !== 'admin') {
     query = query.in('status', ['open', 'offers_received']);
   }
@@ -40,11 +41,11 @@ export default async function RequestsPage({ searchParams }: Props) {
 
   const pageTitle = q
     ? `Results for "${q}"`
-    : isBuyer
+    : showOnlyMine
       ? 'My Requests'
       : isMaker
         ? 'Browse Open Orders'
-        : 'All Custom Orders';
+        : 'Open Custom Orders';
 
   return (
     <div className="mx-auto max-w-[1500px] px-4 py-4 sm:py-6">

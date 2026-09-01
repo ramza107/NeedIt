@@ -176,7 +176,7 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <h2 className="font-semibold text-foreground">My Requests</h2>
-            <Link href="/requests" className="text-sm text-primary font-medium hover:text-primary-hover transition-colors">View all</Link>
+            <Link href="/requests?mine=1" className="text-sm text-primary font-medium hover:text-primary-hover transition-colors">View all</Link>
           </CardHeader>
           <CardContent className="space-y-3">
             {myRequests?.length ? myRequests.map((req) => (

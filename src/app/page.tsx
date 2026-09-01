@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { RequestCard } from '@/components/requests/RequestCard';
 import { MakerPromoCard } from '@/components/makers/MakerPromoCard';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
+import { makerProfilePath, getMakerProfile } from '@/lib/makers';
 import { APP_NAME, APP_TAGLINE, POPULAR_CATEGORIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
 import {
@@ -180,33 +181,14 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                { name: 'Maria Woodcraft', city: 'Austin', headline: 'Custom furniture & wood restoration', rating: 4.9, orders: 127 },
-                { name: 'Alex Designs', city: 'Portland', headline: 'Handmade jewelry & engagement rings', rating: 5.0, orders: 32 },
-                { name: 'Studio Elena', city: 'Denver', headline: 'Original art commissions & portraits', rating: 4.8, orders: 89 },
-              ].map((demo) => (
-                <Link
-                  key={demo.name}
-                  href="/auth/register?role=maker"
-                  className="card-product p-4 hover:bg-muted-bg transition-colors"
-                >
-                  <span className="text-[10px] font-bold uppercase text-muted">Sponsored · Demo</span>
-                  <p className="font-bold text-link mt-2">{demo.name}</p>
-                  <p className="text-xs text-muted">{demo.city}</p>
-                  <p className="text-xs text-foreground/80 mt-2 line-clamp-2">{demo.headline}</p>
-                  <p className="text-xs text-muted mt-2">★ {demo.rating} · {demo.orders} orders</p>
-                </Link>
-              ))}
-              <div className="sm:col-span-3 rounded border border-dashed border-border bg-muted-bg p-6 text-center">
-                <p className="font-bold text-foreground mb-1">Are you a maker?</p>
-                <p className="text-sm text-muted mb-3">
-                  Turn on homepage promotion from your dashboard — free during beta.
-                </p>
-                <Button href="/auth/register?role=maker" variant="orange" className="font-bold">
-                  Create maker account &amp; advertise
-                </Button>
-              </div>
+            <div className="rounded border border-dashed border-border bg-muted-bg p-8 text-center">
+              <p className="font-bold text-foreground mb-1">No sponsored makers yet</p>
+              <p className="text-sm text-muted mb-4 max-w-md mx-auto">
+                Makers can turn on homepage promotion from their dashboard. Example placeholder profiles are hidden so clicks always open a real maker profile.
+              </p>
+              <Button href="/auth/register?role=maker" variant="orange" className="font-bold">
+                Create maker account &amp; advertise
+              </Button>
             </div>
           )}
         </div>
@@ -301,20 +283,26 @@ export default async function HomePage() {
                 <Users className="h-5 w-5 text-accent" />
                 Top-rated makers
               </h2>
-              <Link href="/requests" className="text-sm text-link hover:underline">View all</Link>
+              <Link href="/makers" className="text-sm text-link hover:underline">View all makers</Link>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {makers.map((maker) => (
-                <Link key={maker.id} href={`/profile/${maker.user_id || maker.profile?.id}`} className="card-product p-4 hover:bg-muted-bg">
+              {makers.map((maker) => {
+                const href = makerProfilePath(maker);
+                const profile = getMakerProfile(maker);
+                const name = maker.business_name || profile?.full_name || 'Maker';
+                if (!href) return null;
+
+                return (
+                <Link key={maker.id} href={href} className="card-product p-4 hover:bg-muted-bg">
                   <div className="flex items-center gap-3 mb-2">
                     <Avatar
-                      src={maker.profile?.avatar_url}
-                      name={maker.business_name || maker.profile?.full_name || 'Maker'}
+                      src={profile?.avatar_url}
+                      name={name}
                       size="sm"
                     />
                     <div className="min-w-0">
                       <p className="font-bold text-sm truncate text-link">
-                        {maker.business_name || maker.profile?.full_name}
+                        {name}
                       </p>
                       <p className="text-xs text-muted">{maker.city}</p>
                     </div>
@@ -322,7 +310,8 @@ export default async function HomePage() {
                   <StarRating rating={maker.rating} count={maker.review_count} />
                   <p className="text-xs text-muted mt-1">{maker.completed_orders} orders completed</p>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
