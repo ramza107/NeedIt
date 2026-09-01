@@ -11,10 +11,11 @@ export function MakerPromoCard({
   const name = maker.business_name || maker.profile?.full_name || 'Maker';
   const headline = maker.promo_headline || maker.bio?.slice(0, 100) || 'Custom orders & handmade work';
   const portfolioThumb = maker.portfolio_urls?.[0];
+  const profileHref = `/profile/${maker.user_id || maker.profile?.id}`;
 
   return (
     <Link
-      href={`/profile/${maker.user_id}`}
+      href={profileHref}
       className="block h-full group"
     >
       <article className="card-product h-full flex flex-col bg-card overflow-hidden relative">

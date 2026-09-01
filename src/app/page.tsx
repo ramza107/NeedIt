@@ -305,7 +305,7 @@ export default async function HomePage() {
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {makers.map((maker) => (
-                <Link key={maker.id} href={`/profile/${maker.user_id}`} className="card-product p-4 hover:bg-muted-bg">
+                <Link key={maker.id} href={`/profile/${maker.user_id || maker.profile?.id}`} className="card-product p-4 hover:bg-muted-bg">
                   <div className="flex items-center gap-3 mb-2">
                     <Avatar
                       src={maker.profile?.avatar_url}

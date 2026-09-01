@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { OrderActions as OrderActionsClient } from '@/components/orders/OrderActions';
 import { ChatPanel } from '@/components/chat/ChatPanel';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -119,16 +120,35 @@ export function OrderDetailClient({
 
         <Card className="p-5">
           <p className="text-sm text-muted mb-3">{isBuyer ? 'Your Maker' : 'Buyer'}</p>
-          <div className="flex items-center gap-3">
-            <Avatar
-              src={isBuyer ? order.maker?.avatar_url : order.buyer?.avatar_url}
-              name={isBuyer ? order.maker?.full_name || '' : order.buyer?.full_name || ''}
-            />
-            <div>
-              <p className="font-semibold">{isBuyer ? order.maker?.full_name : order.buyer?.full_name}</p>
-              <StarRating rating={isBuyer ? order.maker?.rating || 0 : order.buyer?.rating || 0} />
+          {isBuyer && order.maker ? (
+            <Link
+              href={`/profile/${order.maker_id}`}
+              className="flex items-center gap-3 group rounded-lg -m-1 p-1 hover:bg-muted-bg transition-colors"
+            >
+              <Avatar
+                src={order.maker.avatar_url}
+                name={order.maker.full_name || ''}
+              />
+              <div>
+                <p className="font-semibold text-link group-hover:text-accent-hover group-hover:underline">
+                  {order.maker.full_name}
+                </p>
+                <StarRating rating={order.maker.rating || 0} />
+                <p className="text-xs text-muted mt-0.5">View maker profile</p>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Avatar
+                src={order.buyer?.avatar_url}
+                name={order.buyer?.full_name || ''}
+              />
+              <div>
+                <p className="font-semibold">{order.buyer?.full_name}</p>
+                <StarRating rating={order.buyer?.rating || 0} />
+              </div>
             </div>
-          </div>
+          )}
         </Card>
 
         <OrderActionsClient

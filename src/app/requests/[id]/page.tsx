@@ -1,5 +1,6 @@
 import { createClient, getProfile } from '@/lib/supabase/server';
-import { redirect, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/ui/Badge';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
@@ -143,13 +144,19 @@ export default async function RequestDetailPage({ params }: Props) {
                       : offer.maker?.maker_profile;
                     return (
                     <div key={offer.id} className="rounded-xl border border-border p-4">
-                      <div className="flex items-center gap-3 mb-3">
+                      <Link
+                        href={`/profile/${offer.maker_id}`}
+                        className="flex items-center gap-3 mb-3 group rounded-lg -m-1 p-1 hover:bg-muted-bg transition-colors"
+                      >
                         <Avatar src={offer.maker?.avatar_url} name={offer.maker?.full_name || 'Maker'} />
-                        <div>
-                          <p className="font-semibold text-foreground">{offer.maker?.full_name}</p>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-link group-hover:text-accent-hover group-hover:underline">
+                            {offer.maker?.full_name}
+                          </p>
                           <StarRating rating={offer.maker?.rating || 0} />
+                          <p className="text-xs text-muted mt-0.5">View maker profile</p>
                         </div>
-                      </div>
+                      </Link>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-2xl font-bold text-foreground">{formatCurrency(offer.price)}</span>
                         <span className="text-sm text-muted">{offer.estimated_days} days</span>

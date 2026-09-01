@@ -52,6 +52,9 @@ export default async function DashboardPage() {
             <p className="text-muted">Welcome back, {makerProfile.business_name || profile.full_name}</p>
           </div>
           <div className="flex gap-2">
+            <Button href={`/profile/${profile.id}`} variant="outline" className="font-bold">
+              View public profile
+            </Button>
             <Button href="/maker/profile/edit" variant="outline" className="font-bold">
               Edit profile
             </Button>

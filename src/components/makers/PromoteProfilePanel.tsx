@@ -112,6 +112,9 @@ export function PromoteProfilePanel({ makerProfile }: { makerProfile: MakerProfi
             <Button type="button" variant="outline" href="/maker/profile/edit">
               Edit photos &amp; bio
             </Button>
+            <Button type="button" variant="link" href={`/profile/${makerProfile.user_id}`}>
+              Preview public profile
+            </Button>
           </div>
         </form>
       </CardContent>

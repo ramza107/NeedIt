@@ -1,5 +1,5 @@
 import { createClient, getProfile } from '@/lib/supabase/server';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
@@ -21,7 +21,19 @@ export default async function ProfilePage({ params }: Props) {
     .eq('id', id)
     .single();
 
-  if (!profile) notFound();
+  if (!profile) {
+    const { data: makerByRowId } = await supabase
+      .from('maker_profiles')
+      .select('user_id')
+      .eq('id', id)
+      .single();
+
+    if (makerByRowId?.user_id) {
+      redirect(`/profile/${makerByRowId.user_id}`);
+    }
+
+    notFound();
+  }
 
   const { data: makerProfile } = await supabase
     .from('maker_profiles')
