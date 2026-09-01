@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-import { Syne, Inter } from 'next/font/google';
+import { Fraunces, DM_Sans } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
 import './globals.css';
 
-const display = Syne({
+const display = Fraunces({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['600', '700', '800'],
+  weight: ['500', '600', '700'],
 });
 
-const body = Inter({
+const body = DM_Sans({
   variable: '--font-body',
   subsets: ['latin'],
 });

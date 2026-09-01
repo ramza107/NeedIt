@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
-import { Zap } from 'lucide-react';
+import { Hammer } from 'lucide-react';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -68,8 +68,8 @@ export default function RegisterForm() {
       <Card glass className="relative w-full max-w-md">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
-              <Zap className="h-4 w-4 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-chocolate/20">
+              <Hammer className="h-4 w-4 text-cream" />
             </div>
             <div>
               <h1 className="font-display text-xl font-bold text-foreground">Join {APP_NAME}</h1>

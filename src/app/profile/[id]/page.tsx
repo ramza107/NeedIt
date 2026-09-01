@@ -40,7 +40,7 @@ export default async function ProfilePage({ params }: Props) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
       <Card className="overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-primary via-fuchsia-500 to-pink-500" />
+        <div className="h-32 bg-gradient-to-r from-chocolate via-primary to-accent/80" />
         <CardContent className="relative pt-0 pb-8">
           <div className="flex flex-col sm:flex-row items-start gap-4 -mt-12">
             <Avatar

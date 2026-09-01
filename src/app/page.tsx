@@ -11,7 +11,7 @@ import {
   MessageSquare,
   Star,
   CheckCircle2,
-  Zap,
+  Hammer,
   Users,
   TrendingUp,
 } from 'lucide-react';
@@ -66,15 +66,13 @@ export default async function HomePage() {
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary-light px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary mb-8">
-                <Zap className="h-3.5 w-3.5" />
-                Marketplace
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-light px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary mb-8">
+                <Hammer className="h-3.5 w-3.5" />
+                Custom marketplace
               </div>
               <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05] tracking-tight">
                 What do you want{' '}
-                <span className="bg-gradient-to-r from-primary via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
-                  made?
-                </span>
+                <span className="italic text-primary">made?</span>
               </h1>
               <p className="mt-6 text-lg text-muted leading-relaxed max-w-lg">
                 {APP_TAGLINE}
@@ -93,13 +91,13 @@ export default async function HomePage() {
 
             {/* Bento stats */}
             <div className="grid grid-cols-2 gap-4">
-              {STATS.map((stat, i) => (
-                <Card
-                  key={stat.label}
-                  hover
-                  className={`p-6 ${i === 0 ? 'col-span-2' : ''}`}
-                >
-                  <p className="font-display text-3xl sm:text-4xl font-bold text-foreground">{stat.value}</p>
+              <div className="col-span-2 card-chocolate rounded-2xl p-6">
+                <p className="font-display text-3xl sm:text-4xl font-bold text-cream">{STATS[0].value}</p>
+                <p className="text-sm text-cream/65 mt-1">{STATS[0].label}</p>
+              </div>
+              {STATS.slice(1).map((stat) => (
+                <Card key={stat.label} hover className="p-6">
+                  <p className="font-display text-3xl font-bold text-foreground">{stat.value}</p>
                   <p className="text-sm text-muted mt-1">{stat.label}</p>
                 </Card>
               ))}
@@ -248,22 +246,20 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden border-t border-border">
-        <div className="absolute inset-0 mesh-bg opacity-50" aria-hidden />
+      <section className="relative overflow-hidden section-chocolate">
+        <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(at 70% 50%, rgba(196,163,90,0.2) 0, transparent 50%)' }} aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl btn-gradient mb-8 shadow-xl shadow-primary/30">
-            <Star className="h-6 w-6 text-white" />
+          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-cream/10 border border-cream/15 mb-8">
+            <Star className="h-6 w-6 text-accent" />
           </div>
-          <h2 className="font-display text-3xl sm:text-5xl font-bold mb-5">
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-cream mb-5">
             Ready to create something{' '}
-            <span className="bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              unique?
-            </span>
+            <span className="text-accent italic">unique?</span>
           </h2>
-          <p className="text-muted max-w-xl mx-auto text-lg mb-10">
+          <p className="text-cream/65 max-w-xl mx-auto text-lg mb-10">
             Join thousands of buyers and makers. Post your first request in under 2 minutes.
           </p>
-          <Button href="/auth/register" size="lg">
+          <Button href="/auth/register" variant="secondary" size="lg" className="bg-cream text-primary hover:bg-cream/90 border-0">
             Get started for free
           </Button>
         </div>

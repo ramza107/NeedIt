@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { APP_NAME } from '@/lib/constants';
 import type { Profile } from '@/types/database';
-import { Menu, X, Zap, LogOut, User } from 'lucide-react';
+import { Menu, X, Hammer, LogOut, User } from 'lucide-react';
 import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
 
 export function Header() {
@@ -80,8 +80,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
-            <Zap className="h-4 w-4 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-chocolate/20">
+            <Hammer className="h-4 w-4 text-cream" />
           </div>
           <span className="font-display text-lg font-bold text-foreground tracking-tight">
             {APP_NAME}

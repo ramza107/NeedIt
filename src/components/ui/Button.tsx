@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 const variants = {
   primary:
-    'btn-gradient text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98]',
+    'btn-gradient text-cream shadow-lg shadow-chocolate/20 hover:shadow-xl hover:shadow-chocolate/25 hover:scale-[1.02] active:scale-[0.98]',
   secondary:
     'bg-card text-foreground border border-border hover:border-primary/50 hover:bg-muted-bg',
   outline:
