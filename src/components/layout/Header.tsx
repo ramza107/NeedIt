@@ -9,6 +9,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { APP_NAME } from '@/lib/constants';
 import type { Profile } from '@/types/database';
 import { Menu, X, Hammer, LogOut, User } from 'lucide-react';
+import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
 
 export function Header() {
   const pathname = usePathname();
@@ -113,7 +114,8 @@ export function Header() {
                 <span className="text-sm font-medium text-stone-700">{profile.full_name}</span>
               </button>
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 rounded-xl border border-stone-200 bg-white py-1 shadow-lg">
+                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-stone-200 bg-white py-1 shadow-lg">
+                  <RoleSwitcher profile={profile} onSwitched={() => setUserMenuOpen(false)} />
                   <Link
                     href={`/profile/${profile.id}`}
                     className="flex items-center gap-2 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50"
@@ -177,6 +179,7 @@ export function Header() {
             </div>
           ) : (
             <div className="pt-2 space-y-2 border-t border-stone-100">
+              <RoleSwitcher profile={profile} onSwitched={() => setMobileOpen(false)} />
               <Link
                 href={`/profile/${profile.id}`}
                 className="flex items-center gap-2 text-sm font-medium text-stone-700 py-2"
