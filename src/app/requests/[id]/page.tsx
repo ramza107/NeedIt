@@ -15,17 +15,21 @@ export default async function RequestDetailPage({ params }: Props) {
   const profile = await getProfile();
   const supabase = await createClient();
 
-  const { data: request } = await supabase
+  const { data: request, error: requestError } = await supabase
     .from('requests')
     .select(`
       *,
       category:categories(*),
       images:request_images(*),
       buyer:profiles(*),
-      offers(*, maker:profiles(*), maker_profile:maker_profiles!maker_profiles_user_id_fkey(*))
+      offers(*, maker:profiles(*, maker_profile:maker_profiles(*)))
     `)
     .eq('id', id)
     .single();
+
+  if (requestError) {
+    console.error('Request fetch error:', requestError.message);
+  }
 
   if (!request) notFound();
 
@@ -119,9 +123,25 @@ export default async function RequestDetailPage({ params }: Props) {
                     estimated_days: number;
                     message: string;
                     status: string;
-                    maker: { full_name: string; avatar_url: string | null; rating: number };
-                    maker_profile: { completed_orders: number; completion_rate: number; on_time_rate: number } | null;
-                  }) => (
+                    maker: {
+                      full_name: string;
+                      avatar_url: string | null;
+                      rating: number;
+                      maker_profile?: {
+                        completed_orders: number;
+                        completion_rate: number;
+                        on_time_rate: number;
+                      } | {
+                        completed_orders: number;
+                        completion_rate: number;
+                        on_time_rate: number;
+                      }[] | null;
+                    };
+                  }) => {
+                    const makerProfile = Array.isArray(offer.maker?.maker_profile)
+                      ? offer.maker.maker_profile[0]
+                      : offer.maker?.maker_profile;
+                    return (
                     <div key={offer.id} className="rounded-xl border border-stone-200 p-4">
                       <div className="flex items-center gap-3 mb-3">
                         <Avatar src={offer.maker?.avatar_url} name={offer.maker?.full_name || 'Maker'} />
@@ -134,10 +154,10 @@ export default async function RequestDetailPage({ params }: Props) {
                         <span className="text-2xl font-bold text-stone-900">{formatCurrency(offer.price)}</span>
                         <span className="text-sm text-stone-500">{offer.estimated_days} days</span>
                       </div>
-                      {offer.maker_profile && (
+                      {makerProfile && (
                         <div className="text-xs text-stone-500 space-y-0.5 mb-3">
-                          <p>{offer.maker_profile.completed_orders} completed orders</p>
-                          <p>{offer.maker_profile.on_time_rate}% on-time · {offer.maker_profile.completion_rate}% success</p>
+                          <p>{makerProfile.completed_orders} completed orders</p>
+                          <p>{makerProfile.on_time_rate}% on-time · {makerProfile.completion_rate}% success</p>
                         </div>
                       )}
                       {offer.message && (
@@ -154,7 +174,8 @@ export default async function RequestDetailPage({ params }: Props) {
                         />
                       )}
                     </div>
-                  ))}
+                    );
+                  })}
               </CardContent>
             </Card>
           )}
