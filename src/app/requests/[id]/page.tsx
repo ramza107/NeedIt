@@ -3,10 +3,8 @@ import { redirect, notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/ui/Badge';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
-import { Button } from '@/components/ui/Button';
 import { MakeOfferForm, SelectOfferButton } from '@/components/offers/OfferActions';
-import { formatBudget, formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils';
-import { MapPin, Calendar, Camera } from 'lucide-react';
+import { formatBudget, formatCurrency, formatRelativeTime } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ id: string }>;
