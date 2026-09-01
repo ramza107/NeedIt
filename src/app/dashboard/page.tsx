@@ -86,42 +86,42 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-stone-900">New Requests</h2>
+              <h2 className="font-semibold text-foreground">New Requests</h2>
             </CardHeader>
             <CardContent className="space-y-3">
               {openRequests?.length ? openRequests.map((req) => (
-                <Link key={req.id} href={`/requests/${req.id}`} className="block rounded-xl border border-stone-100 p-4 hover:bg-stone-50 transition-colors">
+                <Link key={req.id} href={`/requests/${req.id}`} className="block rounded-xl border border-border p-4 hover:bg-muted-bg transition-colors">
                   <div className="flex justify-between items-start">
                     <div>
-                      <p className="font-medium text-stone-900">{req.title}</p>
-                      <p className="text-sm text-stone-500">{req.city} · {req.category?.name}</p>
+                      <p className="font-medium text-foreground">{req.title}</p>
+                      <p className="text-sm text-muted">{req.city} · {req.category?.name}</p>
                     </div>
-                    <span className="text-sm text-stone-500">{formatRelativeTime(req.created_at)}</span>
+                    <span className="text-sm text-muted">{formatRelativeTime(req.created_at)}</span>
                   </div>
                 </Link>
               )) : (
-                <p className="text-stone-500 text-sm">No open requests right now.</p>
+                <p className="text-muted text-sm">No open requests right now.</p>
               )}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-stone-900">My Orders</h2>
+              <h2 className="font-semibold text-foreground">My Orders</h2>
             </CardHeader>
             <CardContent className="space-y-3">
               {myOrders?.length ? myOrders.map((order) => (
-                <Link key={order.id} href={`/orders/${order.id}`} className="block rounded-xl border border-stone-100 p-4 hover:bg-stone-50">
+                <Link key={order.id} href={`/orders/${order.id}`} className="block rounded-xl border border-border p-4 hover:bg-muted-bg">
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="font-medium text-stone-900">{order.request?.title}</p>
-                      <p className="text-sm text-stone-500">{order.buyer?.full_name}</p>
+                      <p className="font-medium text-foreground">{order.request?.title}</p>
+                      <p className="text-sm text-muted">{order.buyer?.full_name}</p>
                     </div>
                     <StatusBadge status={order.status} />
                   </div>
                 </Link>
               )) : (
-                <p className="text-stone-500 text-sm">No orders yet.</p>
+                <p className="text-muted text-sm">No orders yet.</p>
               )}
             </CardContent>
           </Card>
@@ -150,8 +150,8 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">What do you want made?</h1>
-          <p className="text-stone-600">Welcome back, {profile.full_name}</p>
+          <h1 className="font-display text-2xl font-semibold text-foreground">What do you want made?</h1>
+          <p className="text-muted">Welcome back, {profile.full_name}</p>
         </div>
         <Button href="/requests/new" className="gap-2">
           <Plus className="h-4 w-4" />
@@ -162,20 +162,20 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <h2 className="font-semibold text-stone-900">My Requests</h2>
-            <Link href="/requests" className="text-sm text-amber-700 hover:underline">View all</Link>
+            <h2 className="font-semibold text-foreground">My Requests</h2>
+            <Link href="/requests" className="text-sm text-primary font-medium hover:text-primary-hover transition-colors">View all</Link>
           </CardHeader>
           <CardContent className="space-y-3">
             {myRequests?.length ? myRequests.map((req) => (
-              <Link key={req.id} href={`/requests/${req.id}`} className="block rounded-xl border border-stone-100 p-4 hover:bg-stone-50">
+              <Link key={req.id} href={`/requests/${req.id}`} className="block rounded-xl border border-border p-4 hover:bg-muted-bg">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-medium text-stone-900">{req.title}</p>
-                    <p className="text-sm text-stone-500">{req.category?.name}</p>
+                    <p className="font-medium text-foreground">{req.title}</p>
+                    <p className="text-sm text-muted">{req.category?.name}</p>
                   </div>
                   <div className="text-right">
                     <StatusBadge status={req.status} />
-                    <p className="text-xs text-stone-500 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       {(req.offers as { count: number }[])?.[0]?.count || 0} offers
                     </p>
                   </div>
@@ -183,7 +183,7 @@ export default async function DashboardPage() {
               </Link>
             )) : (
               <div className="text-center py-8">
-                <p className="text-stone-500 mb-4">No requests yet. Post what you want made!</p>
+                <p className="text-muted mb-4">No requests yet. Post what you want made!</p>
                 <Button href="/requests/new" size="sm">Create Request</Button>
               </div>
             )}
@@ -192,15 +192,15 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-stone-900">My Orders</h2>
+            <h2 className="font-semibold text-foreground">My Orders</h2>
           </CardHeader>
           <CardContent className="space-y-3">
             {myOrders?.length ? myOrders.map((order) => (
-              <Link key={order.id} href={`/orders/${order.id}`} className="block rounded-xl border border-stone-100 p-4 hover:bg-stone-50">
+              <Link key={order.id} href={`/orders/${order.id}`} className="block rounded-xl border border-border p-4 hover:bg-muted-bg">
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="font-medium text-stone-900">{order.request?.title}</p>
-                    <p className="text-sm text-stone-500">Maker: {order.maker?.full_name}</p>
+                    <p className="font-medium text-foreground">{order.request?.title}</p>
+                    <p className="text-sm text-muted">Maker: {order.maker?.full_name}</p>
                   </div>
                   <div className="text-right">
                     <StatusBadge status={order.status} />
@@ -209,7 +209,7 @@ export default async function DashboardPage() {
                 </div>
               </Link>
             )) : (
-              <p className="text-stone-500 text-sm py-4">No orders yet.</p>
+              <p className="text-muted text-sm py-4">No orders yet.</p>
             )}
           </CardContent>
         </Card>

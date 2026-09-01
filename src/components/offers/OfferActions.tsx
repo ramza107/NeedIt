@@ -55,7 +55,7 @@ export function MakeOfferForm({
   return (
     <Card>
       <CardHeader>
-        <h3 className="font-semibold text-stone-900">Make an Offer</h3>
+        <h3 className="font-semibold text-foreground">Make an Offer</h3>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

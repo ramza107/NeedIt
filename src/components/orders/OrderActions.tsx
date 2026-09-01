@@ -161,9 +161,9 @@ export function OrderActions({
             <h3 className="font-semibold">Upload Completed Work</h3>
           </CardHeader>
           <CardContent className="space-y-3">
-            <label className="flex cursor-pointer items-center gap-2 rounded-xl border-2 border-dashed border-stone-300 p-4 hover:border-amber-400">
-              <Upload className="h-5 w-5 text-stone-400" />
-              <span className="text-sm text-stone-600">Add completion photos</span>
+            <label className="flex cursor-pointer items-center gap-2 rounded-xl border-2 border-dashed border-border p-4 hover:border-primary/40">
+              <Upload className="h-5 w-5 text-muted" />
+              <span className="text-sm text-muted">Add completion photos</span>
               <input
                 type="file"
                 accept="image/*"
@@ -173,7 +173,7 @@ export function OrderActions({
               />
             </label>
             {completionPhotos.length > 0 && (
-              <p className="text-sm text-stone-500">{completionPhotos.length} photo(s) selected</p>
+              <p className="text-sm text-muted">{completionPhotos.length} photo(s) selected</p>
             )}
             <Button onClick={handleUploadCompletion} loading={loading} className="w-full">
               Mark as Ready for Review
@@ -205,7 +205,7 @@ export function OrderActions({
                   key={star}
                   type="button"
                   onClick={() => setRating(star)}
-                  className={`text-2xl ${star <= rating ? 'text-amber-500' : 'text-stone-300'}`}
+                  className={`text-2xl ${star <= rating ? 'text-accent' : 'text-stone-300'}`}
                 >
                   ★
                 </button>

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
-import { Hammer } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
@@ -39,14 +39,14 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card glass className="w-full max-w-md">
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
-            <Hammer className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
+            <Zap className="h-4 w-4 text-white" />
           </div>
           <div>
-            <h1 className="font-display text-xl font-semibold text-foreground">Welcome back</h1>
+            <h1 className="font-display text-xl font-bold text-foreground">Welcome back</h1>
             <p className="text-sm text-muted">Log in to {APP_NAME}</p>
           </div>
         </div>
@@ -69,7 +69,7 @@ function LoginForm() {
           />
 
           {error && (
-            <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
               {error}
             </div>
           )}
@@ -92,10 +92,8 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/60 via-background to-accent-light/30" />
-      <div className="gradient-orb -top-20 right-1/4 h-72 w-72 bg-primary/15" aria-hidden />
-      <div className="gradient-orb bottom-0 left-1/4 h-64 w-64 bg-accent/10" aria-hidden />
+    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden mesh-bg">
+      <div className="absolute inset-0 grid-pattern opacity-30" aria-hidden />
       <div className="relative">
         <Suspense fallback={<div className="text-muted">Loading...</div>}>
           <LoginForm />

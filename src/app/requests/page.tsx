@@ -40,10 +40,10 @@ export default async function RequestsPage({ searchParams }: Props) {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">
+          <h1 className="text-2xl font-bold text-foreground">
             {isBuyer ? 'My Requests' : isMaker ? 'New Requests' : 'Browse Requests'}
           </h1>
-          <p className="text-stone-600">
+          <p className="text-muted">
             {isMaker ? 'Find custom orders matching your skills' : 'Track your custom order requests'}
           </p>
         </div>
@@ -60,7 +60,7 @@ export default async function RequestsPage({ searchParams }: Props) {
           <Link key={req.id} href={`/requests/${req.id}`}>
             <Card className="overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
               {req.images?.[0] ? (
-                <div className="h-48 bg-stone-100 overflow-hidden">
+                <div className="h-48 bg-muted-bg overflow-hidden">
                   <img src={req.images[0].image_url} alt="" className="h-full w-full object-cover" />
                 </div>
               ) : (
@@ -70,11 +70,11 @@ export default async function RequestsPage({ searchParams }: Props) {
               )}
               <div className="p-5 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-semibold text-stone-900 line-clamp-2">{req.title}</h3>
+                  <h3 className="font-semibold text-foreground line-clamp-2">{req.title}</h3>
                   <StatusBadge status={req.status} />
                 </div>
-                <p className="text-sm text-stone-600 line-clamp-2 mb-3 flex-1">{req.description}</p>
-                <div className="space-y-1.5 text-sm text-stone-500">
+                <p className="text-sm text-muted line-clamp-2 mb-3 flex-1">{req.description}</p>
+                <div className="space-y-1.5 text-sm text-muted">
                   <div className="flex items-center gap-1.5">
                     <span>{req.category?.icon}</span>
                     {req.category?.name}
@@ -85,7 +85,7 @@ export default async function RequestsPage({ searchParams }: Props) {
                       {req.city}
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5 font-medium text-stone-700">
+                  <div className="flex items-center gap-1.5 font-medium text-foreground/80">
                     💰 {formatBudget(req.budget_min, req.budget_max)}
                   </div>
                   {req.deadline && (
@@ -95,7 +95,7 @@ export default async function RequestsPage({ searchParams }: Props) {
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-stone-400 mt-3">{formatRelativeTime(req.created_at)}</p>
+                <p className="text-xs text-muted mt-3">{formatRelativeTime(req.created_at)}</p>
               </div>
             </Card>
           </Link>
@@ -104,7 +104,7 @@ export default async function RequestsPage({ searchParams }: Props) {
 
       {!requests?.length && (
         <div className="text-center py-16">
-          <p className="text-stone-500 mb-4">No requests found.</p>
+          <p className="text-muted mb-4">No requests found.</p>
           {isBuyer && <Button href="/requests/new">Create your first request</Button>}
         </div>
       )}

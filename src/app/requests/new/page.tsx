@@ -121,8 +121,8 @@ export default function CreateRequestPage() {
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
       <Card>
         <CardHeader>
-          <h1 className="text-2xl font-bold text-stone-900">Create a Request</h1>
-          <p className="text-stone-600 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Create a Request</h1>
+          <p className="text-muted text-sm mt-1">
             Describe what you want made — makers will compete with offers
           </p>
         </CardHeader>
@@ -203,10 +203,10 @@ export default function CreateRequestPage() {
             />
 
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">Photos</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-2">Photos</label>
               <div className="flex flex-wrap gap-3">
                 {previews.map((preview, i) => (
-                  <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-stone-200">
+                  <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-border">
                     <img src={preview} alt="" className="h-full w-full object-cover" />
                     <button
                       type="button"
@@ -217,20 +217,20 @@ export default function CreateRequestPage() {
                     </button>
                   </div>
                 ))}
-                <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 hover:border-amber-400 transition-colors">
-                  <Upload className="h-5 w-5 text-stone-400" />
-                  <span className="text-xs text-stone-500 mt-1">Upload</span>
+                <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border hover:border-primary/40 transition-colors">
+                  <Upload className="h-5 w-5 text-muted" />
+                  <span className="text-xs text-muted mt-1">Upload</span>
                   <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageChange} />
                 </label>
               </div>
               {previews.length === 0 && (
-                <p className="text-xs text-stone-500 mt-2 flex items-center gap-1">
+                <p className="text-xs text-muted mt-2 flex items-center gap-1">
                   <ImageIcon className="h-3 w-3" /> Add reference photos to help makers understand your vision
                 </p>
               )}
             </div>
 
-            {error && <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+            {error && <div className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</div>}
 
             <Button type="submit" className="w-full" size="lg" loading={loading}>
               Post Request

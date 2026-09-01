@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
-import { Hammer } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -63,18 +63,16 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/60 via-background to-accent-light/30" />
-      <div className="gradient-orb -top-20 left-1/4 h-72 w-72 bg-primary/15" aria-hidden />
-      <div className="gradient-orb bottom-0 right-1/4 h-64 w-64 bg-accent/10" aria-hidden />
-      <Card className="relative w-full max-w-md">
+    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden mesh-bg">
+      <div className="absolute inset-0 grid-pattern opacity-30" aria-hidden />
+      <Card glass className="relative w-full max-w-md">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
-              <Hammer className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
+              <Zap className="h-4 w-4 text-white" />
             </div>
             <div>
-              <h1 className="font-display text-xl font-semibold text-foreground">Join {APP_NAME}</h1>
+              <h1 className="font-display text-xl font-bold text-foreground">Join {APP_NAME}</h1>
               <p className="text-sm text-muted">Create your free account</p>
             </div>
           </div>
@@ -140,7 +138,7 @@ export default function RegisterForm() {
               />
 
               {error && (
-                <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">
+                <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
                   {error}
                 </div>
               )}

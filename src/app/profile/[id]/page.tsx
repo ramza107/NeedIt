@@ -50,10 +50,10 @@ export default async function ProfilePage({ params }: Props) {
               className="border-4 border-white"
             />
             <div className="flex-1 pt-14 sm:pt-12">
-              <h1 className="text-2xl font-bold text-stone-900">
+              <h1 className="text-2xl font-bold text-foreground">
                 {isMaker ? makerProfile.business_name || profile.full_name : profile.full_name}
               </h1>
-              <p className="text-stone-500">{profile.city || profile.location}</p>
+              <p className="text-muted">{profile.city || profile.location}</p>
               <div className="mt-2 flex items-center gap-4">
                 <StarRating rating={profile.rating} count={profile.review_count} />
                 <Badge>{profile.role === 'maker' ? 'Maker' : 'Buyer'}</Badge>
@@ -62,39 +62,39 @@ export default async function ProfilePage({ params }: Props) {
           </div>
 
           {isMaker && makerProfile.bio && (
-            <p className="mt-6 text-stone-700 leading-relaxed">{makerProfile.bio}</p>
+            <p className="mt-6 text-foreground/80 leading-relaxed">{makerProfile.bio}</p>
           )}
 
           {isMaker && (
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="rounded-xl bg-stone-50 p-4 text-center">
-                <p className="text-2xl font-bold text-stone-900">{makerProfile.completed_orders}</p>
-                <p className="text-xs text-stone-500">Completed</p>
+              <div className="rounded-xl bg-muted-bg p-4 text-center">
+                <p className="text-2xl font-bold text-foreground">{makerProfile.completed_orders}</p>
+                <p className="text-xs text-muted">Completed</p>
               </div>
-              <div className="rounded-xl bg-stone-50 p-4 text-center">
-                <p className="text-2xl font-bold text-stone-900">{makerProfile.on_time_rate}%</p>
-                <p className="text-xs text-stone-500">On-time</p>
+              <div className="rounded-xl bg-muted-bg p-4 text-center">
+                <p className="text-2xl font-bold text-foreground">{makerProfile.on_time_rate}%</p>
+                <p className="text-xs text-muted">On-time</p>
               </div>
-              <div className="rounded-xl bg-stone-50 p-4 text-center">
-                <p className="text-2xl font-bold text-stone-900">{makerProfile.completion_rate}%</p>
-                <p className="text-xs text-stone-500">Success</p>
+              <div className="rounded-xl bg-muted-bg p-4 text-center">
+                <p className="text-2xl font-bold text-foreground">{makerProfile.completion_rate}%</p>
+                <p className="text-xs text-muted">Success</p>
               </div>
-              <div className="rounded-xl bg-stone-50 p-4 text-center">
-                <p className="text-2xl font-bold text-stone-900">{makerProfile.dispute_rate}%</p>
-                <p className="text-xs text-stone-500">Disputes</p>
+              <div className="rounded-xl bg-muted-bg p-4 text-center">
+                <p className="text-2xl font-bold text-foreground">{makerProfile.dispute_rate}%</p>
+                <p className="text-xs text-muted">Disputes</p>
               </div>
             </div>
           )}
 
           {!isMaker && (
             <div className="mt-6">
-              <p className="text-stone-600">{profile.completed_orders} completed orders</p>
+              <p className="text-muted">{profile.completed_orders} completed orders</p>
             </div>
           )}
 
           {isMaker && makerProfile.portfolio_urls?.length > 0 && (
             <div className="mt-8">
-              <h2 className="font-semibold text-stone-900 mb-4">Portfolio</h2>
+              <h2 className="font-semibold text-foreground mb-4">Portfolio</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {makerProfile.portfolio_urls.map((url: string, i: number) => (
                   <div key={i} className="aspect-square rounded-xl overflow-hidden">
@@ -110,18 +110,18 @@ export default async function ProfilePage({ params }: Props) {
       {reviews && reviews.length > 0 && (
         <Card className="mt-8">
           <CardHeader>
-            <h2 className="font-semibold text-stone-900">Reviews</h2>
+            <h2 className="font-semibold text-foreground">Reviews</h2>
           </CardHeader>
           <CardContent className="space-y-4">
             {reviews.map((review: Review & { reviewer: Profile }) => (
-              <div key={review.id} className="border-b border-stone-100 pb-4 last:border-0">
+              <div key={review.id} className="border-b border-border pb-4 last:border-0">
                 <div className="flex items-center gap-2 mb-2">
                   <Avatar src={review.reviewer?.avatar_url} name={review.reviewer?.full_name || ''} size="sm" />
-                  <span className="font-medium text-stone-900">{review.reviewer?.full_name}</span>
-                  <span className="text-amber-500">{'★'.repeat(review.rating)}</span>
-                  <span className="text-xs text-stone-400">{formatRelativeTime(review.created_at)}</span>
+                  <span className="font-medium text-foreground">{review.reviewer?.full_name}</span>
+                  <span className="text-accent">{'★'.repeat(review.rating)}</span>
+                  <span className="text-xs text-muted">{formatRelativeTime(review.created_at)}</span>
                 </div>
-                {review.comment && <p className="text-sm text-stone-600">{review.comment}</p>}
+                {review.comment && <p className="text-sm text-muted">{review.comment}</p>}
               </div>
             ))}
           </CardContent>

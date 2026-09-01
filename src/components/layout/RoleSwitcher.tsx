@@ -52,8 +52,8 @@ export function RoleSwitcher({
   }
 
   return (
-    <div className="border-b border-border/60 px-3 py-3">
-      <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-widest text-muted">
+    <div className="border-b border-border px-3 py-3">
+      <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-widest text-muted">
         Account mode
       </p>
       <div className="grid grid-cols-2 gap-1 rounded-xl bg-muted-bg p-1">
@@ -63,7 +63,7 @@ export function RoleSwitcher({
           disabled={loading !== null}
           className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
             profile.role === 'buyer'
-              ? 'bg-card text-primary shadow-sm'
+              ? 'bg-primary-light text-primary'
               : 'text-muted hover:text-foreground'
           }`}
         >
@@ -76,7 +76,7 @@ export function RoleSwitcher({
           disabled={loading !== null}
           className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
             profile.role === 'maker'
-              ? 'bg-card text-primary shadow-sm'
+              ? 'bg-primary-light text-primary'
               : 'text-muted hover:text-foreground'
           }`}
         >

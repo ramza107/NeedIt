@@ -40,14 +40,14 @@ export function OrderDetailClient({
       <div className="lg:col-span-2 space-y-6">
         <div>
           <StatusBadge status={order.status} />
-          <h1 className="text-2xl font-bold text-stone-900 mt-2">{order.request?.title}</h1>
-          <p className="text-stone-600 mt-1">{order.request?.description}</p>
+          <h1 className="text-2xl font-bold text-foreground mt-2">{order.request?.title}</h1>
+          <p className="text-muted mt-1">{order.request?.description}</p>
         </div>
 
         {/* Status timeline */}
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-stone-900">Order Progress</h2>
+            <h2 className="font-semibold text-foreground">Order Progress</h2>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -59,15 +59,15 @@ export function OrderDetailClient({
                     <div
                       className={`flex h-8 w-8 items-center justify-center rounded-full ${
                         isComplete
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-stone-100 text-stone-400'
+                          ? 'bg-primary text-white'
+                          : 'bg-muted-bg text-muted'
                       }`}
                     >
                       {isComplete ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
                     </div>
                     <span
                       className={`text-sm ${
-                        isCurrent ? 'font-semibold text-stone-900' : isComplete ? 'text-stone-700' : 'text-stone-400'
+                        isCurrent ? 'font-semibold text-foreground' : isComplete ? 'text-foreground/80' : 'text-muted'
                       }`}
                     >
                       {ORDER_STATUS_LABELS[step]}
@@ -82,7 +82,7 @@ export function OrderDetailClient({
         {order.completion_photos?.length > 0 && (
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-stone-900">Completed Work</h2>
+              <h2 className="font-semibold text-foreground">Completed Work</h2>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-3">
@@ -97,7 +97,7 @@ export function OrderDetailClient({
         )}
 
         <div>
-          <h2 className="font-semibold text-stone-900 mb-3">Chat</h2>
+          <h2 className="font-semibold text-foreground mb-3">Chat</h2>
           <ChatPanel
             orderId={order.id}
             currentUserId={currentUserId}
@@ -108,9 +108,9 @@ export function OrderDetailClient({
 
       <div className="space-y-6">
         <Card className="p-5">
-          <p className="text-sm text-stone-500">Order Total</p>
-          <p className="text-3xl font-bold text-stone-900">{formatCurrency(order.price)}</p>
-          <div className="mt-3 text-sm text-stone-500 space-y-1">
+          <p className="text-sm text-muted">Order Total</p>
+          <p className="text-3xl font-bold text-foreground">{formatCurrency(order.price)}</p>
+          <div className="mt-3 text-sm text-muted space-y-1">
             <p>Platform fee: {formatCurrency(order.platform_fee)}</p>
             <p>Maker receives: {formatCurrency(order.maker_payout)}</p>
             <p>Payment: <StatusBadge status={order.payment_status} /></p>
@@ -118,7 +118,7 @@ export function OrderDetailClient({
         </Card>
 
         <Card className="p-5">
-          <p className="text-sm text-stone-500 mb-3">{isBuyer ? 'Your Maker' : 'Buyer'}</p>
+          <p className="text-sm text-muted mb-3">{isBuyer ? 'Your Maker' : 'Buyer'}</p>
           <div className="flex items-center gap-3">
             <Avatar
               src={isBuyer ? order.maker?.avatar_url : order.buyer?.avatar_url}

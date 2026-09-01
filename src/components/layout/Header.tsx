@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { APP_NAME } from '@/lib/constants';
 import type { Profile } from '@/types/database';
-import { Menu, X, Hammer, LogOut, User } from 'lucide-react';
+import { Menu, X, Zap, LogOut, User } from 'lucide-react';
 import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
 
 export function Header() {
@@ -77,13 +77,13 @@ export function Header() {
     : [];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-card/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25 transition-transform group-hover:scale-105">
-            <Hammer className="h-5 w-5" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-primary/30">
+            <Zap className="h-4 w-4 text-white" />
           </div>
-          <span className="font-display text-xl font-semibold text-foreground tracking-tight">
+          <span className="font-display text-lg font-bold text-foreground tracking-tight">
             {APP_NAME}
           </span>
         </Link>
@@ -93,7 +93,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 pathname === link.href
                   ? 'bg-primary-light text-primary'
                   : 'text-muted hover:text-foreground hover:bg-muted-bg'
@@ -110,13 +110,13 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2.5 rounded-xl border border-transparent px-2 py-1.5 hover:border-border hover:bg-muted-bg/60 transition-all"
+                className="flex items-center gap-2.5 rounded-full border border-border px-3 py-1.5 hover:border-primary/40 transition-all"
               >
                 <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
-                <span className="text-sm font-medium text-foreground/80">{profile.full_name}</span>
+                <span className="text-sm font-medium text-foreground/90">{profile.full_name}</span>
               </button>
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-card py-1.5 shadow-xl shadow-foreground/5">
+                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-card py-1.5 shadow-2xl shadow-black/40">
                   <RoleSwitcher profile={profile} onSwitched={() => setUserMenuOpen(false)} />
                   <Link
                     href={`/profile/${profile.id}`}
@@ -130,7 +130,7 @@ export function Header() {
                     type="button"
                     onClick={handleLogout}
                     disabled={loggingOut}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
                     {loggingOut ? 'Logging out...' : 'Log out'}
@@ -165,7 +165,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={`block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              className={`block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                 pathname === link.href
                   ? 'bg-primary-light text-primary'
                   : 'text-foreground/80 hover:bg-muted-bg'
@@ -189,7 +189,7 @@ export function Header() {
               <RoleSwitcher profile={profile} onSwitched={() => setMobileOpen(false)} />
               <Link
                 href={`/profile/${profile.id}`}
-                className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 hover:bg-muted-bg"
+                className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/80 hover:bg-muted-bg"
                 onClick={() => setMobileOpen(false)}
               >
                 <User className="h-4 w-4" />
@@ -199,7 +199,7 @@ export function Header() {
                 type="button"
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-red-500/10"
               >
                 <LogOut className="h-4 w-4" />
                 {loggingOut ? 'Logging out...' : 'Log out'}

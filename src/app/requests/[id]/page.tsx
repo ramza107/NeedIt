@@ -45,16 +45,16 @@ export default async function RequestDetailPage({ params }: Props) {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <StatusBadge status={request.status} />
-              <span className="text-sm text-stone-500">{request.category?.icon} {request.category?.name}</span>
+              <span className="text-sm text-muted">{request.category?.icon} {request.category?.name}</span>
             </div>
-            <h1 className="text-3xl font-bold text-stone-900">{request.title}</h1>
-            <p className="text-stone-500 mt-1">Posted {formatRelativeTime(request.created_at)} by {request.buyer?.full_name}</p>
+            <h1 className="text-3xl font-bold text-foreground">{request.title}</h1>
+            <p className="text-muted mt-1">Posted {formatRelativeTime(request.created_at)} by {request.buyer?.full_name}</p>
           </div>
 
           {request.images?.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {request.images.map((img: { id: string; image_url: string }) => (
-                <div key={img.id} className="aspect-square rounded-xl overflow-hidden bg-stone-100">
+                <div key={img.id} className="aspect-square rounded-xl overflow-hidden bg-muted-bg">
                   <img src={img.image_url} alt="" className="h-full w-full object-cover" />
                 </div>
               ))}
@@ -63,30 +63,30 @@ export default async function RequestDetailPage({ params }: Props) {
 
           <Card>
             <CardContent className="pt-6">
-              <p className="text-stone-700 whitespace-pre-wrap leading-relaxed">{request.description}</p>
+              <p className="text-foreground/80 whitespace-pre-wrap leading-relaxed">{request.description}</p>
             </CardContent>
           </Card>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Card className="p-4 text-center">
-              <p className="text-sm text-stone-500">Budget</p>
-              <p className="font-semibold text-stone-900">{formatBudget(request.budget_min, request.budget_max)}</p>
+              <p className="text-sm text-muted">Budget</p>
+              <p className="font-semibold text-foreground">{formatBudget(request.budget_min, request.budget_max)}</p>
             </Card>
             {request.deadline && (
               <Card className="p-4 text-center">
-                <p className="text-sm text-stone-500">Deadline</p>
-                <p className="font-semibold text-stone-900">{formatDate(request.deadline)}</p>
+                <p className="text-sm text-muted">Deadline</p>
+                <p className="font-semibold text-foreground">{formatDate(request.deadline)}</p>
               </Card>
             )}
             {request.city && (
               <Card className="p-4 text-center">
-                <p className="text-sm text-stone-500">Location</p>
-                <p className="font-semibold text-stone-900">{request.city}</p>
+                <p className="text-sm text-muted">Location</p>
+                <p className="font-semibold text-foreground">{request.city}</p>
               </Card>
             )}
             <Card className="p-4 text-center">
-              <p className="text-sm text-stone-500">Delivery</p>
-              <p className="font-semibold text-stone-900 capitalize">{request.delivery_type}</p>
+              <p className="text-sm text-muted">Delivery</p>
+              <p className="font-semibold text-foreground capitalize">{request.delivery_type}</p>
             </Card>
           </div>
         </div>
@@ -98,9 +98,9 @@ export default async function RequestDetailPage({ params }: Props) {
 
           {existingOffer && (
             <Card className="p-4">
-              <p className="text-sm text-stone-500">Your offer</p>
-              <p className="text-xl font-bold text-stone-900">{formatCurrency(existingOffer.price)}</p>
-              <p className="text-sm text-stone-600">{existingOffer.estimated_days} days</p>
+              <p className="text-sm text-muted">Your offer</p>
+              <p className="text-xl font-bold text-foreground">{formatCurrency(existingOffer.price)}</p>
+              <p className="text-sm text-muted">{existingOffer.estimated_days} days</p>
               <StatusBadge status={existingOffer.status} />
             </Card>
           )}
@@ -108,7 +108,7 @@ export default async function RequestDetailPage({ params }: Props) {
           {isOwner && request.offers?.length > 0 && (
             <Card>
               <CardHeader>
-                <h3 className="font-semibold text-stone-900">
+                <h3 className="font-semibold text-foreground">
                   Offers ({request.offers.length})
                 </h3>
               </CardHeader>
@@ -142,26 +142,26 @@ export default async function RequestDetailPage({ params }: Props) {
                       ? offer.maker.maker_profile[0]
                       : offer.maker?.maker_profile;
                     return (
-                    <div key={offer.id} className="rounded-xl border border-stone-200 p-4">
+                    <div key={offer.id} className="rounded-xl border border-border p-4">
                       <div className="flex items-center gap-3 mb-3">
                         <Avatar src={offer.maker?.avatar_url} name={offer.maker?.full_name || 'Maker'} />
                         <div>
-                          <p className="font-semibold text-stone-900">{offer.maker?.full_name}</p>
+                          <p className="font-semibold text-foreground">{offer.maker?.full_name}</p>
                           <StarRating rating={offer.maker?.rating || 0} />
                         </div>
                       </div>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-2xl font-bold text-stone-900">{formatCurrency(offer.price)}</span>
-                        <span className="text-sm text-stone-500">{offer.estimated_days} days</span>
+                        <span className="text-2xl font-bold text-foreground">{formatCurrency(offer.price)}</span>
+                        <span className="text-sm text-muted">{offer.estimated_days} days</span>
                       </div>
                       {makerProfile && (
-                        <div className="text-xs text-stone-500 space-y-0.5 mb-3">
+                        <div className="text-xs text-muted space-y-0.5 mb-3">
                           <p>{makerProfile.completed_orders} completed orders</p>
                           <p>{makerProfile.on_time_rate}% on-time · {makerProfile.completion_rate}% success</p>
                         </div>
                       )}
                       {offer.message && (
-                        <p className="text-sm text-stone-600 mb-3">{offer.message}</p>
+                        <p className="text-sm text-muted mb-3">{offer.message}</p>
                       )}
                       {request.status !== 'maker_selected' && offer.status === 'pending' && (
                         <SelectOfferButton
@@ -182,7 +182,7 @@ export default async function RequestDetailPage({ params }: Props) {
 
           {isOwner && (!request.offers || request.offers.length === 0) && (
             <Card className="p-6 text-center">
-              <p className="text-stone-500">Waiting for offers from makers...</p>
+              <p className="text-muted">Waiting for offers from makers...</p>
             </Card>
           )}
         </div>

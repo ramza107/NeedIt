@@ -42,7 +42,7 @@ export default async function AdminPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold text-stone-900 mb-8">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-8">Admin Dashboard</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
@@ -52,8 +52,8 @@ export default async function AdminPage() {
           { label: 'Orders', count: ordersCount },
         ].map((stat) => (
           <Card key={stat.label} className="p-5 text-center">
-            <p className="text-3xl font-bold text-stone-900">{stat.count || 0}</p>
-            <p className="text-sm text-stone-500">{stat.label}</p>
+            <p className="text-3xl font-bold text-foreground">{stat.count || 0}</p>
+            <p className="text-sm text-muted">{stat.label}</p>
           </Card>
         ))}
       </div>
@@ -61,14 +61,14 @@ export default async function AdminPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-stone-900">Recent Orders</h2>
+            <h2 className="font-semibold text-foreground">Recent Orders</h2>
           </CardHeader>
           <CardContent className="space-y-3">
             {recentOrders?.map((order) => (
-              <div key={order.id} className="flex justify-between items-center rounded-lg border border-stone-100 p-3">
+              <div key={order.id} className="flex justify-between items-center rounded-lg border border-border p-3">
                 <div>
-                  <p className="font-medium text-stone-900">{order.request?.title}</p>
-                  <p className="text-xs text-stone-500">
+                  <p className="font-medium text-foreground">{order.request?.title}</p>
+                  <p className="text-xs text-muted">
                     {order.buyer?.full_name} → {order.maker?.full_name}
                   </p>
                 </div>
@@ -83,17 +83,17 @@ export default async function AdminPage() {
 
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-stone-900">Open Disputes</h2>
+            <h2 className="font-semibold text-foreground">Open Disputes</h2>
           </CardHeader>
           <CardContent className="space-y-3">
             {disputes?.length ? disputes.map((d) => (
-              <div key={d.id} className="rounded-lg border border-red-100 bg-red-50 p-3">
-                <p className="font-medium text-stone-900">{d.order?.request?.title}</p>
-                <p className="text-sm text-stone-600">{d.reason}: {d.description}</p>
-                <p className="text-xs text-stone-400 mt-1">{formatRelativeTime(d.created_at)}</p>
+              <div key={d.id} className="rounded-lg border border-red-100 bg-red-500/10 p-3">
+                <p className="font-medium text-foreground">{d.order?.request?.title}</p>
+                <p className="text-sm text-muted">{d.reason}: {d.description}</p>
+                <p className="text-xs text-muted mt-1">{formatRelativeTime(d.created_at)}</p>
               </div>
             )) : (
-              <p className="text-stone-500 text-sm">No open disputes</p>
+              <p className="text-muted text-sm">No open disputes</p>
             )}
           </CardContent>
         </Card>

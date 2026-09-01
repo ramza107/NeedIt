@@ -54,12 +54,12 @@ export default async function OrderPage({ params, searchParams }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {payment === 'success' && (
-        <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-emerald-800">
+        <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-accent">
           Payment successful! Your funds are held securely until you approve the work.
         </div>
       )}
       {payment === 'cancelled' && (
-        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-amber-800">
+        <div className="mb-6 rounded-xl bg-primary-light border border-amber-200 px-4 py-3 text-primary">
           Payment was cancelled. You can try again when ready.
         </div>
       )}

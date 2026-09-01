@@ -67,8 +67,8 @@ export default function MakerSetupPage() {
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
       <Card>
         <CardHeader>
-          <h1 className="text-2xl font-bold text-stone-900">Set Up Your Maker Profile</h1>
-          <p className="text-stone-600 text-sm">Tell buyers about your skills and experience</p>
+          <h1 className="text-2xl font-bold text-foreground">Set Up Your Maker Profile</h1>
+          <p className="text-muted text-sm">Tell buyers about your skills and experience</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -92,7 +92,7 @@ export default function MakerSetupPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">Categories</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-2">Categories</label>
               <div className="flex flex-wrap gap-2">
                 {categories.map((cat) => (
                   <button
@@ -101,8 +101,8 @@ export default function MakerSetupPage() {
                     onClick={() => toggleCategory(cat.id)}
                     className={`rounded-full px-3 py-1.5 text-sm border transition-colors ${
                       selectedCategories.includes(cat.id)
-                        ? 'border-amber-600 bg-amber-50 text-amber-800'
-                        : 'border-stone-200 text-stone-600 hover:border-stone-300'
+                        ? 'border-primary bg-primary-light text-primary'
+                        : 'border-border text-muted hover:border-border'
                     }`}
                   >
                     {cat.icon} {cat.name}

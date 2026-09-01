@@ -3,19 +3,19 @@ import { cn } from '@/lib/utils';
 
 const variants = {
   primary:
-    'bg-primary text-primary-foreground hover:bg-primary-hover shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0',
+    'btn-gradient text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98]',
   secondary:
-    'bg-primary-foreground text-foreground border border-border hover:bg-muted-bg shadow-sm',
+    'bg-card text-foreground border border-border hover:border-primary/50 hover:bg-muted-bg',
   outline:
-    'border-2 border-border text-foreground hover:border-primary hover:text-primary bg-card/50 backdrop-blur-sm',
-  ghost: 'text-muted hover:bg-muted-bg hover:text-foreground',
-  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
+    'border border-border text-foreground hover:border-primary hover:text-primary bg-transparent',
+  ghost: 'text-muted hover:text-foreground hover:bg-muted-bg',
+  danger: 'bg-red-600 text-white hover:bg-red-500 shadow-lg shadow-red-600/20',
 };
 
 const sizes = {
-  sm: 'px-3.5 py-2 text-sm',
+  sm: 'px-4 py-2 text-sm',
   md: 'px-5 py-2.5 text-sm',
-  lg: 'px-7 py-3.5 text-base',
+  lg: 'px-8 py-3.5 text-base',
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -36,7 +36,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-md',
+    'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
     variants[variant],
     sizes[size],
     className

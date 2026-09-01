@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf7f2;
-  --foreground: #1a1814;
-  --muted: #6b6560;
-  --muted-bg: #f0ebe4;
-  --border: #e8e0d5;
-  --primary: #b85c38;
-  --primary-hover: #9e4a2e;
-  --primary-light: #f5ebe3;
-  --primary-foreground: #fffbf7;
-  --accent: #5c7a6b;
-  --accent-light: #e8f0ec;
-  --card: #ffffff;
-  --ring: rgba(184, 92, 56, 0.35);
+  --background: #09090b;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --muted-bg: #18181b;
+  --border: #27272a;
+  --primary: #8b5cf6;
+  --primary-hover: #a78bfa;
+  --primary-light: rgba(139, 92, 246, 0.12);
+  --primary-foreground: #ffffff;
+  --accent: #34d399;
+  --accent-light: rgba(52, 211, 153, 0.1);
+  --card: #18181b;
+  --surface: #0f0f12;
+  --glow: rgba(139, 92, 246, 0.4);
 }
 
 @theme inline {
@@ -29,6 +30,7 @@
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
   --color-card: var(--card);
+  --color-surface: var(--surface);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
 }
@@ -40,37 +42,50 @@ body {
 }
 
 ::selection {
-  background: var(--primary-light);
-  color: var(--foreground);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
 .font-display {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-family: var(--font-display), system-ui, sans-serif;
 }
 
-/* Subtle grain texture overlay */
-.texture-grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+.mesh-bg {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(at 20% 30%, rgba(139, 92, 246, 0.18) 0, transparent 50%),
+    radial-gradient(at 80% 10%, rgba(52, 211, 153, 0.1) 0, transparent 40%),
+    radial-gradient(at 60% 80%, rgba(236, 72, 153, 0.08) 0, transparent 45%);
 }
 
-/* Decorative gradient orbs */
-.gradient-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-.card-elevated {
-  background: var(--card);
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+}
+
+.card-glass {
+  background: rgba(24, 24, 27, 0.7);
   border: 1px solid var(--border);
-  box-shadow:
-    0 1px 2px rgba(26, 24, 20, 0.04),
-    0 8px 32px rgba(26, 24, 20, 0.06);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.card-elevated:hover {
-  box-shadow:
-    0 2px 4px rgba(26, 24, 20, 0.05),
-    0 12px 40px rgba(26, 24, 20, 0.09);
+.card-glass:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f472b6 100%);
 }

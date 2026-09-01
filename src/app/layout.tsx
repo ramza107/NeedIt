@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
-import { Fraunces, Plus_Jakarta_Sans } from 'next/font/google';
+import { Syne, Inter } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
 import './globals.css';
 
-const display = Fraunces({
+const display = Syne({
   variable: '--font-display',
   subsets: ['latin'],
+  weight: ['600', '700', '800'],
 });
 
-const body = Plus_Jakarta_Sans({
+const body = Inter({
   variable: '--font-body',
   subsets: ['latin'],
 });
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="min-h-full flex flex-col antialiased bg-background text-foreground">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
