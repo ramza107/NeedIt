@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { APP_NAME } from '@/lib/constants';
+import { APP_DOMAIN, APP_NAME } from '@/lib/constants';
 
 export function Footer() {
   return (
@@ -47,7 +47,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mx-auto max-w-[1500px] px-6 mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/60">
-          © {new Date().getFullYear()} {APP_NAME}.com — Custom orders marketplace. All rights reserved.
+          © {new Date().getFullYear()} {APP_DOMAIN} — Custom orders marketplace. All rights reserved.
         </div>
       </div>
     </footer>

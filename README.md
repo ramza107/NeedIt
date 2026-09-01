@@ -1,6 +1,8 @@
-# MakeIt — Custom Orders Marketplace
+# Orderraft — Custom Orders Marketplace
 
-MakeIt is a marketplace where buyers post custom order requests and skilled makers compete with offers. Payment is protected until the buyer approves the finished work.
+Orderraft is a marketplace where buyers post custom order requests and skilled makers compete with offers. Payment is protected until the buyer approves the finished work.
+
+**Domain:** [orderraft.com](https://orderraft.com) (available to register)
 
 ## Features (MVP)
 

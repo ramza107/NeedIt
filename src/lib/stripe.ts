@@ -46,7 +46,7 @@ export async function createCheckoutSession({
           currency: 'usd',
           product_data: {
             name: title,
-            description: `MakeIt custom order — funds held securely until you approve the work`,
+            description: `Orderraft custom order — funds held securely until you approve the work`,
           },
           unit_amount: Math.round(price * 100),
         },

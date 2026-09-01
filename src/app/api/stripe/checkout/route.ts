@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const session = await createCheckoutSession({
       orderId: order.id,
       price: order.price,
-      title: order.request?.title || 'MakeIt Custom Order',
+      title: order.request?.title || 'Orderraft Custom Order',
       buyerEmail: user.email!,
       successUrl: `${origin}/orders/${orderId}?payment=success`,
       cancelUrl: `${origin}/orders/${orderId}?payment=cancelled`,
