@@ -63,9 +63,10 @@ export interface MakerProfile {
   avg_price: number | null;
   stripe_account_id: string | null;
   stripe_onboarded: boolean;
-  is_promoted: boolean;
-  promo_headline: string | null;
-  promoted_at: string | null;
+  cover_url?: string | null;
+  is_promoted?: boolean;
+  promo_headline?: string | null;
+  promoted_at?: string | null;
   profile?: Profile;
 }
 

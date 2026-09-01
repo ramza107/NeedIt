@@ -60,7 +60,7 @@ export default function MakerSetupPage() {
     }
 
     await supabase.from('profiles').update({ role: 'maker', city }).eq('id', user.id);
-    router.push('/dashboard');
+    router.push('/maker/profile/edit');
   }
 
   return (
@@ -112,9 +112,12 @@ export default function MakerSetupPage() {
             </div>
 
             {error && <div className="text-sm text-red-600">{error}</div>}
-            <Button type="submit" className="w-full" loading={loading}>
+            <Button type="submit" className="w-full font-bold" loading={loading}>
               Complete Setup
             </Button>
+            <p className="text-center text-xs text-muted">
+              After setup you can add photos and portfolio in your profile editor
+            </p>
           </form>
         </CardContent>
       </Card>

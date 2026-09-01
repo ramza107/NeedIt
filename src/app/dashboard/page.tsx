@@ -48,10 +48,15 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-foreground">Maker Dashboard</h1>
+            <h1 className="text-2xl font-bold text-foreground">Maker Dashboard</h1>
             <p className="text-muted">Welcome back, {makerProfile.business_name || profile.full_name}</p>
           </div>
-          <Button href="/requests">Browse Requests</Button>
+          <div className="flex gap-2">
+            <Button href="/maker/profile/edit" variant="outline" className="font-bold">
+              Edit profile
+            </Button>
+            <Button href="/requests" className="font-bold">Browse Requests</Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
