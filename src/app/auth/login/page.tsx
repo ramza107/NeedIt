@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
-import { Hammer } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
@@ -39,20 +38,13 @@ function LoginForm() {
   }
 
   return (
-    <Card glass className="w-full max-w-md">
+    <Card className="w-full max-w-md">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-chocolate/20">
-            <Hammer className="h-4 w-4 text-cream" />
-          </div>
-          <div>
-            <h1 className="font-display text-xl font-bold text-foreground">Welcome back</h1>
-            <p className="text-sm text-muted">Log in to {APP_NAME}</p>
-          </div>
-        </div>
+        <h1 className="text-2xl font-bold text-foreground">Sign in</h1>
+        <p className="text-sm text-muted mt-1">{APP_NAME} account</p>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-4">
           <Input
             label="Email"
             type="email"
@@ -69,19 +61,19 @@ function LoginForm() {
           />
 
           {error && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="rounded bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700">
               {error}
             </div>
           )}
 
-          <Button type="submit" className="w-full" loading={loading}>
-            Log In
+          <Button type="submit" className="w-full font-bold" loading={loading}>
+            Sign in
           </Button>
 
-          <p className="text-center text-sm text-muted">
-            Don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="text-primary font-semibold hover:text-primary-hover transition-colors">
-              Sign up
+          <p className="text-center text-sm text-muted pt-2 border-t border-border">
+            New to {APP_NAME}?{' '}
+            <Link href="/auth/register" className="text-link hover:underline font-medium">
+              Create your account
             </Link>
           </p>
         </form>
@@ -92,13 +84,10 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden mesh-bg">
-      <div className="absolute inset-0 grid-pattern opacity-30" aria-hidden />
-      <div className="relative">
-        <Suspense fallback={<div className="text-muted">Loading...</div>}>
-          <LoginForm />
-        </Suspense>
-      </div>
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-10 bg-background">
+      <Suspense fallback={<div className="text-muted">Loading...</div>}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }

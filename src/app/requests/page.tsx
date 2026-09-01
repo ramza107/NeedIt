@@ -1,17 +1,15 @@
 import { createClient, getProfile } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { StatusBadge } from '@/components/ui/Badge';
-import { formatBudget, formatDate, formatRelativeTime } from '@/lib/utils';
-import { MapPin, Calendar, Camera, Plus } from 'lucide-react';
+import { RequestCard } from '@/components/requests/RequestCard';
+import { Plus } from 'lucide-react';
 
 interface Props {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; q?: string }>;
 }
 
 export default async function RequestsPage({ searchParams }: Props) {
-  const { category: categorySlug } = await searchParams;
+  const { category: categorySlug, q } = await searchParams;
   const profile = await getProfile();
   const supabase = await createClient();
 
@@ -31,81 +29,62 @@ export default async function RequestsPage({ searchParams }: Props) {
     if (cat) query = query.eq('category_id', cat.id);
   }
 
+  if (q?.trim()) {
+    query = query.or(`title.ilike.%${q.trim()}%,description.ilike.%${q.trim()}%`);
+  }
+
   const { data: requests } = await query.limit(50);
 
   const isBuyer = profile?.role === 'buyer';
   const isMaker = profile?.role === 'maker';
 
+  const pageTitle = q
+    ? `Results for "${q}"`
+    : isBuyer
+      ? 'My Requests'
+      : isMaker
+        ? 'Browse Open Orders'
+        : 'All Custom Orders';
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            {isBuyer ? 'My Requests' : isMaker ? 'New Requests' : 'Browse Requests'}
-          </h1>
-          <p className="text-muted">
-            {isMaker ? 'Find custom orders matching your skills' : 'Track your custom order requests'}
-          </p>
+    <div className="mx-auto max-w-[1500px] px-4 py-4 sm:py-6">
+      <div className="bg-card rounded border border-border p-4 mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">{pageTitle}</h1>
+            <p className="text-sm text-muted">
+              {requests?.length ?? 0} {requests?.length === 1 ? 'result' : 'results'}
+              {categorySlug ? ` in ${categorySlug}` : ''}
+            </p>
+          </div>
+          {isBuyer && (
+            <Button href="/requests/new" className="gap-2 font-bold">
+              <Plus className="h-4 w-4" />
+              Post a Request
+            </Button>
+          )}
+          {!profile && (
+            <Button href="/auth/register?role=buyer" className="font-bold">
+              Post what you need
+            </Button>
+          )}
         </div>
-        {isBuyer && (
-          <Button href="/requests/new" className="gap-2">
-            <Plus className="h-4 w-4" />
-            Create Request
-          </Button>
-        )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
         {requests?.map((req) => (
-          <Link key={req.id} href={`/requests/${req.id}`}>
-            <Card className="overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
-              {req.images?.[0] ? (
-                <div className="h-48 bg-muted-bg overflow-hidden">
-                  <img src={req.images[0].image_url} alt="" className="h-full w-full object-cover" />
-                </div>
-              ) : (
-                <div className="h-48 bg-gradient-to-br from-primary-light to-accent-light flex items-center justify-center">
-                  <Camera className="h-10 w-10 text-primary/40" />
-                </div>
-              )}
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-semibold text-foreground line-clamp-2">{req.title}</h3>
-                  <StatusBadge status={req.status} />
-                </div>
-                <p className="text-sm text-muted line-clamp-2 mb-3 flex-1">{req.description}</p>
-                <div className="space-y-1.5 text-sm text-muted">
-                  <div className="flex items-center gap-1.5">
-                    <span>{req.category?.icon}</span>
-                    {req.category?.name}
-                  </div>
-                  {req.city && (
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {req.city}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-1.5 font-medium text-foreground/80">
-                    💰 {formatBudget(req.budget_min, req.budget_max)}
-                  </div>
-                  {req.deadline && (
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5" />
-                      {formatDate(req.deadline)}
-                    </div>
-                  )}
-                </div>
-                <p className="text-xs text-muted mt-3">{formatRelativeTime(req.created_at)}</p>
-              </div>
-            </Card>
-          </Link>
+          <RequestCard key={req.id} request={req} />
         ))}
       </div>
 
       {!requests?.length && (
-        <div className="text-center py-16">
-          <p className="text-muted mb-4">No requests found.</p>
-          {isBuyer && <Button href="/requests/new">Create your first request</Button>}
+        <div className="bg-card rounded border border-border text-center py-16 px-4">
+          <p className="text-muted mb-4">No orders found.</p>
+          {isBuyer ? (
+            <Button href="/requests/new" className="font-bold">Create your first request</Button>
+          ) : (
+            <Button href="/auth/register?role=buyer" className="font-bold">Post a request</Button>
+          )}
         </div>
       )}
     </div>

@@ -8,17 +8,17 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function Input({ label, error, className, id, ...props }: InputProps) {
   const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-foreground/90">
+        <label htmlFor={inputId} className="block text-sm font-bold text-foreground">
           {label}
         </label>
       )}
       <input
         id={inputId}
         className={cn(
-          'w-full rounded-xl border border-border bg-surface px-4 py-3 text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200',
-          error && 'border-red-500 focus:border-red-500 focus:ring-red-500/20',
+          'w-full rounded border border-border bg-card px-3 py-2 text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent shadow-sm',
+          error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
           className
         )}
         {...props}
@@ -36,16 +36,16 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 export function Textarea({ label, error, className, id, ...props }: TextareaProps) {
   const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-foreground/90">
+        <label htmlFor={inputId} className="block text-sm font-bold text-foreground">
           {label}
         </label>
       )}
       <textarea
         id={inputId}
         className={cn(
-          'w-full rounded-xl border border-border bg-surface px-4 py-3 text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200 resize-none',
+          'w-full rounded border border-border bg-card px-3 py-2 text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent shadow-sm resize-none',
           error && 'border-red-500',
           className
         )}
@@ -65,16 +65,16 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 export function Select({ label, error, options, className, id, ...props }: SelectProps) {
   const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-foreground/90">
+        <label htmlFor={inputId} className="block text-sm font-bold text-foreground">
           {label}
         </label>
       )}
       <select
         id={inputId}
         className={cn(
-          'w-full rounded-xl border border-border bg-surface px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200',
+          'w-full rounded border border-border bg-card px-3 py-2 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent shadow-sm',
           error && 'border-red-500',
           className
         )}

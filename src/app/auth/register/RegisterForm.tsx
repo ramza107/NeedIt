@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
-import { Hammer } from 'lucide-react';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -63,95 +62,62 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12 overflow-hidden mesh-bg">
-      <div className="absolute inset-0 grid-pattern opacity-30" aria-hidden />
-      <Card glass className="relative w-full max-w-md">
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-10 bg-background">
+      <Card className="w-full max-w-md">
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-chocolate/20">
-              <Hammer className="h-4 w-4 text-cream" />
-            </div>
-            <div>
-              <h1 className="font-display text-xl font-bold text-foreground">Join {APP_NAME}</h1>
-              <p className="text-sm text-muted">Create your free account</p>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold text-foreground">Create account</h1>
+          <p className="text-sm text-muted mt-1">Join {APP_NAME} — it&apos;s free</p>
         </CardHeader>
         <CardContent>
           {success ? (
             <div className="text-center py-4">
-              <p className="text-foreground/80 mb-4">Check your email to confirm your account.</p>
-              <Button href="/auth/login">Go to Login</Button>
+              <p className="text-muted mb-4">Check your email to confirm your account.</p>
+              <Button href="/auth/login" className="font-bold">Sign in</Button>
             </div>
           ) : (
-            <form onSubmit={handleRegister} className="space-y-5">
-              <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={handleRegister} className="space-y-4">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setRole('buyer')}
-                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
+                  className={`rounded border-2 p-3 text-left text-sm ${
                     role === 'buyer'
-                      ? 'border-primary bg-primary-light shadow-sm'
-                      : 'border-border hover:border-primary/30 hover:bg-muted-bg/50'
+                      ? 'border-accent bg-accent-light'
+                      : 'border-border hover:border-muted'
                   }`}
                 >
-                  <p className="font-semibold text-foreground">Buyer</p>
-                  <p className="text-xs text-muted mt-1">I need something made</p>
+                  <p className="font-bold">Buyer</p>
+                  <p className="text-xs text-muted mt-0.5">I need something made</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole('maker')}
-                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
+                  className={`rounded border-2 p-3 text-left text-sm ${
                     role === 'maker'
-                      ? 'border-primary bg-primary-light shadow-sm'
-                      : 'border-border hover:border-primary/30 hover:bg-muted-bg/50'
+                      ? 'border-accent bg-accent-light'
+                      : 'border-border hover:border-muted'
                   }`}
                 >
-                  <p className="font-semibold text-foreground">Maker</p>
-                  <p className="text-xs text-muted mt-1">I create custom items</p>
+                  <p className="font-bold">Maker</p>
+                  <p className="text-xs text-muted mt-0.5">I make custom items</p>
                 </button>
               </div>
 
-              <Input
-                label="Full name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                placeholder="John Smith"
-              />
-              <Input
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="you@example.com"
-              />
-              <Input
-                label="Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                placeholder="At least 6 characters"
-              />
+              <Input label="Your name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+              <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
 
               {error && (
-                <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
+                <div className="rounded bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700">{error}</div>
               )}
 
-              <Button type="submit" className="w-full" loading={loading}>
-                Create Account
+              <Button type="submit" className="w-full font-bold" loading={loading}>
+                Create your {APP_NAME} account
               </Button>
 
-              <p className="text-center text-sm text-muted">
+              <p className="text-center text-sm text-muted pt-2 border-t border-border">
                 Already have an account?{' '}
-                <Link href="/auth/login" className="text-primary font-semibold hover:text-primary-hover transition-colors">
-                  Log in
-                </Link>
+                <Link href="/auth/login" className="text-link hover:underline font-medium">Sign in</Link>
               </p>
             </form>
           )}

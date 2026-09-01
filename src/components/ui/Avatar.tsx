@@ -26,7 +26,7 @@ export function Avatar({
         alt={name}
         width={80}
         height={80}
-        className={cn('rounded-full object-cover ring-2 ring-border', sizes[size], className)}
+        className={cn('rounded-full object-cover border border-border', sizes[size], className)}
       />
     );
   }
@@ -34,7 +34,7 @@ export function Avatar({
   return (
     <div
       className={cn(
-        'rounded-full bg-primary-light text-primary font-semibold flex items-center justify-center ring-2 ring-primary/20',
+        'rounded-full bg-accent-light text-accent font-bold flex items-center justify-center border border-border',
         sizes[size],
         className
       )}
@@ -46,11 +46,11 @@ export function Avatar({
 
 export function StarRating({ rating, count }: { rating: number; count?: number }) {
   return (
-    <div className="flex items-center gap-1">
-      <span className="text-accent">★</span>
-      <span className="font-medium text-foreground">{rating.toFixed(1)}</span>
+    <div className="flex items-center gap-1 text-sm">
+      <span className="text-primary-dark">★</span>
+      <span className="font-medium text-link">{rating.toFixed(1)}</span>
       {count !== undefined && (
-        <span className="text-muted text-sm">({count})</span>
+        <span className="text-muted">({count})</span>
       )}
     </div>
   );

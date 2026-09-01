@@ -4,12 +4,21 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
-import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
-import { APP_NAME } from '@/lib/constants';
+import { SearchBar } from '@/components/layout/SearchBar';
+import { APP_NAME, POPULAR_CATEGORIES } from '@/lib/constants';
 import type { Profile } from '@/types/database';
-import { Menu, X, Hammer, LogOut, User } from 'lucide-react';
+import { Menu, X, MapPin, Package, LogOut, User, ChevronDown } from 'lucide-react';
 import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  furniture: 'Furniture',
+  jewelry: 'Jewelry',
+  clothing: 'Clothing',
+  art: 'Art',
+  gifts: 'Gifts',
+  '3d-printing': '3D Printing',
+};
 
 export function Header() {
   const pathname = usePathname();
@@ -67,144 +76,175 @@ export function Header() {
     setLoggingOut(false);
   }
 
-  const navLinks = profile
-    ? [
-        { href: '/dashboard', label: 'Dashboard' },
-        { href: '/requests', label: profile.role === 'maker' ? 'Browse Requests' : 'My Requests' },
-        ...(profile.role === 'buyer' ? [{ href: '/requests/new', label: 'Create Request' }] : []),
-        ...(profile.role === 'admin' ? [{ href: '/admin', label: 'Admin' }] : []),
-      ]
-    : [];
-
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl btn-gradient shadow-lg shadow-chocolate/20">
-            <Hammer className="h-4 w-4 text-cream" />
-          </div>
-          <span className="font-display text-lg font-bold text-foreground tracking-tight">
-            {APP_NAME}
-          </span>
-        </Link>
+    <header className="sticky top-0 z-50">
+      {/* Main bar */}
+      <div className="bg-header text-white">
+        <div className="mx-auto flex max-w-[1500px] items-center gap-3 px-3 py-2 sm:px-4">
+          <Link href="/" className="flex shrink-0 items-center gap-1 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
+            <span className="text-xl font-bold tracking-tight">{APP_NAME}</span>
+            <span className="hidden sm:inline text-[10px] text-white/70 leading-tight">.com</span>
+          </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                pathname === link.href
-                  ? 'bg-primary-light text-primary'
-                  : 'text-muted hover:text-foreground hover:bg-muted-bg'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden md:flex items-center gap-3">
-          {profile ? (
-            <div className="relative" ref={menuRef}>
-              <button
-                type="button"
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2.5 rounded-full border border-border px-3 py-1.5 hover:border-primary/40 transition-all"
-              >
-                <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
-                <span className="text-sm font-medium text-foreground/90">{profile.full_name}</span>
-              </button>
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-border bg-card py-1.5 shadow-xl shadow-black/8">
-                  <RoleSwitcher profile={profile} onSwitched={() => setUserMenuOpen(false)} />
-                  <Link
-                    href={`/profile/${profile.id}`}
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground/80 hover:bg-muted-bg transition-colors"
-                    onClick={() => setUserMenuOpen(false)}
-                  >
-                    <User className="h-4 w-4 text-muted" />
-                    My Profile
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    disabled={loggingOut}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    {loggingOut ? 'Logging out...' : 'Log out'}
-                  </button>
-                </div>
-              )}
+          <div className="hidden sm:flex items-center gap-1 shrink-0 text-xs hover:outline hover:outline-1 hover:outline-white rounded px-2 py-1 cursor-default">
+            <MapPin className="h-4 w-4" />
+            <div>
+              <p className="text-white/70">Deliver to</p>
+              <p className="font-bold">United States</p>
             </div>
-          ) : (
-            <>
-              <Button href="/auth/login" variant="ghost" size="sm">
-                Log in
-              </Button>
-              <Button href="/auth/register" size="sm">
-                Get Started
-              </Button>
-            </>
-          )}
+          </div>
+
+          <div className="hidden md:flex flex-1 max-w-3xl">
+            <SearchBar />
+          </div>
+
+          <div className="hidden md:flex items-center gap-1 ml-auto">
+            {profile ? (
+              <div className="relative" ref={menuRef}>
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-1 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded text-left"
+                >
+                  <div>
+                    <p className="text-xs text-white/70">Hello, {profile.full_name.split(' ')[0]}</p>
+                    <p className="text-sm font-bold flex items-center gap-0.5">
+                      Account <ChevronDown className="h-3 w-3" />
+                    </p>
+                  </div>
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-1 w-56 rounded border border-border bg-card py-1 shadow-lg text-foreground z-50">
+                    <RoleSwitcher profile={profile} onSwitched={() => setUserMenuOpen(false)} />
+                    <Link
+                      href={`/profile/${profile.id}`}
+                      className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted-bg"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4" />
+                      Your Profile
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted-bg"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      {loggingOut ? 'Signing out...' : 'Sign out'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/auth/login" className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
+                <p className="text-xs text-white/70">Hello, sign in</p>
+                <p className="text-sm font-bold">Account</p>
+              </Link>
+            )}
+
+            <Link
+              href={profile ? '/dashboard' : '/auth/register'}
+              className="flex items-center gap-1 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded"
+            >
+              <div>
+                <p className="text-xs text-white/70">Your</p>
+                <p className="text-sm font-bold">Orders</p>
+              </div>
+            </Link>
+
+            <Link
+              href={profile?.role === 'buyer' ? '/requests/new' : '/requests'}
+              className="flex items-center gap-1 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded"
+            >
+              <Package className="h-7 w-7" />
+              <span className="font-bold text-sm hidden lg:inline">
+                {profile?.role === 'buyer' ? 'Post Request' : 'Browse'}
+              </span>
+            </Link>
+          </div>
+
+          <button
+            className="md:hidden p-2 hover:outline hover:outline-1 hover:outline-white rounded"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
 
-        <button
-          className="md:hidden p-2.5 rounded-xl text-muted hover:bg-muted-bg hover:text-foreground transition-colors"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile search */}
+        <div className="md:hidden px-3 pb-2">
+          <SearchBar />
+        </div>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-card px-4 py-4 space-y-1">
-          {navLinks.map((link) => (
+      {/* Category nav */}
+      <div className="bg-header-secondary text-white text-sm">
+        <div className="mx-auto flex max-w-[1500px] items-center gap-1 overflow-x-auto px-3 py-1.5 sm:px-4 scrollbar-hide">
+          <Link
+            href="/requests"
+            className={`shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white font-medium ${
+              pathname === '/requests' ? 'bg-white/10' : ''
+            }`}
+          >
+            All Requests
+          </Link>
+          {POPULAR_CATEGORIES.map((slug) => (
             <Link
-              key={link.href}
-              href={link.href}
-              className={`block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? 'bg-primary-light text-primary'
-                  : 'text-foreground/80 hover:bg-muted-bg'
-              }`}
-              onClick={() => setMobileOpen(false)}
+              key={slug}
+              href={`/requests?category=${slug}`}
+              className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap"
             >
-              {link.label}
+              {CATEGORY_LABELS[slug] || slug}
             </Link>
           ))}
-          {!profile ? (
-            <div className="flex gap-2 pt-3">
-              <Button href="/auth/login" variant="outline" size="sm" className="flex-1">
-                Log in
-              </Button>
-              <Button href="/auth/register" size="sm" className="flex-1">
-                Get Started
-              </Button>
-            </div>
-          ) : (
-            <div className="pt-3 space-y-1 border-t border-border mt-3">
+          <Link
+            href="/auth/register?role=buyer"
+            className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap font-medium text-primary"
+          >
+            + Post a Request
+          </Link>
+          <Link
+            href="/auth/register?role=maker"
+            className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap"
+          >
+            Become a Maker
+          </Link>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-card border-b border-border px-4 py-3 space-y-2 text-foreground">
+          {profile ? (
+            <>
+              <div className="flex items-center gap-3 pb-2 border-b border-border">
+                <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
+                <div>
+                  <p className="font-bold">{profile.full_name}</p>
+                  <p className="text-xs text-muted capitalize">{profile.role}</p>
+                </div>
+              </div>
               <RoleSwitcher profile={profile} onSwitched={() => setMobileOpen(false)} />
-              <Link
-                href={`/profile/${profile.id}`}
-                className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/80 hover:bg-muted-bg"
-                onClick={() => setMobileOpen(false)}
-              >
-                <User className="h-4 w-4" />
-                My Profile
-              </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
-              >
-                <LogOut className="h-4 w-4" />
-                {loggingOut ? 'Logging out...' : 'Log out'}
+              <Link href="/dashboard" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+              <Link href="/requests" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Requests</Link>
+              <button type="button" onClick={handleLogout} className="block py-2 text-red-600 font-medium w-full text-left">
+                Sign out
               </button>
-            </div>
+            </>
+          ) : (
+            <>
+              <Link href="/auth/login" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Sign in</Link>
+              <Link href="/auth/register" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Create account</Link>
+            </>
           )}
         </div>
       )}

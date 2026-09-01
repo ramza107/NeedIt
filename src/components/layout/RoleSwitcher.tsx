@@ -52,35 +52,35 @@ export function RoleSwitcher({
   }
 
   return (
-    <div className="border-b border-border px-3 py-3">
-      <p className="px-1 pb-2 text-[10px] font-bold uppercase tracking-widest text-muted">
-        Account mode
+    <div className="border-b border-border px-3 py-2">
+      <p className="px-1 pb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+        Switch mode
       </p>
-      <div className="grid grid-cols-2 gap-1 rounded-xl bg-muted-bg p-1">
+      <div className="grid grid-cols-2 gap-1 rounded bg-muted-bg p-0.5">
         <button
           type="button"
           onClick={() => switchRole('buyer')}
           disabled={loading !== null}
-          className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
+          className={`flex items-center justify-center gap-1 rounded px-2 py-1.5 text-xs font-bold transition-all ${
             profile.role === 'buyer'
-              ? 'bg-primary-light text-primary'
+              ? 'bg-card text-accent shadow-sm border border-border'
               : 'text-muted hover:text-foreground'
           }`}
         >
-          <ShoppingBag className="h-3.5 w-3.5" />
+          <ShoppingBag className="h-3 w-3" />
           {loading === 'buyer' ? '...' : 'Buyer'}
         </button>
         <button
           type="button"
           onClick={() => switchRole('maker')}
           disabled={loading !== null}
-          className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all ${
+          className={`flex items-center justify-center gap-1 rounded px-2 py-1.5 text-xs font-bold transition-all ${
             profile.role === 'maker'
-              ? 'bg-primary-light text-primary'
+              ? 'bg-card text-accent shadow-sm border border-border'
               : 'text-muted hover:text-foreground'
           }`}
         >
-          <Hammer className="h-3.5 w-3.5" />
+          <Hammer className="h-3 w-3" />
           {loading === 'maker' ? '...' : 'Maker'}
         </button>
       </div>

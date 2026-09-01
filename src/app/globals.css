@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbf8f4;
-  --foreground: #2c1810;
-  --muted: #7a6b5d;
-  --muted-bg: #f3ede6;
-  --border: #e8ddd2;
-  --primary: #3d2314;
-  --primary-hover: #2c1810;
-  --primary-light: #f0e6dc;
-  --primary-foreground: #fbf8f4;
-  --accent: #c4a35a;
-  --accent-light: rgba(196, 163, 90, 0.15);
+  --background: #eaeded;
+  --foreground: #0f1111;
+  --muted: #565959;
+  --muted-bg: #f7fafa;
+  --border: #d5d9d9;
+  --primary: #ffd814;
+  --primary-hover: #f7ca00;
+  --primary-dark: #ffa41c;
+  --primary-foreground: #0f1111;
+  --accent: #007185;
+  --accent-hover: #005f6f;
+  --accent-light: #e3f4f6;
   --card: #ffffff;
   --surface: #ffffff;
-  --chocolate: #2c1810;
-  --chocolate-mid: #3d2314;
-  --cream: #fbf8f4;
-  --caramel: #c4a35a;
+  --header: #131921;
+  --header-secondary: #232f3e;
+  --link: #007185;
 }
 
 @theme inline {
@@ -28,87 +28,69 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-light: var(--accent-light);
   --color-card: var(--card);
   --color-surface: var(--surface);
-  --color-chocolate: var(--chocolate);
-  --color-cream: var(--cream);
+  --color-header: var(--header);
+  --color-header-secondary: var(--header-secondary);
+  --color-link: var(--link);
   --font-sans: var(--font-body);
-  --font-display: var(--font-display);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body), Arial, sans-serif;
 }
 
 ::selection {
-  background: rgba(61, 35, 20, 0.15);
+  background: rgba(255, 216, 20, 0.4);
   color: var(--foreground);
 }
 
-.font-display {
-  font-family: var(--font-display), Georgia, serif;
+.link-amazon {
+  color: var(--link);
 }
 
-.mesh-bg {
-  background-color: var(--background);
-  background-image:
-    radial-gradient(at 15% 25%, rgba(61, 35, 20, 0.06) 0, transparent 50%),
-    radial-gradient(at 85% 15%, rgba(196, 163, 90, 0.12) 0, transparent 40%),
-    radial-gradient(at 50% 90%, rgba(92, 61, 46, 0.05) 0, transparent 45%);
+.link-amazon:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
-.grid-pattern {
-  background-image:
-    linear-gradient(rgba(61, 35, 20, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 35, 20, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-
-.glow-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--caramel), var(--primary), transparent);
-  opacity: 0.6;
-}
-
-.card-glass {
-  background: rgba(255, 255, 255, 0.9);
+.card-product {
+  background: var(--card);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  box-shadow:
-    0 1px 2px rgba(44, 24, 16, 0.04),
-    0 4px 24px rgba(44, 24, 16, 0.05);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  border-radius: 4px;
+  transition: box-shadow 0.15s;
 }
 
-.card-glass:hover {
-  border-color: rgba(61, 35, 20, 0.2);
-  box-shadow:
-    0 2px 4px rgba(44, 24, 16, 0.06),
-    0 8px 32px rgba(61, 35, 20, 0.08);
+.card-product:hover {
+  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.15);
 }
 
-.card-chocolate {
-  background: var(--chocolate);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--cream);
-  box-shadow: 0 8px 32px rgba(44, 24, 16, 0.25);
+.btn-amazon {
+  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  border: 1px solid #a88734;
+  border-radius: 8px;
+  color: var(--foreground);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
 }
 
-.btn-gradient {
-  background: linear-gradient(135deg, #2c1810 0%, #3d2314 45%, #5c3d2e 100%);
+.btn-amazon:hover {
+  background: linear-gradient(to bottom, #f5d78e, #eeb933);
 }
 
-.btn-gradient:hover {
-  background: linear-gradient(135deg, #3d2314 0%, #5c3d2e 50%, #7a5240 100%);
+.btn-amazon-orange {
+  background: linear-gradient(to bottom, #f7c962, #f0a830);
+  border: 1px solid #a88734;
+  border-radius: 8px;
+  color: var(--foreground);
 }
 
-.section-chocolate {
-  background: var(--chocolate);
-  color: var(--cream);
+.btn-amazon-orange:hover {
+  background: linear-gradient(to bottom, #f5bc4e, #e99a1f);
 }

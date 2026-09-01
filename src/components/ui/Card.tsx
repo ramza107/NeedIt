@@ -4,15 +4,15 @@ export function Card({
   className,
   children,
   hover = false,
-  glass = true,
+  product = false,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { hover?: boolean; glass?: boolean }) {
+}: React.HTMLAttributes<HTMLDivElement> & { hover?: boolean; product?: boolean }) {
   return (
     <div
       className={cn(
-        'rounded-2xl transition-all duration-300',
-        glass ? 'card-glass' : 'bg-card border border-border',
-        hover && 'hover:-translate-y-1',
+        product ? 'card-product' : 'bg-card border border-border rounded',
+        !product && 'shadow-sm',
+        hover && 'hover:shadow-md transition-shadow',
         className
       )}
       {...props}
@@ -30,7 +30,7 @@ export function CardHeader({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn('px-6 py-5 border-b border-border', className)}>
+    <div className={cn('px-4 py-3 border-b border-border bg-muted-bg', className)}>
       {children}
     </div>
   );
@@ -43,5 +43,5 @@ export function CardContent({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <div className={cn('px-6 py-5', className)}>{children}</div>;
+  return <div className={cn('px-4 py-4', className)}>{children}</div>;
 }

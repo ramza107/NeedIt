@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import { RequestCard } from '@/components/requests/RequestCard';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
 import { APP_NAME, APP_TAGLINE, POPULAR_CATEGORIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
@@ -9,12 +9,26 @@ import {
   Camera,
   Shield,
   MessageSquare,
-  Star,
   CheckCircle2,
+  Star,
   Hammer,
   Users,
-  TrendingUp,
 } from 'lucide-react';
+
+async function getOpenRequests() {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from('requests')
+      .select('*, category:categories(*), images:request_images(*)')
+      .in('status', ['open', 'offers_received'])
+      .order('created_at', { ascending: false })
+      .limit(8);
+    return data || [];
+  } catch {
+    return [];
+  }
+}
 
 async function getFeaturedMakers() {
   try {
@@ -40,230 +54,218 @@ async function getCategories() {
   }
 }
 
-const DEMO_MAKERS = [
-  { name: 'Maria Woodcraft', rating: 4.9, orders: 127, category: 'Furniture', city: 'Las Vegas' },
-  { name: 'John Metalworks', rating: 4.7, orders: 54, category: 'Metalwork', city: 'Austin' },
-  { name: 'Alex Designs', rating: 5.0, orders: 32, category: 'Jewelry', city: 'Portland' },
-  { name: 'Studio Elena', rating: 4.8, orders: 89, category: 'Art', city: 'Denver' },
+const DEMO_REQUESTS = [
+  { id: '1', title: 'Custom oak dining table for 6 people', description: 'Solid wood, rustic style', status: 'open', budget_min: 800, budget_max: 1500, city: 'Austin', created_at: new Date().toISOString(), category: { name: 'Furniture', icon: '🪑' }, images: [] },
+  { id: '2', title: 'Engagement ring — custom design', description: 'White gold with sapphire', status: 'open', budget_min: 500, budget_max: 1200, city: 'NYC', created_at: new Date().toISOString(), category: { name: 'Jewelry', icon: '💎' }, images: [] },
+  { id: '3', title: '3D printed drone parts', description: 'Carbon fiber reinforced', status: 'offers_received', budget_min: 50, budget_max: 200, city: 'Seattle', created_at: new Date().toISOString(), category: { name: '3D Printing', icon: '🖨️' }, images: [] },
+  { id: '4', title: 'Hand-painted family portrait', description: 'Oil on canvas, 24x36', status: 'open', budget_min: 200, budget_max: 500, city: 'Denver', created_at: new Date().toISOString(), category: { name: 'Art', icon: '🎨' }, images: [] },
 ];
 
-const STATS = [
-  { value: '500+', label: 'Active makers' },
-  { value: '2.4k', label: 'Orders completed' },
-  { value: '4.8★', label: 'Average rating' },
-];
+const CATEGORY_META: Record<string, { icon: string; desc: string }> = {
+  furniture: { icon: '🪑', desc: 'Tables, shelves, decor' },
+  jewelry: { icon: '💎', desc: 'Rings, necklaces, custom' },
+  clothing: { icon: '👕', desc: 'Tailored & handmade' },
+  art: { icon: '🎨', desc: 'Paintings, sculptures' },
+  gifts: { icon: '🎁', desc: 'Personalized gifts' },
+  '3d-printing': { icon: '🖨️', desc: 'Prototypes & parts' },
+};
 
 export default async function HomePage() {
-  const [makers, categories] = await Promise.all([getFeaturedMakers(), getCategories()]);
+  const [requests, makers, categories] = await Promise.all([
+    getOpenRequests(),
+    getFeaturedMakers(),
+    getCategories(),
+  ]);
+
   const popularCats = categories.filter((c) => POPULAR_CATEGORIES.includes(c.slug));
-  const displayMakers = makers.length > 0 ? makers : null;
+  const hasRealRequests = requests.length > 0;
+  const displayRequests = hasRealRequests ? requests : DEMO_REQUESTS;
 
   return (
-    <>
-      {/* Hero */}
-      <section className="relative overflow-hidden mesh-bg">
-        <div className="absolute inset-0 grid-pattern opacity-40" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-light px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary mb-8">
-                <Hammer className="h-3.5 w-3.5" />
-                Custom marketplace
-              </div>
-              <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05] tracking-tight">
-                What do you want{' '}
-                <span className="italic text-primary">made?</span>
-              </h1>
-              <p className="mt-6 text-lg text-muted leading-relaxed max-w-lg">
-                {APP_TAGLINE}
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Button href="/auth/register?role=buyer" size="lg" className="gap-2">
-                  <Camera className="h-5 w-5" />
-                  Post a Request
-                </Button>
-                <Button href="/auth/register?role=maker" variant="outline" size="lg">
-                  Become a Maker
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Bento stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 card-chocolate rounded-2xl p-6">
-                <p className="font-display text-3xl sm:text-4xl font-bold text-cream">{STATS[0].value}</p>
-                <p className="text-sm text-cream/65 mt-1">{STATS[0].label}</p>
-              </div>
-              {STATS.slice(1).map((stat) => (
-                <Card key={stat.label} hover className="p-6">
-                  <p className="font-display text-3xl font-bold text-foreground">{stat.value}</p>
-                  <p className="text-sm text-muted mt-1">{stat.label}</p>
-                </Card>
-              ))}
-              <Card hover className="col-span-2 p-6 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-light">
-                  <Shield className="h-6 w-6 text-accent" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Buyer protection</p>
-                  <p className="text-sm text-muted">Payment held until you approve</p>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="py-24 border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">Process</p>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground">
-                How {APP_NAME} works
-              </h2>
-            </div>
-            <p className="text-muted max-w-md">
-              From idea to finished product — protected every step of the way
+    <div className="pb-8">
+      {/* Hero banner */}
+      <section className="bg-gradient-to-r from-[#232f3e] via-[#37475a] to-[#232f3e] text-white">
+        <div className="mx-auto max-w-[1500px] px-4 py-10 sm:py-14">
+          <div className="max-w-2xl">
+            <p className="text-primary font-bold text-sm mb-2 uppercase tracking-wide">
+              Custom orders marketplace
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {[
-              { icon: Camera, title: 'Post your idea', desc: 'Upload photos, describe what you need, set your budget' },
-              { icon: MessageSquare, title: 'Get offers', desc: 'Makers compete with prices, timelines, and portfolios' },
-              { icon: Shield, title: 'Pay securely', desc: 'Funds held safely until you approve the finished work' },
-              { icon: CheckCircle2, title: 'Approve & review', desc: 'Accept the result, release payment, leave a review' },
-            ].map((step, i) => (
-              <Card key={step.title} hover className="p-6 group">
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary transition-transform group-hover:scale-110">
-                    <step.icon className="h-5 w-5" />
-                  </div>
-                  <span className="font-display text-2xl font-bold text-muted/25">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-foreground mb-2">{step.title}</h3>
-                <p className="text-sm text-muted leading-relaxed">{step.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-20 bg-muted-bg border-y border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8">
-            Popular categories
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {(popularCats.length > 0 ? popularCats : [
-              { slug: 'furniture', name: 'Furniture', icon: '🪑' },
-              { slug: 'jewelry', name: 'Jewelry', icon: '💎' },
-              { slug: 'clothing', name: 'Clothing', icon: '👕' },
-              { slug: 'art', name: 'Art', icon: '🎨' },
-              { slug: 'gifts', name: 'Gifts', icon: '🎁' },
-              { slug: '3d-printing', name: '3D Printing', icon: '🖨️' },
-            ]).map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/requests?category=${cat.slug}`}
-                className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground/80 hover:border-primary/50 hover:bg-primary-light hover:text-primary transition-all duration-200"
-              >
-                <span>{cat.icon || '📦'}</span>
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Makers */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2 flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5" />
-                Top talent
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
-                Recommended Makers
-              </h2>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+              Can&apos;t find it in a store?<br />
+              <span className="text-primary">Get it made.</span>
+            </h1>
+            <p className="text-white/80 text-base sm:text-lg mb-6 leading-relaxed">
+              {APP_TAGLINE}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button href="/auth/register?role=buyer" size="lg" className="gap-2 font-bold">
+                <Camera className="h-4 w-4" />
+                Post what you need
+              </Button>
+              <Button href="/requests" variant="secondary" size="lg" className="font-bold">
+                Browse open orders
+              </Button>
+              <Button href="/auth/register?role=maker" variant="orange" size="lg" className="gap-2 font-bold">
+                <Hammer className="h-4 w-4" />
+                I&apos;m a maker
+              </Button>
             </div>
-            <Link
-              href="/requests"
-              className="text-sm font-semibold text-primary hover:text-primary-hover flex items-center gap-1.5 transition-colors"
-            >
-              View all <ArrowRight className="h-4 w-4" />
+          </div>
+        </div>
+      </section>
+
+      {/* How it works — immediate clarity */}
+      <section className="bg-card border-b border-border">
+        <div className="mx-auto max-w-[1500px] px-4 py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
+            {[
+              { icon: Camera, label: '1. Post your request', sub: 'Describe + set budget' },
+              { icon: MessageSquare, label: '2. Get maker offers', sub: 'Compare prices & reviews' },
+              { icon: Shield, label: '3. Pay securely', sub: 'Funds held until done' },
+              { icon: CheckCircle2, label: '4. Approve & review', sub: 'Release payment' },
+            ].map((step) => (
+              <div key={step.label} className="flex flex-col items-center gap-1 py-2">
+                <step.icon className="h-6 w-6 text-accent" />
+                <p className="font-bold text-foreground">{step.label}</p>
+                <p className="text-xs text-muted">{step.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Shop by category */}
+      <section className="mx-auto max-w-[1500px] px-4 pt-6">
+        <div className="bg-card rounded p-4 sm:p-6 border border-border">
+          <h2 className="text-xl font-bold text-foreground mb-4">Shop by category</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {(popularCats.length > 0 ? popularCats : POPULAR_CATEGORIES.map((slug) => ({ slug, name: slug, icon: CATEGORY_META[slug]?.icon }))).map((cat) => {
+              const meta = CATEGORY_META[cat.slug] || { icon: '📦', desc: 'Custom orders' };
+              return (
+                <Link
+                  key={cat.slug}
+                  href={`/requests?category=${cat.slug}`}
+                  className="card-product p-4 text-center hover:bg-muted-bg transition-colors"
+                >
+                  <span className="text-3xl block mb-2">{cat.icon || meta.icon}</span>
+                  <p className="font-bold text-sm text-foreground">{cat.name || cat.slug}</p>
+                  <p className="text-xs text-muted mt-0.5">{meta.desc}</p>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Open requests — like Amazon product grid */}
+      <section className="mx-auto max-w-[1500px] px-4 pt-6">
+        <div className="bg-card rounded p-4 sm:p-6 border border-border">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-bold text-foreground">Open custom orders</h2>
+              <p className="text-sm text-muted">Real requests from buyers — submit your offer</p>
+            </div>
+            <Link href="/requests" className="text-sm text-link hover:text-accent-hover hover:underline font-medium flex items-center gap-1">
+              See all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {displayMakers
-              ? displayMakers.map((maker) => (
-                  <Link key={maker.id} href={`/profile/${maker.user_id}`}>
-                    <Card hover className="p-5 h-full">
-                      <div className="flex items-center gap-3 mb-4">
-                        <Avatar
-                          src={maker.profile?.avatar_url}
-                          name={maker.business_name || maker.profile?.full_name || 'Maker'}
-                        />
-                        <div>
-                          <p className="font-semibold text-foreground text-sm">
-                            {maker.business_name || maker.profile?.full_name}
-                          </p>
-                          <p className="text-xs text-muted">{maker.city}</p>
-                        </div>
-                      </div>
-                      <StarRating rating={maker.rating} count={maker.review_count} />
-                      <p className="text-xs text-muted mt-3 flex items-center gap-1">
-                        <TrendingUp className="h-3 w-3 text-accent" />
-                        {maker.completed_orders} orders
-                      </p>
-                    </Card>
-                  </Link>
-                ))
-              : DEMO_MAKERS.map((maker) => (
-                  <Card key={maker.name} hover className="p-5">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Avatar name={maker.name} />
-                      <div>
-                        <p className="font-semibold text-foreground text-sm">{maker.name}</p>
-                        <p className="text-xs text-muted">{maker.city}</p>
-                      </div>
-                    </div>
-                    <StarRating rating={maker.rating} />
-                    <p className="text-xs text-muted mt-3">
-                      {maker.orders} orders · {maker.category}
-                    </p>
-                  </Card>
-                ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {displayRequests.slice(0, 8).map((req) =>
+              hasRealRequests ? (
+                <RequestCard key={req.id} request={req} compact />
+              ) : (
+                <Link key={req.id} href="/auth/register?role=maker" className="block h-full">
+                  <RequestCard request={req} compact />
+                </Link>
+              )
+            )}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative overflow-hidden section-chocolate">
-        <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(at 70% 50%, rgba(196,163,90,0.2) 0, transparent 50%)' }} aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-cream/10 border border-cream/15 mb-8">
-            <Star className="h-6 w-6 text-accent" />
-          </div>
-          <h2 className="font-display text-3xl sm:text-5xl font-bold text-cream mb-5">
-            Ready to create something{' '}
-            <span className="text-accent italic">unique?</span>
-          </h2>
-          <p className="text-cream/65 max-w-xl mx-auto text-lg mb-10">
-            Join thousands of buyers and makers. Post your first request in under 2 minutes.
+      {/* Two columns: buyers + makers */}
+      <section className="mx-auto max-w-[1500px] px-4 pt-6 grid md:grid-cols-2 gap-6">
+        <div className="bg-card rounded p-6 border border-border">
+          <h2 className="text-xl font-bold mb-2">Need something custom?</h2>
+          <p className="text-muted text-sm mb-4">
+            Upload photos, describe your idea, set a budget. Skilled makers will send you offers with price and timeline.
           </p>
-          <Button href="/auth/register" variant="secondary" size="lg" className="bg-cream text-primary hover:bg-cream/90 border-0">
-            Get started for free
+          <ul className="space-y-2 text-sm mb-5">
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Free to post a request</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Compare multiple offers</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Payment protected until approval</li>
+          </ul>
+          <Button href="/auth/register?role=buyer" className="font-bold">
+            Post a request — it&apos;s free
+          </Button>
+        </div>
+        <div className="bg-card rounded p-6 border border-border">
+          <h2 className="text-xl font-bold mb-2">Are you a maker?</h2>
+          <p className="text-muted text-sm mb-4">
+            Browse open orders in your category. Send offers, get paid when the buyer approves your work.
+          </p>
+          <ul className="space-y-2 text-sm mb-5">
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> New orders daily</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Build your portfolio & rating</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Secure payouts</li>
+          </ul>
+          <Button href="/auth/register?role=maker" variant="orange" className="font-bold">
+            Start earning as a maker
           </Button>
         </div>
       </section>
-    </>
+
+      {/* Top makers */}
+      {makers.length > 0 && (
+        <section className="mx-auto max-w-[1500px] px-4 pt-6">
+          <div className="bg-card rounded p-4 sm:p-6 border border-border">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Users className="h-5 w-5 text-accent" />
+                Top-rated makers
+              </h2>
+              <Link href="/requests" className="text-sm text-link hover:underline">View all</Link>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {makers.map((maker) => (
+                <Link key={maker.id} href={`/profile/${maker.user_id}`} className="card-product p-4 hover:bg-muted-bg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Avatar
+                      src={maker.profile?.avatar_url}
+                      name={maker.business_name || maker.profile?.full_name || 'Maker'}
+                      size="sm"
+                    />
+                    <div className="min-w-0">
+                      <p className="font-bold text-sm truncate text-link">
+                        {maker.business_name || maker.profile?.full_name}
+                      </p>
+                      <p className="text-xs text-muted">{maker.city}</p>
+                    </div>
+                  </div>
+                  <StarRating rating={maker.rating} count={maker.review_count} />
+                  <p className="text-xs text-muted mt-1">{maker.completed_orders} orders completed</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Trust banner */}
+      <section className="mx-auto max-w-[1500px] px-4 pt-6">
+        <div className="bg-card rounded p-6 border border-border flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+          <Shield className="h-12 w-12 text-accent shrink-0" />
+          <div className="flex-1">
+            <h2 className="text-lg font-bold">Buyer protection on every order</h2>
+            <p className="text-sm text-muted mt-1">
+              Your payment is held securely until you review and approve the finished work. Dispute support included.
+            </p>
+          </div>
+          <Button href="/auth/register" variant="orange" className="shrink-0 font-bold">
+            Get started
+          </Button>
+        </div>
+      </section>
+    </div>
   );
 }
