@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -23,15 +23,8 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const supabaseConfigured = isSupabaseConfigured();
-
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
-    if (!supabaseConfigured) {
-      setError('Supabase is not configured. Please set environment variables.');
-      return;
-    }
-
     setLoading(true);
     setError('');
 
@@ -145,12 +138,6 @@ export default function RegisterForm() {
 
               {error && (
                 <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
-              )}
-
-              {!supabaseConfigured && (
-                <div className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                  Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
-                </div>
               )}
 
               <Button type="submit" className="w-full" loading={loading}>
