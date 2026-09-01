@@ -36,7 +36,11 @@ export function PromoteProfilePanel({ makerProfile }: { makerProfile: MakerProfi
       .eq('user_id', makerProfile.user_id);
 
     if (updateError) {
-      setError(updateError.message);
+      if (updateError.message.includes('is_promoted') || updateError.code === '42703') {
+        setError('Database not fully configured yet. Ask admin to run setup or try again in a few minutes.');
+      } else {
+        setError(updateError.message);
+      }
       setLoading(false);
       return;
     }
@@ -105,8 +109,8 @@ export function PromoteProfilePanel({ makerProfile }: { makerProfile: MakerProfi
             <Button type="submit" loading={loading} className="font-bold">
               {isPromoted ? 'Update promotion' : 'Save settings'}
             </Button>
-            <Button type="button" variant="outline" href={`/profile/${makerProfile.user_id}`}>
-              Preview profile
+            <Button type="button" variant="outline" href="/maker/profile/edit">
+              Edit photos &amp; bio
             </Button>
           </div>
         </form>

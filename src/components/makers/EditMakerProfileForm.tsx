@@ -116,18 +116,29 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
         await supabase.from('profiles').update({ city }).eq('id', profile.id);
       }
 
-      const { error: makerErr } = await supabase
+      const makerPayload: Record<string, unknown> = {
+        business_name: businessName,
+        bio,
+        city,
+        location,
+        categories: selectedCategories,
+        portfolio_urls: newPortfolioUrls,
+      };
+      if (coverUrl) makerPayload.cover_url = coverUrl;
+
+      let { error: makerErr } = await supabase
         .from('maker_profiles')
-        .update({
-          business_name: businessName,
-          bio,
-          city,
-          location,
-          categories: selectedCategories,
-          cover_url: coverUrl || null,
-          portfolio_urls: newPortfolioUrls,
-        })
+        .update(makerPayload)
         .eq('user_id', profile.id);
+
+      if (makerErr?.message?.includes('cover_url')) {
+        delete makerPayload.cover_url;
+        const retry = await supabase
+          .from('maker_profiles')
+          .update(makerPayload)
+          .eq('user_id', profile.id);
+        makerErr = retry.error;
+      }
 
       if (makerErr) throw new Error(makerErr.message);
 

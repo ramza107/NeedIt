@@ -20,12 +20,13 @@ import {
 async function getPromotedMakers() {
   try {
     const supabase = await createClient();
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('maker_profiles')
       .select('*, profile:profiles(*)')
       .eq('is_promoted', true)
       .order('promoted_at', { ascending: false })
       .limit(12);
+    if (error) return [];
     return data || [];
   } catch {
     return [];
