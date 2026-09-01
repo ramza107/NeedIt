@@ -24,9 +24,11 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
+  const requestsMenuRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [requestsMenuOpen, setRequestsMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const supabaseConfigured = isSupabaseConfigured();
 
@@ -58,6 +60,9 @@ export function Header() {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
+      }
+      if (requestsMenuRef.current && !requestsMenuRef.current.contains(event.target as Node)) {
+        setRequestsMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -188,36 +193,61 @@ export function Header() {
 
       {/* Category nav */}
       <div className="bg-header-secondary text-white text-sm">
-        <div className="mx-auto flex max-w-[1500px] items-center gap-1 overflow-x-auto px-3 py-1.5 sm:px-4 scrollbar-hide">
-          <Link
-            href="/requests"
-            className={`shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white font-medium ${
-              pathname === '/requests' ? 'bg-white/10' : ''
-            }`}
-          >
-            All Requests
-          </Link>
-          {POPULAR_CATEGORIES.map((slug) => (
+        <div className="mx-auto flex max-w-[1500px] items-center gap-1 px-3 py-1.5 sm:px-4">
+          <div className="relative" ref={requestsMenuRef}>
+            <button
+              type="button"
+              onClick={() => setRequestsMenuOpen(!requestsMenuOpen)}
+              className={`flex items-center gap-1 shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white font-medium ${
+                pathname === '/requests' || requestsMenuOpen ? 'bg-white/10' : ''
+              }`}
+              aria-expanded={requestsMenuOpen}
+              aria-haspopup="true"
+            >
+              All Requests
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${requestsMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {requestsMenuOpen && (
+              <div className="absolute left-0 top-full mt-1 z-50 min-w-[220px] rounded border border-border bg-card py-1 shadow-lg text-foreground">
+                <Link
+                  href="/requests"
+                  className="block px-4 py-2.5 text-sm font-semibold hover:bg-muted-bg border-b border-border"
+                  onClick={() => setRequestsMenuOpen(false)}
+                >
+                  All Requests
+                </Link>
+                <div className="px-4 pt-2 pb-1">
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-muted">Categories</p>
+                </div>
+                {POPULAR_CATEGORIES.map((slug) => (
+                  <Link
+                    key={slug}
+                    href={`/requests?category=${slug}`}
+                    className="block px-4 py-2 text-sm hover:bg-muted-bg"
+                    onClick={() => setRequestsMenuOpen(false)}
+                  >
+                    {CATEGORY_LABELS[slug] || slug}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="ml-auto flex items-center gap-1">
             <Link
-              key={slug}
-              href={`/requests?category=${slug}`}
+              href="/auth/register?role=buyer"
+              className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap font-medium text-primary"
+            >
+              + Post a Request
+            </Link>
+            <Link
+              href="/auth/register?role=maker"
               className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap"
             >
-              {CATEGORY_LABELS[slug] || slug}
+              Become a Maker
             </Link>
-          ))}
-          <Link
-            href="/auth/register?role=buyer"
-            className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap font-medium text-primary"
-          >
-            + Post a Request
-          </Link>
-          <Link
-            href="/auth/register?role=maker"
-            className="shrink-0 px-2 py-1 rounded hover:outline hover:outline-1 hover:outline-white whitespace-nowrap"
-          >
-            Become a Maker
-          </Link>
+          </div>
         </div>
       </div>
 
@@ -235,7 +265,19 @@ export function Header() {
               </div>
               <RoleSwitcher profile={profile} onSwitched={() => setMobileOpen(false)} />
               <Link href="/dashboard" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-              <Link href="/requests" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>Requests</Link>
+              <Link href="/requests" className="block py-2 font-medium" onClick={() => setMobileOpen(false)}>All Requests</Link>
+              <div className="pl-3 space-y-1 border-l-2 border-border ml-1">
+                {POPULAR_CATEGORIES.map((slug) => (
+                  <Link
+                    key={slug}
+                    href={`/requests?category=${slug}`}
+                    className="block py-1.5 text-sm text-muted hover:text-foreground"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {CATEGORY_LABELS[slug] || slug}
+                  </Link>
+                ))}
+              </div>
               <button type="button" onClick={handleLogout} className="block py-2 text-red-600 font-medium w-full text-left">
                 Sign out
               </button>
