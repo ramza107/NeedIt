@@ -2,19 +2,19 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const variants = {
-  primary: 'btn-primary font-semibold hover:brightness-[1.02] active:scale-[0.99]',
-  secondary: 'bg-card text-foreground border border-border hover:bg-muted-bg shadow-sm',
-  accent: 'btn-accent font-semibold hover:brightness-[1.02] active:scale-[0.99]',
-  outline: 'border border-border bg-card text-foreground hover:bg-muted-bg',
-  ghost: 'text-foreground hover:bg-muted-bg',
+  primary: 'btn-primary font-semibold hover:brightness-[1.03] active:scale-[0.99]',
+  secondary: 'bg-card text-foreground border border-border hover:bg-muted-bg shadow-sm rounded-full',
+  accent: 'btn-accent font-semibold hover:brightness-[1.03] active:scale-[0.99]',
+  outline: 'border border-border bg-card text-foreground hover:bg-muted-bg rounded-full',
+  ghost: 'text-foreground hover:bg-muted-bg rounded-full',
   link: 'text-link hover:text-primary-hover p-0',
-  danger: 'bg-red-600 text-white hover:bg-red-700 border border-red-700',
+  danger: 'bg-red-600 text-white hover:bg-red-700 border border-red-700 rounded-full',
 };
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-xs rounded-lg',
-  md: 'px-4 py-2 text-sm rounded-xl',
-  lg: 'px-6 py-3 text-sm rounded-xl',
+  sm: 'px-3.5 py-1.5 text-xs',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-sm',
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -82,11 +82,14 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-header/90 backdrop-blur-md border-b border-border">
-      <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-        <Link href="/" className="flex shrink-0 items-center gap-2 group">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">
-            {APP_NAME.charAt(0)}
+    <header className="sticky top-0 z-50 bg-header/85 backdrop-blur-xl border-b border-border/70">
+      <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3.5">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 group">
+          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+              <path d="M4 12.5L10 6l4 4 6-7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 18h16" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity="0.45" />
+            </svg>
           </span>
           <span className="font-display text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
             {APP_NAME}
@@ -102,7 +105,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setRequestsMenuOpen(!requestsMenuOpen)}
-              className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+              className={`flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
                 pathname === '/requests' || requestsMenuOpen
                   ? 'bg-primary/10 text-primary'
                   : 'text-foreground hover:bg-muted-bg'
@@ -142,7 +145,7 @@ export function Header() {
 
           <Link
             href="/makers"
-            className="px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
+            className="px-3.5 py-2 rounded-full text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
           >
             Makers
           </Link>
@@ -152,7 +155,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-muted-bg transition-colors"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-muted-bg transition-colors"
               >
                 <Avatar src={profile.avatar_url} name={profile.full_name} size="sm" />
                 <ChevronDown className="h-3.5 w-3.5 text-muted" />
@@ -194,7 +197,7 @@ export function Header() {
           ) : (
             <Link
               href="/auth/login"
-              className="px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
+              className="px-3.5 py-2 rounded-full text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
             >
               Sign in
             </Link>
@@ -202,7 +205,7 @@ export function Header() {
 
           <Link
             href={profile?.role === 'buyer' ? '/requests/new' : '/requests'}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
           >
             <Package className="h-4 w-4" />
             {profile?.role === 'buyer' ? 'Post' : 'Orders'}
@@ -210,14 +213,14 @@ export function Header() {
 
           <Link
             href="/auth/register?role=buyer"
-            className="ml-1 px-4 py-2 rounded-xl text-sm font-semibold btn-primary"
+            className="ml-1 px-5 py-2.5 rounded-full text-sm font-semibold btn-primary"
           >
             Get started
           </Link>
         </nav>
 
         <button
-          className="md:hidden p-2 rounded-xl hover:bg-muted-bg transition-colors ml-auto"
+          className="md:hidden p-2 rounded-full hover:bg-muted-bg transition-colors ml-auto"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Menu"
         >
@@ -267,10 +270,10 @@ export function Header() {
             </>
           )}
           <div className="pt-3 flex gap-2">
-            <Link href="/auth/register?role=buyer" className="flex-1 text-center py-2.5 rounded-xl text-sm font-semibold btn-primary" onClick={() => setMobileOpen(false)}>
+            <Link href="/auth/register?role=buyer" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-primary" onClick={() => setMobileOpen(false)}>
               Post a request
             </Link>
-            <Link href="/auth/register?role=maker" className="flex-1 text-center py-2.5 rounded-xl text-sm font-semibold btn-accent" onClick={() => setMobileOpen(false)}>
+            <Link href="/auth/register?role=maker" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-accent" onClick={() => setMobileOpen(false)}>
               I&apos;m a maker
             </Link>
           </div>

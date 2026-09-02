@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Fraunces } from 'next/font/google';
+import { DM_Sans, Sora } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
 import './globals.css';
 
-const body = Plus_Jakarta_Sans({
+const body = DM_Sans({
   variable: '--font-body',
   subsets: ['latin'],
 });
 
-const display = Fraunces({
+const display = Sora({
   variable: '--font-display',
   subsets: ['latin'],
 });

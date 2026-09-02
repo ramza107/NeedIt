@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f5f2;
-  --foreground: #1a1816;
-  --muted: #6b6560;
-  --muted-bg: #efede8;
-  --border: #e2ddd6;
-  --primary: #5b4ddb;
-  --primary-hover: #4a3fc7;
-  --primary-dark: #3d33a8;
+  --background: #eef2f4;
+  --foreground: #12181c;
+  --muted: #5c6a73;
+  --muted-bg: #e4eaee;
+  --border: #d3dde3;
+  --primary: #0d7377;
+  --primary-hover: #0a5f62;
+  --primary-dark: #08484b;
   --primary-foreground: #ffffff;
-  --accent: #e8613a;
-  --accent-hover: #d4522e;
-  --accent-light: #fdf0eb;
+  --accent: #e07a5f;
+  --accent-hover: #cc6a50;
+  --accent-light: #fdf1ed;
   --card: #ffffff;
-  --surface: #ffffff;
+  --surface: #f7fafb;
   --header: #ffffff;
-  --header-secondary: #f7f5f2;
-  --link: #5b4ddb;
-  --ring: rgba(91, 77, 219, 0.25);
+  --header-secondary: #eef2f4;
+  --link: #0d7377;
+  --ring: rgba(13, 115, 119, 0.22);
 }
 
 @theme inline {
@@ -44,13 +44,15 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(13, 115, 119, 0.07), transparent),
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgba(91, 77, 219, 0.2);
+  background: rgba(13, 115, 119, 0.2);
   color: var(--foreground);
 }
 
@@ -66,22 +68,23 @@ body {
 .card-product {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(26, 24, 22, 0.04);
-  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(18, 24, 28, 0.04);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .card-product:hover {
-  border-color: #d4cec6;
-  box-shadow: 0 8px 24px rgba(26, 24, 22, 0.08);
+  border-color: #c5d2da;
+  box-shadow: 0 12px 28px rgba(18, 24, 28, 0.08);
+  transform: translateY(-2px);
 }
 
 .btn-primary {
   background: var(--primary);
   color: var(--primary-foreground);
   border: 1px solid transparent;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(91, 77, 219, 0.2);
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(13, 115, 119, 0.25);
 }
 
 .btn-primary:hover {
@@ -92,8 +95,8 @@ body {
   background: var(--accent);
   color: #ffffff;
   border: 1px solid transparent;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(232, 97, 58, 0.2);
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(224, 122, 95, 0.25);
 }
 
 .btn-accent:hover {
@@ -103,17 +106,50 @@ body {
 .section-panel {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 1px 3px rgba(26, 24, 22, 0.04);
+  border-radius: 24px;
+  box-shadow: 0 1px 3px rgba(18, 24, 28, 0.04);
 }
 
 .hero-gradient {
+  position: relative;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse 80% 60% at 70% 0%, rgba(91, 77, 219, 0.12), transparent),
-    radial-gradient(ellipse 60% 50% at 10% 100%, rgba(232, 97, 58, 0.08), transparent),
-    linear-gradient(180deg, #ffffff 0%, #f7f5f2 100%);
+    linear-gradient(135deg, #0a4f52 0%, #0d7377 45%, #14919b 100%);
+}
+
+.hero-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 80% at 85% 20%, rgba(224, 122, 95, 0.28), transparent),
+    radial-gradient(ellipse 40% 60% at 10% 90%, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
 }
 
 .font-display {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+.animate-fade-up-delay {
+  animation: fade-up 0.7s ease-out 0.12s both;
+}
+
+.animate-fade-up-delay-2 {
+  animation: fade-up 0.7s ease-out 0.24s both;
 }

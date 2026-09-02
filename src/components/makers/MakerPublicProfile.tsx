@@ -38,7 +38,7 @@ export function MakerPublicProfile({
     <div className="pb-10">
       {/* Storefront header */}
       <div className="bg-card border-b border-border">
-        <div className="relative h-40 sm:h-56 md:h-64 bg-gradient-to-br from-primary/20 via-accent-light to-muted-bg overflow-hidden">
+        <div className="relative h-40 sm:h-56 md:h-64 bg-gradient-to-br from-primary via-primary-hover to-primary-dark overflow-hidden">
           {coverUrl && (
             <img src={coverUrl} alt="" className="h-full w-full object-cover" />
           )}

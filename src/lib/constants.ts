@@ -1,6 +1,6 @@
-export const APP_NAME = 'Orderraft';
+export const APP_NAME = 'Wahrly';
 export const APP_TAGLINE = "Describe what you need — skilled makers send offers, and payment stays protected until you approve the work.";
-export const APP_DOMAIN = 'orderraft.com';
+export const APP_DOMAIN = 'wahrly.com';
 export const PLATFORM_FEE_PERCENT = 10;
 
 export const ORDER_STATUS_LABELS: Record<string, string> = {

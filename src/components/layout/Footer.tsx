@@ -40,14 +40,17 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">
-              {APP_NAME.charAt(0)}
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden>
+                <path d="M4 12.5L10 6l4 4 6-7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 18h16" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity="0.45" />
+              </svg>
             </span>
             <span className="font-display font-semibold text-foreground">{APP_NAME}</span>
           </div>
           <p className="text-xs text-muted">
-            © {new Date().getFullYear()} {APP_DOMAIN} — Custom orders marketplace
+            © {new Date().getFullYear()} {APP_DOMAIN} — Made truly, for you
           </p>
         </div>
       </div>

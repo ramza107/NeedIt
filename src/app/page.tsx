@@ -15,7 +15,6 @@ import {
   Hammer,
   Users,
   Megaphone,
-  Sparkles,
 } from 'lucide-react';
 
 async function getPromotedMakers() {
@@ -103,42 +102,38 @@ export default async function HomePage() {
 
   return (
     <div className="pb-12">
-      {/* Hero */}
-      <section className="hero-gradient border-b border-border">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-24">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold mb-5">
-              <Sparkles className="h-3.5 w-3.5" />
-              Custom orders marketplace
-            </div>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-tight text-foreground mb-5">
-              Can&apos;t find it in a store?<br />
-              <span className="text-primary">Get it made.</span>
-            </h1>
-            <p className="text-muted text-base sm:text-lg mb-8 leading-relaxed max-w-xl">
-              {APP_TAGLINE}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button href="/auth/register?role=buyer" size="lg" className="gap-2">
-                <Camera className="h-4 w-4" />
-                Post what you need
-              </Button>
-              <Button href="/requests" variant="secondary" size="lg">
-                Browse open orders
-              </Button>
-              <Button href="/auth/register?role=maker" variant="accent" size="lg" className="gap-2">
-                <Hammer className="h-4 w-4" />
-                I&apos;m a maker
-              </Button>
-            </div>
+      {/* Brand-first hero */}
+      <section className="hero-gradient text-white">
+        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-24 lg:py-28">
+          <p className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight mb-5 animate-fade-up">
+            {APP_NAME}
+          </p>
+          <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium leading-snug text-white/95 mb-4 max-w-xl animate-fade-up-delay">
+            Can&apos;t find it in a store? Get it made — truly.
+          </h1>
+          <p className="text-white/75 text-base sm:text-lg mb-9 leading-relaxed max-w-lg animate-fade-up-delay-2">
+            {APP_TAGLINE}
+          </p>
+          <div className="flex flex-wrap gap-3 animate-fade-up-delay-2">
+            <Button href="/auth/register?role=buyer" size="lg" className="gap-2 !bg-white !text-primary hover:!bg-white/90 shadow-lg">
+              <Camera className="h-4 w-4" />
+              Post what you need
+            </Button>
+            <Button href="/requests" size="lg" className="!bg-transparent !text-white border border-white/40 hover:!bg-white/10 rounded-full">
+              Browse open orders
+            </Button>
+            <Button href="/auth/register?role=maker" variant="accent" size="lg" className="gap-2">
+              <Hammer className="h-4 w-4" />
+              I&apos;m a maker
+            </Button>
           </div>
         </div>
       </section>
 
       {/* How it works */}
       <section className="border-b border-border bg-card">
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { icon: Camera, label: 'Post your request', sub: 'Describe + set budget', step: '01' },
               { icon: MessageSquare, label: 'Get maker offers', sub: 'Compare prices & reviews', step: '02' },
@@ -146,7 +141,7 @@ export default async function HomePage() {
               { icon: CheckCircle2, label: 'Approve & review', sub: 'Release payment', step: '04' },
             ].map((item) => (
               <div key={item.step} className="flex flex-col gap-2">
-                <span className="text-xs font-bold text-primary/60">{item.step}</span>
+                <span className="text-xs font-bold tracking-widest text-primary/50">{item.step}</span>
                 <item.icon className="h-5 w-5 text-primary" />
                 <p className="font-semibold text-foreground text-sm">{item.label}</p>
                 <p className="text-xs text-muted leading-relaxed">{item.sub}</p>
@@ -260,7 +255,7 @@ export default async function HomePage() {
             Post a request — it&apos;s free
           </Button>
         </div>
-        <div className="section-panel p-6 sm:p-7 bg-accent-light/30 border-accent/20">
+        <div className="section-panel p-6 sm:p-7 bg-accent-light/40 border-accent/20">
           <h2 className="font-display text-xl font-semibold mb-2">Are you a maker?</h2>
           <p className="text-muted text-sm mb-5 leading-relaxed">
             Browse open orders in your category. Send offers, get paid when the buyer approves your work.

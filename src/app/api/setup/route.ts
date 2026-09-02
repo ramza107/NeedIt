@@ -35,7 +35,7 @@ async function runSql(query: string, accessToken: string) {
 
 export async function POST(request: Request) {
   const secret = request.headers.get('x-setup-secret');
-  const expected = process.env.SETUP_SECRET || 'orderraft-setup-2026';
+  const expected = process.env.SETUP_SECRET || 'wahrly-setup-2026';
 
   if (secret !== expected) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

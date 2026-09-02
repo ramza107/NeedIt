@@ -16,8 +16,8 @@ export function SearchBar({ className = '', defaultValue = '' }: { className?: s
 
   return (
     <form onSubmit={handleSubmit} className={`flex flex-1 ${className}`}>
-      <div className="flex w-full items-center rounded-xl border border-border bg-muted-bg/60 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10 transition-all overflow-hidden">
-        <Search className="h-4 w-4 text-muted ml-3 shrink-0" />
+      <div className="flex w-full items-center rounded-full border border-border bg-muted-bg/70 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10 transition-all overflow-hidden">
+        <Search className="h-4 w-4 text-muted ml-4 shrink-0" />
         <input
           type="search"
           value={query}
