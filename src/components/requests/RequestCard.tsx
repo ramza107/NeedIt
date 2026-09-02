@@ -26,7 +26,7 @@ export function RequestCard({ request, compact = false, href }: RequestCardProps
   return (
     <Link href={linkHref} className="block h-full group">
       <article className="card-product h-full flex flex-col bg-card overflow-hidden">
-        <div className={`${compact ? 'h-36' : 'h-44'} bg-muted-bg flex items-center justify-center overflow-hidden`}>
+        <div className={`${compact ? 'h-36' : 'h-44'} bg-muted-bg flex items-center justify-center overflow-hidden rounded-t-[15px]`}>
           {request.images?.[0] ? (
             <img
               src={request.images[0].image_url}

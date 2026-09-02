@@ -10,7 +10,7 @@ export function Card({
   return (
     <div
       className={cn(
-        product ? 'card-product' : 'bg-card border border-border rounded',
+        product ? 'card-product' : 'bg-card border border-border rounded-2xl',
         !product && 'shadow-sm',
         hover && 'hover:shadow-md transition-shadow',
         className

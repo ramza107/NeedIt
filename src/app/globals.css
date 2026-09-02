@@ -1,23 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #eaeded;
-  --foreground: #0f1111;
-  --muted: #565959;
-  --muted-bg: #f7fafa;
-  --border: #d5d9d9;
-  --primary: #ffd814;
-  --primary-hover: #f7ca00;
-  --primary-dark: #ffa41c;
-  --primary-foreground: #0f1111;
-  --accent: #007185;
-  --accent-hover: #005f6f;
-  --accent-light: #e3f4f6;
+  --background: #f7f5f2;
+  --foreground: #1a1816;
+  --muted: #6b6560;
+  --muted-bg: #efede8;
+  --border: #e2ddd6;
+  --primary: #5b4ddb;
+  --primary-hover: #4a3fc7;
+  --primary-dark: #3d33a8;
+  --primary-foreground: #ffffff;
+  --accent: #e8613a;
+  --accent-hover: #d4522e;
+  --accent-light: #fdf0eb;
   --card: #ffffff;
   --surface: #ffffff;
-  --header: #131921;
-  --header-secondary: #232f3e;
-  --link: #007185;
+  --header: #ffffff;
+  --header-secondary: #f7f5f2;
+  --link: #5b4ddb;
+  --ring: rgba(91, 77, 219, 0.25);
 }
 
 @theme inline {
@@ -39,58 +40,80 @@
   --color-header-secondary: var(--header-secondary);
   --color-link: var(--link);
   --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), Arial, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgba(255, 216, 20, 0.4);
+  background: rgba(91, 77, 219, 0.2);
   color: var(--foreground);
 }
 
-.link-amazon {
+.link-brand {
   color: var(--link);
+  transition: color 0.15s;
 }
 
-.link-amazon:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
+.link-brand:hover {
+  color: var(--primary-hover);
 }
 
 .card-product {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  transition: box-shadow 0.15s;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(26, 24, 22, 0.04);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .card-product:hover {
-  box-shadow: 0 2px 5px rgba(15, 17, 17, 0.15);
+  border-color: #d4cec6;
+  box-shadow: 0 8px 24px rgba(26, 24, 22, 0.08);
 }
 
-.btn-amazon {
-  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-  border: 1px solid #a88734;
-  border-radius: 8px;
-  color: var(--foreground);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(91, 77, 219, 0.2);
 }
 
-.btn-amazon:hover {
-  background: linear-gradient(to bottom, #f5d78e, #eeb933);
+.btn-primary:hover {
+  background: var(--primary-hover);
 }
 
-.btn-amazon-orange {
-  background: linear-gradient(to bottom, #f7c962, #f0a830);
-  border: 1px solid #a88734;
-  border-radius: 8px;
-  color: var(--foreground);
+.btn-accent {
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(232, 97, 58, 0.2);
 }
 
-.btn-amazon-orange:hover {
-  background: linear-gradient(to bottom, #f5bc4e, #e99a1f);
+.btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+.section-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(26, 24, 22, 0.04);
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 0%, rgba(91, 77, 219, 0.12), transparent),
+    radial-gradient(ellipse 60% 50% at 10% 100%, rgba(232, 97, 58, 0.08), transparent),
+    linear-gradient(180deg, #ffffff 0%, #f7f5f2 100%);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
 }

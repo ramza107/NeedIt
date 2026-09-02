@@ -3,51 +3,52 @@ import { APP_DOMAIN, APP_NAME } from '@/lib/constants';
 
 export function Footer() {
   return (
-    <footer className="mt-auto">
-      <div className="bg-header-secondary py-8 text-center">
-        <Link
-          href="/"
-          className="inline-block text-sm text-white hover:underline"
-        >
-          Back to top
-        </Link>
-      </div>
-      <div className="bg-header text-white py-10">
-        <div className="mx-auto max-w-[1500px] px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+    <footer className="mt-auto border-t border-border bg-card">
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
           <div>
-            <h4 className="font-bold mb-3">Get to Know Us</h4>
-            <ul className="space-y-2 text-white/80">
-              <li><Link href="/" className="hover:underline">About {APP_NAME}</Link></li>
-              <li><Link href="/requests" className="hover:underline">How it works</Link></li>
+            <h4 className="font-semibold mb-4 text-foreground">About</h4>
+            <ul className="space-y-2.5 text-muted">
+              <li><Link href="/" className="hover:text-primary transition-colors">About {APP_NAME}</Link></li>
+              <li><Link href="/requests" className="hover:text-primary transition-colors">How it works</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-3">For Buyers</h4>
-            <ul className="space-y-2 text-white/80">
-              <li><Link href="/auth/register?role=buyer" className="hover:underline">Post a Request</Link></li>
-              <li><Link href="/requests" className="hover:underline">Browse Orders</Link></li>
-              <li><Link href="/auth/login" className="hover:underline">Your Account</Link></li>
+            <h4 className="font-semibold mb-4 text-foreground">For Buyers</h4>
+            <ul className="space-y-2.5 text-muted">
+              <li><Link href="/auth/register?role=buyer" className="hover:text-primary transition-colors">Post a Request</Link></li>
+              <li><Link href="/requests" className="hover:text-primary transition-colors">Browse Orders</Link></li>
+              <li><Link href="/auth/login" className="hover:text-primary transition-colors">Your Account</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-3">For Makers</h4>
-            <ul className="space-y-2 text-white/80">
-              <li><Link href="/auth/register?role=maker" className="hover:underline">Become a Maker</Link></li>
-              <li><Link href="/requests" className="hover:underline">Find Work</Link></li>
-              <li><Link href="/dashboard" className="hover:underline">Maker Dashboard</Link></li>
+            <h4 className="font-semibold mb-4 text-foreground">For Makers</h4>
+            <ul className="space-y-2.5 text-muted">
+              <li><Link href="/auth/register?role=maker" className="hover:text-primary transition-colors">Become a Maker</Link></li>
+              <li><Link href="/requests" className="hover:text-primary transition-colors">Find Work</Link></li>
+              <li><Link href="/makers" className="hover:text-primary transition-colors">Maker Directory</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-3">Help & Safety</h4>
-            <ul className="space-y-2 text-white/80">
-              <li><span>Buyer protection</span></li>
-              <li><span>Secure payments</span></li>
-              <li><span>Dispute resolution</span></li>
+            <h4 className="font-semibold mb-4 text-foreground">Trust & Safety</h4>
+            <ul className="space-y-2.5 text-muted">
+              <li>Buyer protection</li>
+              <li>Secure payments</li>
+              <li>Dispute resolution</li>
             </ul>
           </div>
         </div>
-        <div className="mx-auto max-w-[1500px] px-6 mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/60">
-          © {new Date().getFullYear()} {APP_DOMAIN} — Custom orders marketplace. All rights reserved.
+
+        <div className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">
+              {APP_NAME.charAt(0)}
+            </span>
+            <span className="font-display font-semibold text-foreground">{APP_NAME}</span>
+          </div>
+          <p className="text-xs text-muted">
+            © {new Date().getFullYear()} {APP_DOMAIN} — Custom orders marketplace
+          </p>
         </div>
       </div>
     </footer>
