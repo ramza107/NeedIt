@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
+import { BrandLogo } from '@/components/layout/BrandLogo';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -65,6 +66,9 @@ export default function RegisterForm() {
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-10 bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
+          <div className="mb-3">
+            <BrandLogo size="md" href="/" />
+          </div>
           <h1 className="text-2xl font-bold text-foreground">Create account</h1>
           <p className="text-sm text-muted mt-1">Join {APP_NAME} — it&apos;s free</p>
         </CardHeader>

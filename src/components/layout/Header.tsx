@@ -6,10 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchBar } from '@/components/layout/SearchBar';
-import { APP_NAME, POPULAR_CATEGORIES } from '@/lib/constants';
+import { POPULAR_CATEGORIES } from '@/lib/constants';
 import type { Profile } from '@/types/database';
 import { Menu, X, Package, LogOut, User, ChevronDown, ClipboardList } from 'lucide-react';
 import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
+import { BrandLogo } from '@/components/layout/BrandLogo';
 
 const CATEGORY_LABELS: Record<string, string> = {
   furniture: 'Furniture',
@@ -87,17 +88,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-header/85 backdrop-blur-xl border-b border-border/70">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3.5">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5 group">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-              <path d="M4 12.5L10 6l4 4 6-7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M4 18h16" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity="0.45" />
-            </svg>
-          </span>
-          <span className="font-display text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
-            {APP_NAME}
-          </span>
-        </Link>
+        <BrandLogo size="md" />
 
         <div className="hidden md:flex flex-1 max-w-md mx-4">
           <SearchBar />

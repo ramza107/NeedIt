@@ -21,6 +21,10 @@ export const metadata: Metadata = {
     template: `%s | ${APP_NAME}`,
   },
   description: APP_TAGLINE,
+  icons: {
+    icon: [{ url: '/favicon.png', type: 'image/png' }, { url: '/logo-256.png', type: 'image/png', sizes: '256x256' }],
+    apple: [{ url: '/logo-256.png', sizes: '256x256' }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

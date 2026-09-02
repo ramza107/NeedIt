@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { APP_NAME } from '@/lib/constants';
+import { BrandLogo } from '@/components/layout/BrandLogo';
 
 function LoginForm() {
   const router = useRouter();
@@ -40,6 +41,9 @@ function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
+        <div className="mb-3">
+          <BrandLogo size="md" href="/" />
+        </div>
         <h1 className="text-2xl font-bold text-foreground">Sign in</h1>
         <p className="text-sm text-muted mt-1">{APP_NAME} account</p>
       </CardHeader>

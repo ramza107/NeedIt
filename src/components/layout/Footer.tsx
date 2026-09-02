@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { APP_DOMAIN, APP_NAME } from '@/lib/constants';
+import { BrandLogo } from '@/components/layout/BrandLogo';
 
 export function Footer() {
   return (
@@ -40,15 +41,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden>
-                <path d="M4 12.5L10 6l4 4 6-7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4 18h16" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity="0.45" />
-              </svg>
-            </span>
-            <span className="font-display font-semibold text-foreground">{APP_NAME}</span>
-          </div>
+          <BrandLogo size="sm" href="/" />
           <p className="text-xs text-muted">
             © {new Date().getFullYear()} {APP_DOMAIN} — Made truly, for you
           </p>
