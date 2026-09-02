@@ -17,7 +17,7 @@ const display = Sora({
 
 export const metadata: Metadata = {
   title: {
-    default: `${APP_NAME} — Custom Orders Marketplace`,
+    default: `${APP_NAME} — Manufacturers Marketplace`,
     template: `%s | ${APP_NAME}`,
   },
   description: APP_TAGLINE,

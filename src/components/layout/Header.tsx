@@ -8,7 +8,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { SearchBar } from '@/components/layout/SearchBar';
 import { APP_NAME, POPULAR_CATEGORIES } from '@/lib/constants';
 import type { Profile } from '@/types/database';
-import { Menu, X, Package, LogOut, User, ChevronDown } from 'lucide-react';
+import { Menu, X, Package, LogOut, User, ChevronDown, ClipboardList } from 'lucide-react';
 import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -24,11 +24,11 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
-  const requestsMenuRef = useRef<HTMLDivElement>(null);
+  const makersMenuRef = useRef<HTMLDivElement>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [requestsMenuOpen, setRequestsMenuOpen] = useState(false);
+  const [makersMenuOpen, setMakersMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const supabaseConfigured = isSupabaseConfigured();
 
@@ -61,8 +61,8 @@ export function Header() {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
       }
-      if (requestsMenuRef.current && !requestsMenuRef.current.contains(event.target as Node)) {
-        setRequestsMenuOpen(false);
+      if (makersMenuRef.current && !makersMenuRef.current.contains(event.target as Node)) {
+        setMakersMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -80,6 +80,9 @@ export function Header() {
     router.refresh();
     setLoggingOut(false);
   }
+
+  const onMakers = pathname === '/makers' || pathname.startsWith('/profile');
+  const onRequests = pathname === '/requests' || pathname.startsWith('/requests/');
 
   return (
     <header className="sticky top-0 z-50 bg-header/85 backdrop-blur-xl border-b border-border/70">
@@ -101,40 +104,41 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center gap-1 ml-auto">
-          <div className="relative" ref={requestsMenuRef}>
+          {/* Manufacturers by category */}
+          <div className="relative" ref={makersMenuRef}>
             <button
               type="button"
-              onClick={() => setRequestsMenuOpen(!requestsMenuOpen)}
+              onClick={() => setMakersMenuOpen(!makersMenuOpen)}
               className={`flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
-                pathname === '/requests' || requestsMenuOpen
+                onMakers || makersMenuOpen
                   ? 'bg-primary/10 text-primary'
                   : 'text-foreground hover:bg-muted-bg'
               }`}
-              aria-expanded={requestsMenuOpen}
+              aria-expanded={makersMenuOpen}
               aria-haspopup="true"
             >
-              Browse
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${requestsMenuOpen ? 'rotate-180' : ''}`} />
+              Manufacturers
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${makersMenuOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {requestsMenuOpen && (
+            {makersMenuOpen && (
               <div className="absolute left-0 top-full mt-2 z-50 min-w-[220px] rounded-2xl border border-border bg-card py-2 shadow-xl text-foreground">
                 <Link
-                  href="/requests"
+                  href="/makers"
                   className="block px-4 py-2.5 text-sm font-semibold hover:bg-muted-bg mx-1 rounded-xl"
-                  onClick={() => setRequestsMenuOpen(false)}
+                  onClick={() => setMakersMenuOpen(false)}
                 >
-                  All Requests
+                  All manufacturers
                 </Link>
                 <div className="px-4 pt-2 pb-1">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted">Categories</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted">By category</p>
                 </div>
                 {POPULAR_CATEGORIES.map((slug) => (
                   <Link
                     key={slug}
-                    href={`/requests?category=${slug}`}
+                    href={`/makers?category=${slug}`}
                     className="block px-4 py-2 text-sm hover:bg-muted-bg mx-1 rounded-xl"
-                    onClick={() => setRequestsMenuOpen(false)}
+                    onClick={() => setMakersMenuOpen(false)}
                   >
                     {CATEGORY_LABELS[slug] || slug}
                   </Link>
@@ -143,11 +147,17 @@ export function Header() {
             )}
           </div>
 
+          {/* Requests — separate menu */}
           <Link
-            href="/makers"
-            className="px-3.5 py-2 rounded-full text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
+            href="/requests"
+            className={`px-3.5 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-1.5 ${
+              onRequests
+                ? 'bg-primary/10 text-primary'
+                : 'text-foreground hover:bg-muted-bg'
+            }`}
           >
-            Makers
+            <ClipboardList className="h-4 w-4" />
+            Requests
           </Link>
 
           {profile ? (
@@ -204,18 +214,18 @@ export function Header() {
           )}
 
           <Link
-            href={profile?.role === 'buyer' ? '/requests/new' : '/requests'}
+            href={profile?.role === 'buyer' ? '/requests/new' : '/makers'}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium text-foreground hover:bg-muted-bg transition-colors"
           >
             <Package className="h-4 w-4" />
-            {profile?.role === 'buyer' ? 'Post' : 'Orders'}
+            {profile?.role === 'buyer' ? 'Post request' : 'Explore'}
           </Link>
 
           <Link
-            href="/auth/register?role=buyer"
+            href="/auth/register?role=maker"
             className="ml-1 px-5 py-2.5 rounded-full text-sm font-semibold btn-primary"
           >
-            Get started
+            List company
           </Link>
         </nav>
 
@@ -245,23 +255,6 @@ export function Header() {
               </div>
               <RoleSwitcher profile={profile} onSwitched={() => setMobileOpen(false)} />
               <Link href="/dashboard" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-              <Link href="/requests" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>All Requests</Link>
-              <Link href="/makers" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>Makers</Link>
-              <div className="pl-3 space-y-1 border-l-2 border-border ml-2 my-2">
-                {POPULAR_CATEGORIES.map((slug) => (
-                  <Link
-                    key={slug}
-                    href={`/requests?category=${slug}`}
-                    className="block py-1.5 text-sm text-muted hover:text-foreground"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {CATEGORY_LABELS[slug] || slug}
-                  </Link>
-                ))}
-              </div>
-              <button type="button" onClick={handleLogout} className="block py-2.5 text-red-600 font-medium w-full text-left px-2">
-                Sign out
-              </button>
             </>
           ) : (
             <>
@@ -269,12 +262,36 @@ export function Header() {
               <Link href="/auth/register" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>Create account</Link>
             </>
           )}
+
+          <Link href="/makers" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>All manufacturers</Link>
+          <div className="pl-3 space-y-1 border-l-2 border-border ml-2 my-2">
+            {POPULAR_CATEGORIES.map((slug) => (
+              <Link
+                key={slug}
+                href={`/makers?category=${slug}`}
+                className="block py-1.5 text-sm text-muted hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {CATEGORY_LABELS[slug] || slug}
+              </Link>
+            ))}
+          </div>
+          <Link href="/requests" className="block py-2.5 font-medium rounded-xl px-2 hover:bg-muted-bg" onClick={() => setMobileOpen(false)}>
+            Requests
+          </Link>
+
+          {profile && (
+            <button type="button" onClick={handleLogout} className="block py-2.5 text-red-600 font-medium w-full text-left px-2">
+              Sign out
+            </button>
+          )}
+
           <div className="pt-3 flex gap-2">
-            <Link href="/auth/register?role=buyer" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-primary" onClick={() => setMobileOpen(false)}>
-              Post a request
+            <Link href="/makers" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-primary" onClick={() => setMobileOpen(false)}>
+              Manufacturers
             </Link>
-            <Link href="/auth/register?role=maker" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-accent" onClick={() => setMobileOpen(false)}>
-              I&apos;m a maker
+            <Link href="/requests" className="flex-1 text-center py-2.5 rounded-full text-sm font-semibold btn-accent" onClick={() => setMobileOpen(false)}>
+              Requests
             </Link>
           </div>
         </div>

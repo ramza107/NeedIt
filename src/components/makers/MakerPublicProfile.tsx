@@ -234,7 +234,7 @@ export function MakerPublicProfile({
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
-                    href={`/requests?category=${cat.slug}`}
+                    href={`/makers?category=${cat.slug}`}
                     className="inline-flex items-center gap-1 rounded-full border border-border bg-muted-bg px-3 py-1 text-xs font-medium hover:border-accent hover:bg-accent-light transition-colors"
                   >
                     <span>{cat.icon}</span>

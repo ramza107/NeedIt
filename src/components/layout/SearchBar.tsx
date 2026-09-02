@@ -11,7 +11,7 @@ export function SearchBar({ className = '', defaultValue = '' }: { className?: s
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const q = query.trim();
-    router.push(q ? `/requests?q=${encodeURIComponent(q)}` : '/requests');
+    router.push(q ? `/makers?q=${encodeURIComponent(q)}` : '/makers');
   }
 
   return (
@@ -22,7 +22,7 @@ export function SearchBar({ className = '', defaultValue = '' }: { className?: s
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search orders — furniture, jewelry, 3D print..."
+          placeholder="Search manufacturers — furniture, clothing, jewelry..."
           className="flex-1 min-w-0 px-3 py-2.5 text-sm text-foreground bg-transparent border-0 focus:outline-none"
         />
       </div>

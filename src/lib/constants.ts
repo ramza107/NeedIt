@@ -1,5 +1,5 @@
 export const APP_NAME = 'Wahrly';
-export const APP_TAGLINE = "Describe what you need — skilled makers send offers, and payment stays protected until you approve the work.";
+export const APP_TAGLINE = "Discover manufacturers by what they produce — or post a custom request and get protected offers from skilled makers.";
 export const APP_DOMAIN = 'wahrly.com';
 export const PLATFORM_FEE_PERCENT = 10;
 

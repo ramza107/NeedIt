@@ -1,20 +1,20 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { RequestCard } from '@/components/requests/RequestCard';
 import { MakerPromoCard } from '@/components/makers/MakerPromoCard';
-import { Avatar, StarRating } from '@/components/ui/Avatar';
-import { makerProfilePath, getMakerProfile } from '@/lib/makers';
+import { CategoryManufacturers } from '@/components/makers/CategoryManufacturers';
+import { toMakerCardData } from '@/lib/makers';
 import { APP_NAME, APP_TAGLINE, POPULAR_CATEGORIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
 import {
   ArrowRight,
-  Camera,
   Shield,
   MessageSquare,
   CheckCircle2,
   Hammer,
-  Users,
+  Building2,
   Megaphone,
+  ClipboardList,
+  Search,
 } from 'lucide-react';
 
 async function getPromotedMakers() {
@@ -33,29 +33,14 @@ async function getPromotedMakers() {
   }
 }
 
-async function getOpenRequests() {
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from('requests')
-      .select('*, category:categories(*), images:request_images(*)')
-      .in('status', ['open', 'offers_received'])
-      .order('created_at', { ascending: false })
-      .limit(8);
-    return data || [];
-  } catch {
-    return [];
-  }
-}
-
-async function getFeaturedMakers() {
+async function getManufacturers() {
   try {
     const supabase = await createClient();
     const { data } = await supabase
       .from('maker_profiles')
       .select('*, profile:profiles(*)')
       .order('rating', { ascending: false })
-      .limit(4);
+      .limit(60);
     return data || [];
   } catch {
     return [];
@@ -72,71 +57,69 @@ async function getCategories() {
   }
 }
 
-const DEMO_REQUESTS = [
-  { id: '1', title: 'Custom oak dining table for 6 people', description: 'Solid wood, rustic style', status: 'open', budget_min: 800, budget_max: 1500, city: 'Austin', created_at: new Date().toISOString(), category: { name: 'Furniture', icon: '🪑' }, images: [] },
-  { id: '2', title: 'Engagement ring — custom design', description: 'White gold with sapphire', status: 'open', budget_min: 500, budget_max: 1200, city: 'NYC', created_at: new Date().toISOString(), category: { name: 'Jewelry', icon: '💎' }, images: [] },
-  { id: '3', title: '3D printed drone parts', description: 'Carbon fiber reinforced', status: 'offers_received', budget_min: 50, budget_max: 200, city: 'Seattle', created_at: new Date().toISOString(), category: { name: '3D Printing', icon: '🖨️' }, images: [] },
-  { id: '4', title: 'Hand-painted family portrait', description: 'Oil on canvas, 24x36', status: 'open', budget_min: 200, budget_max: 500, city: 'Denver', created_at: new Date().toISOString(), category: { name: 'Art', icon: '🎨' }, images: [] },
-];
-
-const CATEGORY_META: Record<string, { icon: string; desc: string }> = {
-  furniture: { icon: '🪑', desc: 'Tables, shelves, decor' },
-  jewelry: { icon: '💎', desc: 'Rings, necklaces, custom' },
-  clothing: { icon: '👕', desc: 'Tailored & handmade' },
-  art: { icon: '🎨', desc: 'Paintings, sculptures' },
-  gifts: { icon: '🎁', desc: 'Personalized gifts' },
-  '3d-printing': { icon: '🖨️', desc: 'Prototypes & parts' },
-};
-
 export default async function HomePage() {
-  const [requests, makers, categories, promotedMakers] = await Promise.all([
-    getOpenRequests(),
-    getFeaturedMakers(),
+  const [manufacturers, categories, promotedMakers] = await Promise.all([
+    getManufacturers(),
     getCategories(),
     getPromotedMakers(),
   ]);
 
   const popularCats = categories.filter((c) => POPULAR_CATEGORIES.includes(c.slug));
-  const hasRealRequests = requests.length > 0;
-  const displayRequests = hasRealRequests ? requests : DEMO_REQUESTS;
+  const categoryOptions = (popularCats.length > 0
+    ? popularCats
+    : POPULAR_CATEGORIES.map((slug) => ({
+        id: slug,
+        slug,
+        name: slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+        icon: null as string | null,
+      }))
+  ).map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    name: c.name,
+    icon: c.icon,
+  }));
+
+  const makerCards = manufacturers.map(toMakerCardData);
 
   return (
     <div className="pb-12">
-      {/* Brand-first hero */}
+      {/* Brand-first hero — manufacturers first */}
       <section className="hero-gradient text-white">
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-24 lg:py-28">
           <p className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight mb-5 animate-fade-up">
             {APP_NAME}
           </p>
           <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium leading-snug text-white/95 mb-4 max-w-xl animate-fade-up-delay">
-            Can&apos;t find it in a store? Get it made — truly.
+            Find manufacturers who make what you need.
           </h1>
           <p className="text-white/75 text-base sm:text-lg mb-9 leading-relaxed max-w-lg animate-fade-up-delay-2">
             {APP_TAGLINE}
           </p>
           <div className="flex flex-wrap gap-3 animate-fade-up-delay-2">
-            <Button href="/auth/register?role=buyer" size="lg" className="gap-2 !bg-white !text-primary hover:!bg-white/90 shadow-lg">
-              <Camera className="h-4 w-4" />
-              Post what you need
-            </Button>
-            <Button href="/requests" size="lg" className="!bg-transparent !text-white border border-white/40 hover:!bg-white/10 rounded-full">
-              Browse open orders
+            <Button href="/makers" size="lg" className="gap-2 !bg-white !text-primary hover:!bg-white/90 shadow-lg">
+              <Building2 className="h-4 w-4" />
+              Browse manufacturers
             </Button>
             <Button href="/auth/register?role=maker" variant="accent" size="lg" className="gap-2">
               <Hammer className="h-4 w-4" />
-              I&apos;m a maker
+              List your company
+            </Button>
+            <Button href="/requests" size="lg" className="!bg-transparent !text-white border border-white/40 hover:!bg-white/10 rounded-full gap-2">
+              <ClipboardList className="h-4 w-4" />
+              Custom requests
             </Button>
           </div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* How it works — company-first */}
       <section className="border-b border-border bg-card">
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { icon: Camera, label: 'Post your request', sub: 'Describe + set budget', step: '01' },
-              { icon: MessageSquare, label: 'Get maker offers', sub: 'Compare prices & reviews', step: '02' },
+              { icon: Search, label: 'Browse manufacturers', sub: 'By category & specialty', step: '01' },
+              { icon: MessageSquare, label: 'Contact or request', sub: 'Message or post a brief', step: '02' },
               { icon: Shield, label: 'Pay securely', sub: 'Funds held until done', step: '03' },
               { icon: CheckCircle2, label: 'Approve & review', sub: 'Release payment', step: '04' },
             ].map((item) => (
@@ -151,8 +134,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sponsored makers */}
+      {/* Category → manufacturers (interactive) */}
       <section className="mx-auto max-w-6xl px-4 pt-10">
+        <CategoryManufacturers categories={categoryOptions} makers={makerCards} />
+      </section>
+
+      {/* Sponsored manufacturers */}
+      <section className="mx-auto max-w-6xl px-4 pt-8">
         <div className="section-panel p-5 sm:p-7">
           <div className="flex flex-wrap items-end justify-between gap-3 mb-5">
             <div>
@@ -160,14 +148,14 @@ export default async function HomePage() {
                 <Megaphone className="h-3.5 w-3.5" />
                 Sponsored
               </p>
-              <h2 className="font-display text-2xl font-semibold text-foreground">Featured makers</h2>
-              <p className="text-sm text-muted mt-1">Hire skilled craftspeople — view profiles &amp; portfolios</p>
+              <h2 className="font-display text-2xl font-semibold text-foreground">Featured manufacturers</h2>
+              <p className="text-sm text-muted mt-1">Companies advertising their production services</p>
             </div>
             <Link
               href="/auth/register?role=maker"
               className="text-sm text-link hover:text-primary-hover font-medium flex items-center gap-1"
             >
-              Advertise your profile <ArrowRight className="h-3.5 w-3.5" />
+              Advertise your company <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
@@ -179,140 +167,49 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-border bg-muted-bg/50 p-10 text-center">
-              <p className="font-semibold text-foreground mb-1">No sponsored makers yet</p>
+              <p className="font-semibold text-foreground mb-1">No sponsored manufacturers yet</p>
               <p className="text-sm text-muted mb-5 max-w-md mx-auto">
-                Makers can turn on homepage promotion from their dashboard.
+                Companies can turn on homepage promotion from their dashboard.
               </p>
               <Button href="/auth/register?role=maker" variant="accent">
-                Create maker account &amp; advertise
+                List your company &amp; advertise
               </Button>
             </div>
           )}
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="mx-auto max-w-6xl px-4 pt-8">
-        <div className="section-panel p-5 sm:p-7">
-          <h2 className="font-display text-2xl font-semibold text-foreground mb-5">Browse by category</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {(popularCats.length > 0 ? popularCats : POPULAR_CATEGORIES.map((slug) => ({ slug, name: slug, icon: CATEGORY_META[slug]?.icon }))).map((cat) => {
-              const meta = CATEGORY_META[cat.slug] || { icon: '📦', desc: 'Custom orders' };
-              return (
-                <Link
-                  key={cat.slug}
-                  href={`/requests?category=${cat.slug}`}
-                  className="card-product p-4 text-center hover:bg-muted-bg/50 transition-colors"
-                >
-                  <span className="text-3xl block mb-2">{cat.icon || meta.icon}</span>
-                  <p className="font-semibold text-sm text-foreground">{cat.name || cat.slug}</p>
-                  <p className="text-xs text-muted mt-0.5">{meta.desc}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Open requests */}
-      <section className="mx-auto max-w-6xl px-4 pt-8">
-        <div className="section-panel p-5 sm:p-7">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="font-display text-2xl font-semibold text-foreground">Open custom orders</h2>
-              <p className="text-sm text-muted mt-1">Real requests from buyers — submit your offer</p>
-            </div>
-            <Link href="/requests" className="text-sm text-link hover:text-primary-hover font-medium flex items-center gap-1">
-              See all <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {displayRequests.slice(0, 8).map((req) => (
-              <RequestCard
-                key={req.id}
-                request={req}
-                compact
-                href={hasRealRequests ? undefined : '/auth/register?role=maker'}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Buyers + Makers */}
+      {/* Split: manufacturers vs requests */}
       <section className="mx-auto max-w-6xl px-4 pt-8 grid md:grid-cols-2 gap-5">
         <div className="section-panel p-6 sm:p-7">
-          <h2 className="font-display text-xl font-semibold mb-2">Need something custom?</h2>
+          <h2 className="font-display text-xl font-semibold mb-2">Looking for a manufacturer?</h2>
           <p className="text-muted text-sm mb-5 leading-relaxed">
-            Upload photos, describe your idea, set a budget. Skilled makers will send you offers with price and timeline.
+            Browse companies by what they produce — furniture, clothing, jewelry, and more. View portfolios and ratings, then reach out.
           </p>
           <ul className="space-y-2.5 text-sm mb-6">
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Free to post a request</li>
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Compare multiple offers</li>
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Payment protected until approval</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Filter by production category</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Compare portfolios &amp; reviews</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Secure payments when you order</li>
           </ul>
-          <Button href="/auth/register?role=buyer">
-            Post a request — it&apos;s free
+          <Button href="/makers">
+            Browse manufacturers
           </Button>
         </div>
         <div className="section-panel p-6 sm:p-7 bg-accent-light/40 border-accent/20">
-          <h2 className="font-display text-xl font-semibold mb-2">Are you a maker?</h2>
+          <h2 className="font-display text-xl font-semibold mb-2">Need something custom?</h2>
           <p className="text-muted text-sm mb-5 leading-relaxed">
-            Browse open orders in your category. Send offers, get paid when the buyer approves your work.
+            Post a request and let manufacturers send offers. Requests stay available as a separate flow — same protected payments.
           </p>
           <ul className="space-y-2.5 text-sm mb-6">
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> New orders daily</li>
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Build your portfolio & rating</li>
-            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Secure payouts</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Free to post a request</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Compare multiple offers</li>
+            <li className="flex items-center gap-2.5"><CheckCircle2 className="h-4 w-4 text-accent shrink-0" /> Payment protected until approval</li>
           </ul>
-          <Button href="/auth/register?role=maker" variant="accent">
-            Start earning as a maker
+          <Button href="/requests" variant="accent">
+            Go to requests
           </Button>
         </div>
       </section>
-
-      {/* Top makers */}
-      {makers.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 pt-8">
-          <div className="section-panel p-5 sm:p-7">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="font-display text-2xl font-semibold flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
-                Top-rated makers
-              </h2>
-              <Link href="/makers" className="text-sm text-link hover:text-primary-hover font-medium">View all makers</Link>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {makers.map((maker) => {
-                const href = makerProfilePath(maker);
-                const profile = getMakerProfile(maker);
-                const name = maker.business_name || profile?.full_name || 'Maker';
-                if (!href) return null;
-
-                return (
-                <Link key={maker.id} href={href} className="card-product p-4 hover:bg-muted-bg/50">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Avatar
-                      src={profile?.avatar_url}
-                      name={name}
-                      size="sm"
-                    />
-                    <div className="min-w-0">
-                      <p className="font-semibold text-sm truncate text-link">
-                        {name}
-                      </p>
-                      <p className="text-xs text-muted">{maker.city}</p>
-                    </div>
-                  </div>
-                  <StarRating rating={maker.rating} count={maker.review_count} />
-                  <p className="text-xs text-muted mt-1">{maker.completed_orders} orders completed</p>
-                </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Trust banner */}
       <section className="mx-auto max-w-6xl px-4 pt-8">
