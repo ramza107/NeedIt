@@ -97,15 +97,27 @@ export default async function HomePage() {
             {APP_TAGLINE}
           </p>
           <div className="flex flex-wrap gap-3 animate-fade-up-delay-2">
-            <Button href="/makers" size="lg" className="gap-2 !bg-white !text-primary hover:!bg-white/90 shadow-lg">
+            <Button
+              href="/makers"
+              size="lg"
+              className="gap-2 !bg-[#fffcf7] !text-[#3a342e] hover:!bg-white shadow-lg border border-[#fffcf7]"
+            >
               <Building2 className="h-4 w-4" />
               Browse manufacturers
             </Button>
-            <Button href="/auth/register?role=maker" variant="accent" size="lg" className="gap-2">
+            <Button
+              href="/auth/register?role=maker"
+              size="lg"
+              className="gap-2 !bg-[#3a342e] !text-[#fffcf7] hover:!bg-[#2a2520] shadow-lg border border-[#3a342e]"
+            >
               <Hammer className="h-4 w-4" />
               List your company
             </Button>
-            <Button href="/requests" size="lg" className="!bg-transparent !text-white border border-white/40 hover:!bg-white/10 rounded-full gap-2">
+            <Button
+              href="/requests"
+              size="lg"
+              className="gap-2 !bg-[#fffcf7]/15 !text-[#fffcf7] border-2 border-[#fffcf7]/90 hover:!bg-[#fffcf7]/25 shadow-md backdrop-blur-sm"
+            >
               <ClipboardList className="h-4 w-4" />
               Custom requests
             </Button>
