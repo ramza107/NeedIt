@@ -10,7 +10,9 @@ ALTER TABLE maker_profiles
   ADD COLUMN IF NOT EXISTS is_promoted BOOLEAN NOT NULL DEFAULT FALSE,
   ADD COLUMN IF NOT EXISTS promo_headline TEXT,
   ADD COLUMN IF NOT EXISTS promoted_at TIMESTAMPTZ,
-  ADD COLUMN IF NOT EXISTS cover_url TEXT;
+  ADD COLUMN IF NOT EXISTS cover_url TEXT,
+  ADD COLUMN IF NOT EXISTS phone TEXT,
+  ADD COLUMN IF NOT EXISTS contact_person TEXT;
 
 CREATE INDEX IF NOT EXISTS maker_profiles_promoted_idx
   ON maker_profiles (promoted_at DESC NULLS LAST)
@@ -96,7 +98,7 @@ export async function POST(request: Request) {
   // 3. Verify columns
   const { error: verifyError } = await supabase
     .from('maker_profiles')
-    .select('is_promoted, cover_url')
+    .select('is_promoted, cover_url, phone, contact_person')
     .limit(1);
 
   return NextResponse.json({

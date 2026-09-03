@@ -53,6 +53,8 @@ export interface MakerProfile {
   portfolio_urls: string[];
   location: string | null;
   city: string | null;
+  phone: string | null;
+  contact_person: string | null;
   rating: number;
   review_count: number;
   completed_orders: number;

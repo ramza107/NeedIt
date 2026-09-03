@@ -24,6 +24,8 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
   const [bio, setBio] = useState(makerProfile.bio || '');
   const [city, setCity] = useState(makerProfile.city || profile.city || '');
   const [location, setLocation] = useState(makerProfile.location || '');
+  const [contactPerson, setContactPerson] = useState(makerProfile.contact_person || '');
+  const [phone, setPhone] = useState(makerProfile.phone || '');
   const [selectedCategories, setSelectedCategories] = useState<string[]>(makerProfile.categories || []);
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url);
   const [coverUrl, setCoverUrl] = useState(makerProfile.cover_url || '');
@@ -121,10 +123,16 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
         bio,
         city,
         location,
+        contact_person: contactPerson.trim(),
+        phone: phone.trim(),
         categories: selectedCategories,
         portfolio_urls: newPortfolioUrls,
       };
       if (coverUrl) makerPayload.cover_url = coverUrl;
+
+      if (!contactPerson.trim() || !phone.trim()) {
+        throw new Error('Contact person and phone number are required');
+      }
 
       let { error: makerErr } = await supabase
         .from('maker_profiles')
@@ -207,6 +215,23 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
             required
             placeholder="Maria Woodcraft"
           />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Input
+              label="Contact person"
+              value={contactPerson}
+              onChange={(e) => setContactPerson(e.target.value)}
+              required
+              placeholder="Full name"
+            />
+            <Input
+              label="Phone number"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder="+1 555 123 4567"
+            />
+          </div>
           <Textarea
             label="About you"
             value={bio}

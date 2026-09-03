@@ -14,6 +14,8 @@ import {
   Megaphone,
   Pencil,
   MessageSquare,
+  Phone,
+  User,
 } from 'lucide-react';
 
 interface MakerPublicProfileProps {
@@ -75,6 +77,25 @@ export function MakerPublicProfile({
                       {makerProfile.city || profile.city}
                       {makerProfile.location ? ` · ${makerProfile.location}` : ''}
                     </p>
+                  )}
+                  {(makerProfile.contact_person || makerProfile.phone) && (
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+                      {makerProfile.contact_person && (
+                        <p className="flex items-center gap-1.5">
+                          <User className="h-4 w-4 shrink-0" />
+                          {makerProfile.contact_person}
+                        </p>
+                      )}
+                      {makerProfile.phone && (
+                        <a
+                          href={`tel:${makerProfile.phone.replace(/\s+/g, '')}`}
+                          className="flex items-center gap-1.5 text-link hover:text-primary-hover"
+                        >
+                          <Phone className="h-4 w-4 shrink-0" />
+                          {makerProfile.phone}
+                        </a>
+                      )}
+                    </div>
                   )}
                   <div className="mt-2">
                     <StarRating rating={profile.rating} count={profile.review_count} />
@@ -226,6 +247,39 @@ export function MakerPublicProfile({
               )}
             </dl>
           </Card>
+
+          {(makerProfile.contact_person || makerProfile.phone) && (
+            <Card className="p-4">
+              <h3 className="font-bold text-foreground mb-3">Contact</h3>
+              <dl className="space-y-2.5 text-sm">
+                {makerProfile.contact_person && (
+                  <div className="flex items-start gap-2">
+                    <User className="h-4 w-4 text-muted mt-0.5 shrink-0" />
+                    <div>
+                      <dt className="text-muted text-xs">Contact person</dt>
+                      <dd className="font-medium text-foreground">{makerProfile.contact_person}</dd>
+                    </div>
+                  </div>
+                )}
+                {makerProfile.phone && (
+                  <div className="flex items-start gap-2">
+                    <Phone className="h-4 w-4 text-muted mt-0.5 shrink-0" />
+                    <div>
+                      <dt className="text-muted text-xs">Phone</dt>
+                      <dd>
+                        <a
+                          href={`tel:${makerProfile.phone.replace(/\s+/g, '')}`}
+                          className="font-medium text-link hover:text-primary-hover"
+                        >
+                          {makerProfile.phone}
+                        </a>
+                      </dd>
+                    </div>
+                  </div>
+                )}
+              </dl>
+            </Card>
+          )}
 
           {categories.length > 0 && (
             <Card className="p-4">

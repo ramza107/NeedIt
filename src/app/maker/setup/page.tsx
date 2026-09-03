@@ -16,6 +16,8 @@ export default function MakerSetupPage() {
   const [bio, setBio] = useState('');
   const [city, setCity] = useState('');
   const [location, setLocation] = useState('');
+  const [contactPerson, setContactPerson] = useState('');
+  const [phone, setPhone] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +52,8 @@ export default function MakerSetupPage() {
       bio,
       city,
       location,
+      contact_person: contactPerson.trim(),
+      phone: phone.trim(),
       categories: selectedCategories,
     });
 
@@ -79,6 +83,23 @@ export default function MakerSetupPage() {
               required
               placeholder="Maria Woodcraft"
             />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Contact person"
+                value={contactPerson}
+                onChange={(e) => setContactPerson(e.target.value)}
+                required
+                placeholder="Full name"
+              />
+              <Input
+                label="Phone number"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                placeholder="+1 555 123 4567"
+              />
+            </div>
             <Textarea
               label="Bio"
               value={bio}
