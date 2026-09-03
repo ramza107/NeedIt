@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #eef2f4;
-  --foreground: #12181c;
-  --muted: #5c6a73;
-  --muted-bg: #e4eaee;
-  --border: #d3dde3;
-  --primary: #0d7377;
-  --primary-hover: #0a5f62;
-  --primary-dark: #08484b;
-  --primary-foreground: #ffffff;
-  --accent: #e07a5f;
-  --accent-hover: #cc6a50;
-  --accent-light: #fdf1ed;
-  --card: #ffffff;
-  --surface: #f7fafb;
-  --header: #ffffff;
-  --header-secondary: #eef2f4;
-  --link: #0d7377;
-  --ring: rgba(13, 115, 119, 0.22);
+  --background: #f5f0e8;
+  --foreground: #3a342e;
+  --muted: #8a7f74;
+  --muted-bg: #ede6dc;
+  --border: #e0d6ca;
+  --primary: #9a8268;
+  --primary-hover: #857055;
+  --primary-dark: #6b5845;
+  --primary-foreground: #fffcf7;
+  --primary-light: #f5ede3;
+  --accent: #c4a882;
+  --accent-hover: #b0926e;
+  --accent-light: #faf3ea;
+  --card: #fffcf7;
+  --surface: #faf6f0;
+  --header: #fffcf7;
+  --header-secondary: #f5f0e8;
+  --link: #857055;
+  --ring: rgba(154, 130, 104, 0.22);
 }
 
 @theme inline {
@@ -31,6 +32,7 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-dark: var(--primary-dark);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-light: var(--primary-light);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-light: var(--accent-light);
@@ -45,14 +47,14 @@
 
 body {
   background:
-    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(13, 115, 119, 0.07), transparent),
+    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(196, 168, 130, 0.12), transparent),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgba(13, 115, 119, 0.2);
+  background: rgba(196, 168, 130, 0.35);
   color: var(--foreground);
 }
 
@@ -69,13 +71,13 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: 0 1px 2px rgba(18, 24, 28, 0.04);
+  box-shadow: 0 1px 2px rgba(58, 52, 46, 0.04);
   transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .card-product:hover {
-  border-color: #c5d2da;
-  box-shadow: 0 12px 28px rgba(18, 24, 28, 0.08);
+  border-color: #d4c9bb;
+  box-shadow: 0 12px 28px rgba(58, 52, 46, 0.07);
   transform: translateY(-2px);
 }
 
@@ -84,7 +86,7 @@ body {
   color: var(--primary-foreground);
   border: 1px solid transparent;
   border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(13, 115, 119, 0.25);
+  box-shadow: 0 1px 2px rgba(107, 88, 69, 0.2);
 }
 
 .btn-primary:hover {
@@ -93,10 +95,10 @@ body {
 
 .btn-accent {
   background: var(--accent);
-  color: #ffffff;
+  color: #fffcf7;
   border: 1px solid transparent;
   border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(224, 122, 95, 0.25);
+  box-shadow: 0 1px 2px rgba(196, 168, 130, 0.25);
 }
 
 .btn-accent:hover {
@@ -107,14 +109,14 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 24px;
-  box-shadow: 0 1px 3px rgba(18, 24, 28, 0.04);
+  box-shadow: 0 1px 3px rgba(58, 52, 46, 0.04);
 }
 
 .hero-gradient {
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(135deg, #0a4f52 0%, #0d7377 45%, #14919b 100%);
+    linear-gradient(135deg, #6b5845 0%, #9a8268 48%, #c4a882 100%);
 }
 
 .hero-gradient::before {
@@ -122,8 +124,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 50% 80% at 85% 20%, rgba(224, 122, 95, 0.28), transparent),
-    radial-gradient(ellipse 40% 60% at 10% 90%, rgba(255, 255, 255, 0.12), transparent);
+    radial-gradient(ellipse 50% 80% at 85% 20%, rgba(255, 252, 247, 0.18), transparent),
+    radial-gradient(ellipse 40% 60% at 10% 90%, rgba(245, 240, 232, 0.15), transparent);
   pointer-events: none;
 }
 
