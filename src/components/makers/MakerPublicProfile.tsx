@@ -78,7 +78,7 @@ export function MakerPublicProfile({
                       {makerProfile.location ? ` · ${makerProfile.location}` : ''}
                     </p>
                   )}
-                  {(makerProfile.contact_person || makerProfile.phone) && (
+                  {(makerProfile.contact_person || makerProfile.phone) ? (
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
                       {makerProfile.contact_person && (
                         <p className="flex items-center gap-1.5">
@@ -96,7 +96,11 @@ export function MakerPublicProfile({
                         </a>
                       )}
                     </div>
-                  )}
+                  ) : isOwner ? (
+                    <p className="mt-2 text-sm text-accent">
+                      Add contact person and phone in Edit profile — buyers need these.
+                    </p>
+                  ) : null}
                   <div className="mt-2">
                     <StarRating rating={profile.rating} count={profile.review_count} />
                   </div>
@@ -248,9 +252,9 @@ export function MakerPublicProfile({
             </dl>
           </Card>
 
-          {(makerProfile.contact_person || makerProfile.phone) && (
-            <Card className="p-4">
-              <h3 className="font-bold text-foreground mb-3">Contact</h3>
+          <Card className="p-4">
+            <h3 className="font-bold text-foreground mb-3">Contact</h3>
+            {makerProfile.contact_person || makerProfile.phone ? (
               <dl className="space-y-2.5 text-sm">
                 {makerProfile.contact_person && (
                   <div className="flex items-start gap-2">
@@ -278,8 +282,20 @@ export function MakerPublicProfile({
                   </div>
                 )}
               </dl>
-            </Card>
-          )}
+            ) : isOwner ? (
+              <div className="space-y-3">
+                <p className="text-sm text-muted">
+                  Contact person and phone are required so buyers can reach your company.
+                </p>
+                <Button href="/maker/profile/edit" size="sm" className="font-semibold gap-1.5">
+                  <Pencil className="h-3.5 w-3.5" />
+                  Add contact details
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted">Contact details not listed yet.</p>
+            )}
+          </Card>
 
           {categories.length > 0 && (
             <Card className="p-4">

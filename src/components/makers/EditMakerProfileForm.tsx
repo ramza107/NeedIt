@@ -205,16 +205,10 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
 
       <Card>
         <CardHeader>
-          <h2 className="font-bold text-foreground">Business info</h2>
+          <h2 className="font-bold text-foreground">Contact details</h2>
+          <p className="text-sm text-muted">Required — buyers use these to reach your company</p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Input
-            label="Business name"
-            value={businessName}
-            onChange={(e) => setBusinessName(e.target.value)}
-            required
-            placeholder="Maria Woodcraft"
-          />
           <div className="grid sm:grid-cols-2 gap-4">
             <Input
               label="Contact person"
@@ -232,6 +226,21 @@ export function EditMakerProfileForm({ profile, makerProfile, categories }: Prop
               placeholder="+1 555 123 4567"
             />
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-bold text-foreground">Business info</h2>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input
+            label="Business name"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            required
+            placeholder="Maria Woodcraft"
+          />
           <Textarea
             label="About you"
             value={bio}
