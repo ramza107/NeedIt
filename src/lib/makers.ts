@@ -37,6 +37,7 @@ export type MakerCardData = {
   href: string | null;
   name: string;
   avatar_url: string | null;
+  is_promoted: boolean;
 };
 
 export function toMakerCardData(maker: MakerWithProfile): MakerCardData {
@@ -54,5 +55,6 @@ export function toMakerCardData(maker: MakerWithProfile): MakerCardData {
     href: makerProfilePath(maker),
     name: maker.business_name || profile?.full_name || 'Manufacturer',
     avatar_url: profile?.avatar_url ?? null,
+    is_promoted: Boolean(maker.is_promoted),
   };
 }

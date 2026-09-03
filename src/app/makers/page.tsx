@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
 import { makerProfilePath, getMakerProfile } from '@/lib/makers';
 import { POPULAR_CATEGORIES } from '@/lib/constants';
-import { Building2 } from 'lucide-react';
+import { Building2, Megaphone } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<string, string> = {
   furniture: 'Furniture',
@@ -51,6 +51,11 @@ export default async function MakersPage({
       return hay.includes(query);
     });
   }
+
+  makers = [...makers].sort((a, b) => {
+    if (Boolean(a.is_promoted) === Boolean(b.is_promoted)) return (b.rating || 0) - (a.rating || 0);
+    return a.is_promoted ? -1 : 1;
+  });
 
   const chipCategories = categories.filter((c) => POPULAR_CATEGORIES.includes(c.slug));
 
@@ -113,10 +118,16 @@ export default async function MakersPage({
             }
 
             return (
-              <Link key={maker.id} href={href} className="card-product p-4 hover:bg-muted-bg/50 bg-card">
+              <Link key={maker.id} href={href} className={`card-product p-4 hover:bg-muted-bg/50 bg-card relative ${maker.is_promoted ? 'ring-1 ring-primary/25 bg-primary-light/30' : ''}`}>
+                {maker.is_promoted && (
+                  <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+                    <Megaphone className="h-2.5 w-2.5" />
+                    Sponsored
+                  </span>
+                )}
                 <div className="flex items-center gap-3 mb-2">
                   <Avatar src={profile?.avatar_url} name={name} size="sm" />
-                  <div className="min-w-0">
+                  <div className="min-w-0 pr-14">
                     <p className="font-semibold text-sm truncate text-link">{name}</p>
                     <p className="text-xs text-muted">{maker.city}</p>
                   </div>

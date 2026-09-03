@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Avatar, StarRating } from '@/components/ui/Avatar';
 import type { MakerCardData } from '@/lib/makers';
-import { ArrowRight, Building2 } from 'lucide-react';
+import { ArrowRight, Building2, Megaphone } from 'lucide-react';
 
 type CategoryOption = {
   id: string;
@@ -34,9 +34,17 @@ export function CategoryManufacturers({
   const selected = categories.find((c) => c.slug === selectedSlug) || categories[0];
 
   const filtered = useMemo(() => {
-    if (!selected) return makers;
-    return makers.filter((m) => m.categories.includes(selected.id));
+    const list = selected
+      ? makers.filter((m) => m.categories.includes(selected.id))
+      : makers;
+
+    return [...list].sort((a, b) => {
+      if (a.is_promoted === b.is_promoted) return b.rating - a.rating;
+      return a.is_promoted ? -1 : 1;
+    });
   }, [makers, selected]);
+
+  const sponsoredCount = filtered.filter((m) => m.is_promoted).length;
 
   return (
     <div className="section-panel p-5 sm:p-7">
@@ -44,15 +52,24 @@ export function CategoryManufacturers({
         <div>
           <h2 className="font-display text-2xl font-semibold text-foreground">Browse manufacturers</h2>
           <p className="text-sm text-muted mt-1">
-            Pick a category to see companies that produce it
+            Pick a category — sponsored companies appear first
           </p>
         </div>
-        <Link
-          href={selected ? `/makers?category=${selected.slug}` : '/makers'}
-          className="text-sm text-link hover:text-primary-hover font-medium flex items-center gap-1"
-        >
-          View all in category <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/auth/register?role=maker"
+            className="text-sm text-muted hover:text-primary font-medium flex items-center gap-1"
+          >
+            <Megaphone className="h-3.5 w-3.5" />
+            Advertise
+          </Link>
+          <Link
+            href={selected ? `/makers?category=${selected.slug}` : '/makers'}
+            className="text-sm text-link hover:text-primary-hover font-medium flex items-center gap-1"
+          >
+            View all <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
@@ -79,11 +96,14 @@ export function CategoryManufacturers({
       </div>
 
       {selected && (
-        <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h3 className="font-display text-lg font-semibold text-foreground">
             {selected.icon || FALLBACK_META[selected.slug]?.icon} {selected.name} manufacturers
           </h3>
-          <span className="text-xs text-muted">{filtered.length} found</span>
+          <span className="text-xs text-muted">
+            {filtered.length} found
+            {sponsoredCount > 0 ? ` · ${sponsoredCount} sponsored` : ''}
+          </span>
         </div>
       )}
 
@@ -100,10 +120,22 @@ export function CategoryManufacturers({
             }
 
             return (
-              <Link key={maker.id} href={maker.href} className="card-product p-4 hover:bg-muted-bg/50 block">
+              <Link
+                key={maker.id}
+                href={maker.href}
+                className={`card-product p-4 hover:bg-muted-bg/50 block relative ${
+                  maker.is_promoted ? 'ring-1 ring-primary/25 bg-primary-light/30' : ''
+                }`}
+              >
+                {maker.is_promoted && (
+                  <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+                    <Megaphone className="h-2.5 w-2.5" />
+                    Sponsored
+                  </span>
+                )}
                 <div className="flex items-center gap-3 mb-2">
                   <Avatar src={maker.avatar_url} name={maker.name} size="sm" />
-                  <div className="min-w-0">
+                  <div className="min-w-0 pr-16">
                     <p className="font-semibold text-sm truncate text-link">{maker.name}</p>
                     <p className="text-xs text-muted">{maker.city}</p>
                   </div>

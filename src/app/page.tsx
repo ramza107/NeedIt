@@ -1,37 +1,18 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { MakerPromoCard } from '@/components/makers/MakerPromoCard';
 import { CategoryManufacturers } from '@/components/makers/CategoryManufacturers';
 import { toMakerCardData } from '@/lib/makers';
 import { APP_NAME, APP_TAGLINE, POPULAR_CATEGORIES } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
 import {
-  ArrowRight,
   Shield,
   MessageSquare,
   CheckCircle2,
   Hammer,
   Building2,
-  Megaphone,
   ClipboardList,
   Search,
 } from 'lucide-react';
-
-async function getPromotedMakers() {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from('maker_profiles')
-      .select('*, profile:profiles(*)')
-      .eq('is_promoted', true)
-      .order('promoted_at', { ascending: false })
-      .limit(12);
-    if (error) return [];
-    return data || [];
-  } catch {
-    return [];
-  }
-}
 
 async function getManufacturers() {
   try {
@@ -58,10 +39,9 @@ async function getCategories() {
 }
 
 export default async function HomePage() {
-  const [manufacturers, categories, promotedMakers] = await Promise.all([
+  const [manufacturers, categories] = await Promise.all([
     getManufacturers(),
     getCategories(),
-    getPromotedMakers(),
   ]);
 
   const popularCats = categories.filter((c) => POPULAR_CATEGORIES.includes(c.slug));
@@ -146,49 +126,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Category → manufacturers (interactive) */}
+      {/* Category browse — sponsored first inside results */}
       <section className="mx-auto max-w-6xl px-4 pt-10">
         <CategoryManufacturers categories={categoryOptions} makers={makerCards} />
-      </section>
-
-      {/* Sponsored manufacturers */}
-      <section className="mx-auto max-w-6xl px-4 pt-8">
-        <div className="section-panel p-5 sm:p-7">
-          <div className="flex flex-wrap items-end justify-between gap-3 mb-5">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 mb-1.5">
-                <Megaphone className="h-3.5 w-3.5" />
-                Sponsored
-              </p>
-              <h2 className="font-display text-2xl font-semibold text-foreground">Featured manufacturers</h2>
-              <p className="text-sm text-muted mt-1">Companies advertising their production services</p>
-            </div>
-            <Link
-              href="/auth/register?role=maker"
-              className="text-sm text-link hover:text-primary-hover font-medium flex items-center gap-1"
-            >
-              Advertise your company <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-
-          {promotedMakers.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-              {promotedMakers.map((maker) => (
-                <MakerPromoCard key={maker.id} maker={maker} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-muted-bg/50 p-10 text-center">
-              <p className="font-semibold text-foreground mb-1">No sponsored manufacturers yet</p>
-              <p className="text-sm text-muted mb-5 max-w-md mx-auto">
-                Companies can turn on homepage promotion from their dashboard.
-              </p>
-              <Button href="/auth/register?role=maker" variant="accent">
-                List your company &amp; advertise
-              </Button>
-            </div>
-          )}
-        </div>
       </section>
 
       {/* Split: manufacturers vs requests */}

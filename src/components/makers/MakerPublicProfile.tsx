@@ -222,38 +222,11 @@ export function MakerPublicProfile({
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <Card className="p-4">
-            <h3 className="font-bold text-foreground mb-3">Maker stats</h3>
-            <dl className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <dt className="text-muted flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4" />
-                  Completed orders
-                </dt>
-                <dd className="font-bold">{makerProfile.completed_orders}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-muted flex items-center gap-1.5">
-                  <Clock className="h-4 w-4" />
-                  On-time rate
-                </dt>
-                <dd className="font-bold">{makerProfile.on_time_rate}%</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-muted">Success rate</dt>
-                <dd className="font-bold">{makerProfile.completion_rate}%</dd>
-              </div>
-              {makerProfile.avg_price != null && makerProfile.avg_price > 0 && (
-                <div className="flex justify-between">
-                  <dt className="text-muted">Avg. project</dt>
-                  <dd className="font-bold">{formatCurrency(makerProfile.avg_price)}</dd>
-                </div>
-              )}
-            </dl>
-          </Card>
-
-          <Card className="p-4">
-            <h3 className="font-bold text-foreground mb-3">Contact</h3>
+          <Card className="p-4 border-primary/20 bg-primary-light/40">
+            <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+              <Phone className="h-4 w-4 text-primary" />
+              Contact
+            </h3>
             {makerProfile.contact_person || makerProfile.phone ? (
               <dl className="space-y-2.5 text-sm">
                 {makerProfile.contact_person && (
@@ -295,6 +268,36 @@ export function MakerPublicProfile({
             ) : (
               <p className="text-sm text-muted">Contact details not listed yet.</p>
             )}
+          </Card>
+
+          <Card className="p-4">
+            <h3 className="font-bold text-foreground mb-3">Maker stats</h3>
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <dt className="text-muted flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Completed orders
+                </dt>
+                <dd className="font-bold">{makerProfile.completed_orders}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  On-time rate
+                </dt>
+                <dd className="font-bold">{makerProfile.on_time_rate}%</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted">Success rate</dt>
+                <dd className="font-bold">{makerProfile.completion_rate}%</dd>
+              </div>
+              {makerProfile.avg_price != null && makerProfile.avg_price > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-muted">Avg. project</dt>
+                  <dd className="font-bold">{formatCurrency(makerProfile.avg_price)}</dd>
+                </div>
+              )}
+            </dl>
           </Card>
 
           {categories.length > 0 && (
