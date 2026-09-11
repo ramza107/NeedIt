@@ -137,7 +137,24 @@ export async function POST(request: Request) {
     }
   }
 
-  // 3. Verify columns
+  // 3. Bootstrap platform admin
+  const adminEmail = 'rr.aliev96@gmail.com';
+  const { data: adminProfile, error: adminErr } = await supabase
+    .from('profiles')
+    .update({ role: 'admin' })
+    .eq('email', adminEmail)
+    .select('id, email, role, full_name')
+    .maybeSingle();
+
+  if (adminErr) {
+    results.push(`admin: ${adminErr.message}`);
+  } else if (!adminProfile) {
+    results.push(`admin: no profile found for ${adminEmail} — register/login once first`);
+  } else {
+    results.push(`admin: ${adminProfile.email} → ${adminProfile.role}`);
+  }
+
+  // 4. Verify columns + admin policies helpers
   const { error: verifyError } = await supabase
     .from('maker_profiles')
     .select('is_promoted, cover_url, phone, contact_person')
@@ -146,6 +163,8 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: !verifyError,
     results,
+    admin: adminProfile || null,
     verify: verifyError?.message || 'columns exist',
+    version: 'admin-bootstrap-v1',
   });
 }

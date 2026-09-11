@@ -183,6 +183,15 @@ export function Header() {
                   >
                     Dashboard
                   </Link>
+                  {profile.role === 'admin' && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted-bg mx-1 rounded-xl font-semibold text-primary"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Admin panel
+                    </Link>
+                  )}
                   <button
                     type="button"
                     onClick={handleLogout}
