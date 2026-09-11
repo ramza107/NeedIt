@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { requireAdmin, createClient } from '@/lib/supabase/server';
+import { requireAdmin, createServiceClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/ui/Badge';
 import { formatCurrency, formatRelativeTime } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { MessageSquare, Users, Shield } from 'lucide-react';
 
 export default async function AdminPage() {
   await requireAdmin();
-  const supabase = await createClient();
+  const supabase = createServiceClient();
 
   const [
     { count: usersCount },

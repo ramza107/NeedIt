@@ -13,10 +13,12 @@ export function ChatPanel({
   orderId,
   currentUserId,
   participants,
+  isAdmin = false,
 }: {
   orderId: string;
   currentUserId: string;
   participants: Record<string, Profile>;
+  isAdmin?: boolean;
 }) {
   const supabase = createClient();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -25,14 +27,34 @@ export function ChatPanel({
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    supabase
-      .from('messages')
-      .select('*, sender:profiles(*)')
-      .eq('order_id', orderId)
-      .order('created_at', { ascending: true })
-      .then(({ data }) => {
-        if (data) setMessages(data as Message[]);
-      });
+    let cancelled = false;
+
+    async function loadMessages() {
+      if (isAdmin) {
+        const res = await fetch(`/api/admin/messages?orderId=${orderId}`);
+        if (!res.ok) return;
+        const json = (await res.json()) as { messages?: Message[] };
+        if (!cancelled && json.messages) setMessages(json.messages);
+        return;
+      }
+
+      const { data } = await supabase
+        .from('messages')
+        .select('*, sender:profiles(*)')
+        .eq('order_id', orderId)
+        .order('created_at', { ascending: true });
+      if (!cancelled && data) setMessages(data as Message[]);
+    }
+
+    loadMessages();
+
+    if (isAdmin) {
+      const interval = setInterval(loadMessages, 8000);
+      return () => {
+        cancelled = true;
+        clearInterval(interval);
+      };
+    }
 
     const channel = supabase
       .channel(`messages:${orderId}`)
@@ -51,9 +73,10 @@ export function ChatPanel({
       .subscribe();
 
     return () => {
+      cancelled = true;
       supabase.removeChannel(channel);
     };
-  }, [orderId, supabase]);
+  }, [orderId, supabase, isAdmin]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });

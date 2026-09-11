@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient, getProfile, createServiceClient } from '@/lib/supabase/server';
+import { getProfile, createServiceClient } from '@/lib/supabase/server';
 
 async function assertAdmin() {
   const profile = await getProfile();
@@ -30,7 +30,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: 'Cannot remove your own admin role' }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  const supabase = createServiceClient();
 
   if (profilePatch && Object.keys(profilePatch).length > 0) {
     const allowed = [
@@ -111,10 +111,9 @@ export async function DELETE(request: Request) {
     // Deleting auth user cascades to profiles / related rows when FKs are set
     const { error } = await service.auth.admin.deleteUser(userId);
     if (error) {
-      // Fallback: soft-delete / hard-delete profile row
-      const supabase = await createClient();
-      await supabase.from('maker_profiles').delete().eq('user_id', userId);
-      const { error: profileErr } = await supabase.from('profiles').delete().eq('id', userId);
+      // Fallback: hard-delete profile rows via service role
+      await service.from('maker_profiles').delete().eq('user_id', userId);
+      const { error: profileErr } = await service.from('profiles').delete().eq('id', userId);
       if (profileErr) {
         return NextResponse.json({ error: error.message || profileErr.message }, { status: 400 });
       }

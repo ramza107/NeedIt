@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { requireAdmin, createClient } from '@/lib/supabase/server';
+import { requireAdmin, createServiceClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { StatusBadge } from '@/components/ui/Badge';
 import { formatRelativeTime } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { ArrowLeft, MessageSquare } from 'lucide-react';
 
 export default async function AdminChatsPage() {
   await requireAdmin();
-  const supabase = await createClient();
+  const supabase = createServiceClient();
 
   const { data: orders } = await supabase
     .from('orders')

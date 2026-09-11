@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { requireAdmin, createClient } from '@/lib/supabase/server';
+import { requireAdmin, createServiceClient } from '@/lib/supabase/server';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { formatRelativeTime } from '@/lib/utils';
@@ -15,7 +15,7 @@ export default async function AdminUsersPage({
   const roleFilter = params.role || '';
   const q = (params.q || '').trim().toLowerCase();
 
-  const supabase = await createClient();
+  const supabase = createServiceClient();
   let query = supabase
     .from('profiles')
     .select('*, maker_profiles(id, business_name, phone, contact_person)')

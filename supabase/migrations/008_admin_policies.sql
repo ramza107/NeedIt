@@ -15,6 +15,14 @@ $$;
 
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_blocked BOOLEAN DEFAULT FALSE;
 
+-- Orders: admins can open any order
+DROP POLICY IF EXISTS "Orders viewable by participants" ON orders;
+DROP POLICY IF EXISTS "Orders viewable by participants or admin" ON orders;
+CREATE POLICY "Orders viewable by participants or admin" ON orders
+  FOR SELECT USING (
+    auth.uid() = buyer_id OR auth.uid() = maker_id OR public.is_admin()
+  );
+
 -- Messages: admins can read any order chat
 DROP POLICY IF EXISTS "Messages viewable by order participants" ON messages;
 DROP POLICY IF EXISTS "Messages viewable by order participants or admin" ON messages;

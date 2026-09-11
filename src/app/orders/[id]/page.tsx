@@ -1,4 +1,4 @@
-import { createClient, getProfile } from '@/lib/supabase/server';
+import { createClient, createServiceClient, getProfile } from '@/lib/supabase/server';
 import { redirect, notFound } from 'next/navigation';
 import { OrderDetailClient } from '@/components/orders/OrderDetail';
 
@@ -13,7 +13,8 @@ export default async function OrderPage({ params, searchParams }: Props) {
   const profile = await getProfile();
   if (!profile) redirect('/auth/login');
 
-  const supabase = await createClient();
+  const isAdmin = profile.role === 'admin';
+  const supabase = isAdmin ? createServiceClient() : await createClient();
 
   const { data: order } = await supabase
     .from('orders')
@@ -30,7 +31,6 @@ export default async function OrderPage({ params, searchParams }: Props) {
 
   const isBuyer = profile.id === order.buyer_id;
   const isMaker = profile.id === order.maker_id;
-  const isAdmin = profile.role === 'admin';
 
   if (!isBuyer && !isMaker && !isAdmin) notFound();
 
@@ -68,6 +68,7 @@ export default async function OrderPage({ params, searchParams }: Props) {
         currentUserId={profile.id}
         isBuyer={isBuyer}
         isMaker={isMaker}
+        isAdmin={isAdmin}
       />
     </div>
   );

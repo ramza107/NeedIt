@@ -16,6 +16,7 @@ export function OrderDetailClient({
   currentUserId,
   isBuyer,
   isMaker,
+  isAdmin = false,
 }: {
   order: Order & {
     request?: { title: string; description: string };
@@ -25,6 +26,7 @@ export function OrderDetailClient({
   currentUserId: string;
   isBuyer: boolean;
   isMaker: boolean;
+  isAdmin?: boolean;
 }) {
   const participants: Record<string, Profile> = {};
   if (order.buyer) participants[order.buyer.id] = order.buyer;
@@ -103,6 +105,7 @@ export function OrderDetailClient({
             orderId={order.id}
             currentUserId={currentUserId}
             participants={participants}
+            isAdmin={isAdmin}
           />
         </div>
       </div>
@@ -119,8 +122,37 @@ export function OrderDetailClient({
         </Card>
 
         <Card className="p-5">
-          <p className="text-sm text-muted mb-3">{isBuyer ? 'Your Maker' : 'Buyer'}</p>
-          {isBuyer && order.maker ? (
+          <p className="text-sm text-muted mb-3">
+            {isAdmin ? 'Participants' : isBuyer ? 'Your Maker' : 'Buyer'}
+          </p>
+          {isAdmin ? (
+            <div className="space-y-3">
+              {order.buyer && (
+                <Link
+                  href={`/profile/${order.buyer_id}`}
+                  className="flex items-center gap-3 group rounded-lg -m-1 p-1 hover:bg-muted-bg transition-colors"
+                >
+                  <Avatar src={order.buyer.avatar_url} name={order.buyer.full_name || ''} />
+                  <div>
+                    <p className="text-xs text-muted">Buyer</p>
+                    <p className="font-semibold text-link group-hover:underline">{order.buyer.full_name}</p>
+                  </div>
+                </Link>
+              )}
+              {order.maker && (
+                <Link
+                  href={`/profile/${order.maker_id}`}
+                  className="flex items-center gap-3 group rounded-lg -m-1 p-1 hover:bg-muted-bg transition-colors"
+                >
+                  <Avatar src={order.maker.avatar_url} name={order.maker.full_name || ''} />
+                  <div>
+                    <p className="text-xs text-muted">Maker</p>
+                    <p className="font-semibold text-link group-hover:underline">{order.maker.full_name}</p>
+                  </div>
+                </Link>
+              )}
+            </div>
+          ) : isBuyer && order.maker ? (
             <Link
               href={`/profile/${order.maker_id}`}
               className="flex items-center gap-3 group rounded-lg -m-1 p-1 hover:bg-muted-bg transition-colors"

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { requireAdmin, createClient } from '@/lib/supabase/server';
+import { requireAdmin, createServiceClient } from '@/lib/supabase/server';
 import { AdminUserEditor } from '@/components/admin/AdminUserEditor';
 import { ArrowLeft } from 'lucide-react';
 
@@ -11,7 +11,7 @@ export default async function AdminUserEditPage({
 }) {
   await requireAdmin();
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = createServiceClient();
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
   if (!profile) notFound();
